@@ -13,7 +13,7 @@ class AlumnosDAO
     }
 
     // Devuelve todos los alumnos
-    public function getAll() {
+    public function getAlumnos() {
         $this->getConection();
         $sql = "SELECT * FROM $this->table";
         $stmt = $this->conection->prepare($sql);
@@ -21,4 +21,13 @@ class AlumnosDAO
         return $stmt->fetchAll();
     }
 
+    public function getAlumno($id) {
+        if(is_null($id)) return false;
+        $this->getConection();
+        $sql = "SELECT * FROM $this->table WHERE id = :id";
+        $stmt = $this->conection->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
 }

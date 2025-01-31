@@ -1,7 +1,5 @@
 <?php
 
-require_once '/config/config.php';
-
 class Database
 {
     private $host;
@@ -12,7 +10,7 @@ class Database
     
     public function __construct() {
         $this->host = constant('DB_HOST');
-        $this->db = constant('DB');
+        $this->db = constant('DB_NAME');
         $this->user = constant('DB_USER');
         $this->pass = constant('DB_PASS');
 
