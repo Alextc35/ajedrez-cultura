@@ -39,7 +39,7 @@ $categoriaActual = (!empty($dataToView['data']) && $dataToView['data'][array_key
                             foreach ($dataToView['data'] as $alumno) {
                         ?>
                             <tr>
-                                <td><?= $cont++ ?></td>
+                                <td><?php echo $cont++ . '°'; ?></td>
                                 <td><?= $alumno['nombre']; ?></td>
                                 <td><?= $alumno['categoria']; ?></td>
                                 <td><?= $alumno['victorias']; ?></td>
