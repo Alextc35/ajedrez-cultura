@@ -14,8 +14,14 @@ class ControladorAlumnos
     }
 
     // Devuelve todos los alumnos
-    public function index() {
+    public function list() {
         $this->page_title = 'Alumnos';
         return $this->alumnosObj->getAlumnos();
+    }
+
+    // Devuelve los datos de un alumno
+    public function view($id) {
+        $this->page_title = 'Alumno';
+        return $this->alumnosObj->getAlumno($id);
     }
 }
