@@ -3,23 +3,30 @@ session_start();
 
 require_once('tcpdf/tcpdf.php'); // Si descargaste TCPDF manualmente
 
-if (!isset($_SESSION['dataToView'])) {
+if (!isset($_SESSION['dataToView']) || empty($_SESSION['dataToView']['data'])) {
     die("No hay datos para generar el PDF");
 }
 
 $dataToView = $_SESSION['dataToView'];
 $fecha = date('d/m/Y');
+// Obtener la categoría desde la URL
+$categoria = isset($_GET['categoria']) ? urldecode($_GET['categoria']) : 'LIGA LOCAL';
+
+// Filtrar los datos según la categoría
+$dataToView['data'] = array_filter($dataToView['data'], function ($alumno) use ($categoria) {
+    return $alumno['categoria'] === $categoria;
+});
 
 // Crear nuevo documento PDF
 $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
-$pdf->SetTitle('LIGA LOCAL');
+$pdf->SetTitle("Clasificación - $categoria");
 $pdf->SetMargins(10, 10, 10);
 $pdf->SetAutoPageBreak(TRUE, 10);
 $pdf->AddPage();
 
 // Título
 $pdf->SetFont('helvetica', 'B', 16);
-$pdf->Cell(0, 10, "LIGA LOCAL - $fecha", 0, 1, 'C');
+$pdf->Cell(0, 10, "$categoria - $fecha", 0, 1, 'C');
 
 // Espacio antes de la tabla
 $pdf->Ln(5);
@@ -68,5 +75,5 @@ $html .= '</tbody></table>';
 $pdf->writeHTML($html, true, false, false, false, '');
 
 // Salida del archivo
-$pdf->Output('clasificacion_alumnos.pdf', 'D'); // 'D' fuerza la descarga
+$pdf->Output("clasificacion_$categoria.pdf", 'D'); // 'D' fuerza la descarga
 ?>
