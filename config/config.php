@@ -7,4 +7,4 @@
 
     // Párametros de la aplicación
     const DEFAULT_CONTROLLER = "ControladorAlumnos";
-    const DEFAULT_ACTION = "index";
+    const DEFAULT_ACTION = "list";

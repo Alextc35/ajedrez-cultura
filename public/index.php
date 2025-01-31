@@ -1,17 +1,17 @@
 <?php
-include 'config/config.php';
-include 'model/Database.php';
+include '../config/config.php';
+include '../app/models/Database.php';
 
 if(!isset($_GET['controller']))
     $_GET['controller'] = constant("DEFAULT_CONTROLLER");
 if(!isset($_GET['action']))
     $_GET['action'] = constant("DEFAULT_ACTION");
 
-$controller_path = 'controller/' . $_GET['controller'] . '.php';
+$controller_path = '../app/controllers/' . $_GET['controller'] . '.php';
 
 // Comprobamos que el controlador exista
 if(!file_exists($controller_path)) {
-    $controller_path = 'controller/' . constant("DEFAULT_CONTROLLER") . '.php';
+    $controller_path = '../app/controllers/' . constant("DEFAULT_CONTROLLER") . '.php';
     $_GET['controller'] = constant("DEFAULT_CONTROLLER");
     $_GET['action'] = constant("DEFAULT_ACTION");
 }
@@ -28,7 +28,7 @@ if (method_exists($controller, $_GET['action']))
     $dataToView['data'] = $controller->{$_GET['action']}();
 
 // Cargamos la vista
-require_once 'view/templates/header.php';
-require_once 'view/' . $controller->view . '.php';
-require_once 'view/templates/footer.php';
+require_once '../app/views/templates/header.php';
+require_once '../app/views/' . $controller->view . '.php';
+require_once '../app/views/templates/footer.php';
 ?>

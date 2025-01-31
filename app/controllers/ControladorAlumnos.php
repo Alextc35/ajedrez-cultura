@@ -1,5 +1,5 @@
 <?php
-require_once 'model/AlumnosDAO.php';
+require_once '../app/models/AlumnosDAO.php';
 
 class ControladorAlumnos
 {

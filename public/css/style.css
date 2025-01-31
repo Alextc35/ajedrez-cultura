@@ -1,0 +1,68 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.table-container {
+    width: 95%;
+    max-width: 900px;
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.table-wrapper {
+    max-height: 80vh;
+    overflow-y: auto;
+    border-radius: 10px;
+}
+/* 📌 Hace que el thead sea sticky */
+thead {
+    position: sticky;
+    top: 0;
+    background-color: #007BFF; /* Asegura que el fondo del thead no sea transparente */
+    color: white;
+    z-index: 10; /* Para que quede sobre el contenido */
+}
+
+th {
+    padding: 12px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+td {
+    padding: 10px;
+    text-align: center;
+}
+/* 📌 Ajustes responsivos en móviles */
+@media (max-width: 768px) {
+    .table-container {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .table-responsive {
+        font-size: 14px; /* Hace que el texto sea más compacto */
+    }
+
+    th, td {
+        padding: 8px;
+        font-size: 13px; /* Reduce tamaño en móviles */
+    }
+}
+
+@media (max-width: 480px) {
+    th, td {
+        font-size: 8px;
+        padding: 6px;
+    }
+}
