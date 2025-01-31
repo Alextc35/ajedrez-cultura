@@ -1,9 +1,18 @@
 <?php
 session_start();
+// Determinar la categoría actual
+if($_GET['action'] === 'list') {
+    $categoriaActual = 'LIGA';
+}
+else {
+$categoriaActual = (!empty($dataToView['data']) && $dataToView['data'][array_key_first($dataToView['data'])]['categoria'] === 'LIGA LOCAL')
+    ? 'LIGA LOCAL' 
+    : 'LIGA INFANTIL';
+}
 ?>
 <div>
     <div class="table-container">
-        <h2 class="text-center">LIGA LOCAL</h2>
+        <h2 class="text-center"><?= $categoriaActual ?></h2>
         <?php if (count($dataToView['data']) > 0) { ?>
             <div class="table-wrapper table-responsive">
                 <table class="table table-striped table-hover">
@@ -59,6 +68,6 @@ session_start();
         <?php } ?>
     </div>
     <div class="text-center p-2">
-        <a href="/chess-league/public/generar_pdf.php" class="btn btn-danger">Descargar PDF</a>
+        <a href="/chess-league/public/generar_pdf.php?categoria=<?= urlencode($categoriaActual) ?>" class="btn btn-danger">Descargar PDF</a>
     </div>
 </div>
