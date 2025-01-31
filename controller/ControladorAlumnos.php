@@ -1,5 +1,5 @@
 <?php
-require_once '/model/AlumnosDAO.php';
+require_once 'model/AlumnosDAO.php';
 
 class ControladorAlumnos
 {
@@ -16,6 +16,6 @@ class ControladorAlumnos
     // Devuelve todos los alumnos
     public function index() {
         $this->page_title = 'Alumnos';
-        return $this->alumnosObj->getAll();
+        return $this->alumnosObj->getAlumnos();
     }
 }
