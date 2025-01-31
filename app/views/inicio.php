@@ -5,5 +5,7 @@
 
         <a href="?controller=ControladorAlumnos&action=ligaLocal" class="btn btn-primary">LIGA LOCAL</a>
         <a href="?controller=ControladorAlumnos&action=ligaInfantil" class="btn btn-success">LIGA INFANTIL</a>
+        <p class="text-muted pt-2 ">Desarrollado por Alejandro Téllez Corona</p>
+        <p class="fst-italic text-muted">&copy; <?= date('Y') ?> - Mejorada del Campo</p>
     </div>
 </div>
