@@ -21,14 +21,4 @@ class AlumnosDAO
         $stmt->execute();
         return $stmt->fetchAll();
     }
-
-    public function getAlumno($id) {
-        if(is_null($id)) return false;
-        $this->getConection();
-        $sql = "SELECT * FROM $this->table WHERE id = :id";
-        $stmt = $this->conection->prepare($sql);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-        return $stmt->fetch();
-    }
 }
