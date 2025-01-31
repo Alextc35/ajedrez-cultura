@@ -75,5 +75,5 @@ $html .= '</tbody></table>';
 $pdf->writeHTML($html, true, false, false, false, '');
 
 // Salida del archivo
-$pdf->Output("clasificacion_$categoria.pdf", 'D'); // 'D' fuerza la descarga
+$pdf->Output("$categoria.pdf", 'D'); // 'D' fuerza la descarga
 ?>
