@@ -5,4 +5,5 @@ CREATE TABLE alumnos (
     victorias INT DEFAULT 0,
     derrotas INT DEFAULT 0,
     tablas INT DEFAULT 0
+    creado TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
