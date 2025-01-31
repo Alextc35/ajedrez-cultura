@@ -1,12 +1,14 @@
 <div>
-    <div>
-        <a href="index.php?controller=ControladorAlumnos&action=index">Ejemplo</a>
-        <hr/>
-    </div>
-    <div>
+    <div class="table-container">
         <?php
         $cont = 1;
         if (count($dataToView['data']) > 0) {
+        // Calcular puntos y ordenar de mayor a menor
+        usort($dataToView['data'], function ($a, $b) {
+            $puntosA = ($a['victorias'] * 1) + ($a['tablas'] * 0.5);
+            $puntosB = ($b['victorias'] * 1) + ($b['tablas'] * 0.5);
+            return $puntosB <=> $puntosA; // Ordenar de mayor a menor
+        });
             ?>
             <table>
             <tr>
