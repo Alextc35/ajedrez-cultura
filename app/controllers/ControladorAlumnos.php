@@ -58,4 +58,9 @@ class ControladorAlumnos
         require_once '../app/views/edit.php';
     }
     
+    public function add() {
+        $this->page_title = 'Añadir Alumno';
+        $this->view = 'add';
+        require_once '../app/views/add.php'; // Cargar la vista del formulario
+    }
 }

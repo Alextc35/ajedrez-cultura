@@ -57,6 +57,7 @@ $categoriaActual = (!empty($dataToView['data']) && $dataToView['data'][array_key
 
             <div class="text-center p-2">
                 <a href="?controller=ControladorAlumnos&action=add" class="btn btn-primary">Añadir alumno</a>
+                <a href="?controller=ControladorAlumnos&action=add&categoria=<?= urlencode($categoriaActual) ?>" class="btn btn-primary">Añadir alumno</a>
                 <a href="?controller=ControladorAlumnos&action=edit&categoria=<?= urlencode($categoriaActual) ?>" class="btn btn-primary">Editar alumno</a>
                 <a href="?controller=ControladorAlumnos&action=delete" class="btn btn-primary">Eliminar alumno</a>
             </div>
@@ -64,6 +65,7 @@ $categoriaActual = (!empty($dataToView['data']) && $dataToView['data'][array_key
             <p class="text-center">No hay alumnos</p>
             <div class="text-center">
                 <a href="?controller=ControladorAlumnos&action=add" class="btn btn-primary">Añadir alumno</a>
+                <a href="?controller=ControladorAlumnos&action=add&categoria=<?= urlencode($categoriaActual) ?>" class="btn btn-primary">Añadir alumno</a>
             </div>
         <?php } ?>
     </div>

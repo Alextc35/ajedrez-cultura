@@ -29,4 +29,14 @@ class AlumnosDAO
         $stmt->execute([$nombre, $victorias, $derrotas, $tablas, $id]);
     }
     
+    public function addAlumno($nombre, $categoria, $victorias, $derrotas, $tablas) {
+        $this->getConection();
+        try {
+            $sql = "INSERT INTO alumnos (nombre, categoria, victorias, derrotas, tablas) VALUES (?, ?, ?, ?, ?)";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$nombre, $categoria, $victorias, $derrotas, $tablas]);
+        } catch (PDOException $e) {
+            die("Error al insertar alumno: " . $e->getMessage());
+        }
+    }
 }
