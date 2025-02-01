@@ -39,4 +39,23 @@ class ControladorAlumnos
         });
         require_once '../app/views/clasificacion.php';
     }
+
+    public function edit() {
+        $this->page_title = 'Editar Alumnos';
+        $dataToView['data'] = $this->alumnosObj->getAlumnos();
+    
+        // 📌 Determinar la categoría desde la URL (Si no está, usa LIGA LOCAL por defecto)
+        $categoria = isset($_GET['categoria']) && $_GET['categoria'] === 'LIGA INFANTIL' ? 'LIGA INFANTIL' : 'LIGA LOCAL';
+    
+        // 📌 Filtrar alumnos según la categoría seleccionada
+        $dataToView['data'] = array_filter($dataToView['data'], function ($alumno) use ($categoria) {
+            return $alumno['categoria'] === $categoria;
+        });
+    
+        // Pasar la categoría a la vista
+        $dataToView['categoria'] = $categoria;
+        $this->view = 'edit';
+        require_once '../app/views/edit.php';
+    }
+    
 }
