@@ -38,7 +38,6 @@ $html = '<table border="1" cellpadding="5">
                 <tr style="background-color:#007BFF;color:#ffffff;">
                     <th>Posición</th>
                     <th>Nombre</th>
-                    <th>Categoría</th>
                     <th>Victorias</th>
                     <th>Derrotas</th>
                     <th>Tablas</th>
@@ -61,7 +60,6 @@ foreach ($dataToView['data'] as $alumno) {
     $html .= '<tr>
                 <td>' . $cont++ . '</td>
                 <td>' . htmlspecialchars($alumno['nombre']) . '</td>
-                <td>' . htmlspecialchars($alumno['categoria']) . '</td>
                 <td>' . $alumno['victorias'] . '</td>
                 <td>' . $alumno['derrotas'] . '</td>
                 <td>' . $alumno['tablas'] . '</td>

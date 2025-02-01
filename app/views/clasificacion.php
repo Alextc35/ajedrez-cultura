@@ -12,7 +12,9 @@ $categoriaActual = (!empty($dataToView['data']) && $dataToView['data'][array_key
 ?>
 <div>
     <div class="table-container">
+        <a href="/chess-league/public/" class="btn btn-secondary float-start">Volver</a>
         <h2 class="text-center"><?= $categoriaActual ?></h2>
+
         <?php if (count($dataToView['data']) > 0) { ?>
             <div class="table-wrapper table-responsive">
                 <table class="table table-striped table-hover">
@@ -20,7 +22,6 @@ $categoriaActual = (!empty($dataToView['data']) && $dataToView['data'][array_key
                         <tr>
                             <th>Posición</th>
                             <th>Nombre</th>
-                            <th>Categoria</th>
                             <th>Victorias</th>
                             <th>Derrotas</th>
                             <th>Tablas</th>
@@ -41,7 +42,6 @@ $categoriaActual = (!empty($dataToView['data']) && $dataToView['data'][array_key
                             <tr>
                                 <td><?php echo $cont++ . '°'; ?></td>
                                 <td><?= $alumno['nombre']; ?></td>
-                                <td><?= $alumno['categoria']; ?></td>
                                 <td><?= $alumno['victorias']; ?></td>
                                 <td><?= $alumno['derrotas']; ?></td>
                                 <td><?= $alumno['tablas']; ?></td>
@@ -57,7 +57,7 @@ $categoriaActual = (!empty($dataToView['data']) && $dataToView['data'][array_key
 
             <div class="text-center p-2">
                 <a href="?controller=ControladorAlumnos&action=add" class="btn btn-primary">Añadir alumno</a>
-                <a href="?controller=ControladorAlumnos&action=edit" class="btn btn-primary">Editar alumno</a>
+                <a href="?controller=ControladorAlumnos&action=edit&categoria=<?= urlencode($categoriaActual) ?>" class="btn btn-primary">Editar alumno</a>
                 <a href="?controller=ControladorAlumnos&action=delete" class="btn btn-primary">Eliminar alumno</a>
             </div>
         <?php } else { ?>
@@ -68,6 +68,7 @@ $categoriaActual = (!empty($dataToView['data']) && $dataToView['data'][array_key
         <?php } ?>
     </div>
     <div class="text-center p-2">
+        <a href="?controller=ControladorAlumnos&action=match" class="btn btn-success">Enfrentar</a>
         <a href="/chess-league/public/generar_pdf.php?categoria=<?= urlencode($categoriaActual) ?>" class="btn btn-danger">Descargar PDF</a>
     </div>
 </div>
