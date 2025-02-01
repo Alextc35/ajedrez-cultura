@@ -58,7 +58,7 @@ $cont = 1;
 foreach ($dataToView['data'] as $alumno) {
     $puntos = ($alumno['victorias'] * 1) + ($alumno['tablas'] * 0.5);
     $html .= '<tr>
-                <td>' . $cont++ . '</td>
+                <td>' . $cont++ . '°</td>
                 <td>' . htmlspecialchars($alumno['nombre']) . '</td>
                 <td>' . $alumno['victorias'] . '</td>
                 <td>' . $alumno['derrotas'] . '</td>
