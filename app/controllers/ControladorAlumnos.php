@@ -63,4 +63,11 @@ class ControladorAlumnos
         $this->view = 'add';
         require_once '../app/views/add.php'; // Cargar la vista del formulario
     }
+    
+    public function delete() {
+        $this->page_title = 'Eliminar Alumno';
+        $this->view = 'delete';
+        require_once '../app/views/delete.php'; // Cargar la vista de eliminación
+    }
+    
 }

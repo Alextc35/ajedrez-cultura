@@ -39,4 +39,16 @@ class AlumnosDAO
             die("Error al insertar alumno: " . $e->getMessage());
         }
     }
+
+    public function deleteAlumno($id) {
+        $this->getConection();
+        try {
+            $sql = "DELETE FROM alumnos WHERE id = ?";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$id]);
+        } catch (PDOException $e) {
+            die("Error al eliminar alumno: " . $e->getMessage());
+        }
+    }
+    
 }

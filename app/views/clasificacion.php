@@ -26,6 +26,7 @@ $categoriaActual = (!empty($dataToView['data']) && $dataToView['data'][array_key
                             <th>Derrotas</th>
                             <th>Tablas</th>
                             <th>Puntos</th>
+                            <th>ELIMINAR</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -46,6 +47,7 @@ $categoriaActual = (!empty($dataToView['data']) && $dataToView['data'][array_key
                                 <td><?= $alumno['derrotas']; ?></td>
                                 <td><?= $alumno['tablas']; ?></td>
                                 <td><?= $alumno['victorias'] + $alumno['tablas'] / 2; ?></td>
+                                <td>                <a href="/chess-league/public/delete.php?id=<?= $alumno['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que quieres eliminar a <?= htmlspecialchars($alumno['nombre']); ?>?')"><i class="bi bi-person-x-fill"></i></a></td>
                             </tr>
                         <?php } ?>
                     </tbody>
@@ -56,15 +58,12 @@ $categoriaActual = (!empty($dataToView['data']) && $dataToView['data'][array_key
             </div>
 
             <div class="text-center p-2">
-                <a href="?controller=ControladorAlumnos&action=add" class="btn btn-primary">Añadir alumno</a>
                 <a href="?controller=ControladorAlumnos&action=add&categoria=<?= urlencode($categoriaActual) ?>" class="btn btn-primary">Añadir alumno</a>
                 <a href="?controller=ControladorAlumnos&action=edit&categoria=<?= urlencode($categoriaActual) ?>" class="btn btn-primary">Editar alumno</a>
-                <a href="?controller=ControladorAlumnos&action=delete" class="btn btn-primary">Eliminar alumno</a>
             </div>
         <?php } else { ?>
             <p class="text-center">No hay alumnos</p>
             <div class="text-center">
-                <a href="?controller=ControladorAlumnos&action=add" class="btn btn-primary">Añadir alumno</a>
                 <a href="?controller=ControladorAlumnos&action=add&categoria=<?= urlencode($categoriaActual) ?>" class="btn btn-primary">Añadir alumno</a>
             </div>
         <?php } ?>
