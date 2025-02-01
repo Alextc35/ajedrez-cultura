@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #333;
     margin: 0;
     padding: 20px;
     display: flex;
@@ -62,7 +62,7 @@ td {
 
 @media (max-width: 480px) {
     th, td {
-        font-size: 8px;
+        font-size: 12px;
         padding: 6px;
     }
 }
