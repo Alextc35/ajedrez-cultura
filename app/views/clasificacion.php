@@ -47,7 +47,7 @@ $categoriaActual = (!empty($dataToView['data']) && $dataToView['data'][array_key
                                 <td><?= $alumno['derrotas']; ?></td>
                                 <td><?= $alumno['tablas']; ?></td>
                                 <td><?= $alumno['victorias'] + $alumno['tablas'] / 2; ?></td>
-                                <td>                <a href="/chess-league/public/delete.php?id=<?= $alumno['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que quieres eliminar a <?= htmlspecialchars($alumno['nombre']); ?>?')"><i class="bi bi-person-x-fill"></i></a></td>
+                                <td><a href="/chess-league/public/delete.php?id=<?= $alumno['id']; ?>&categoria=<?= urlencode($categoriaActual) ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que quieres eliminar a <?= htmlspecialchars($alumno['nombre']); ?>?')"><i class="bi bi-person-x-fill"></i></a></td>
                             </tr>
                         <?php } ?>
                     </tbody>

@@ -5,7 +5,7 @@ require_once '../app/models/AlumnosDAO.php';
 
 // 📌 Verificar que el formulario fue enviado por POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    if ($dataToView['categoria'] === 'LIGA LOCAL')
+    if ($_POST['categoria'] === 'LIGA LOCAL')
         $categoria = 'ligaLocal';
     else
         $categoria = 'ligaInfantil';
@@ -29,11 +29,11 @@ if (empty($nombre)) {
 // 📌 Insertar en la base de datos
 try {
     $alumnosDAO->addAlumno($nombre, $categoria, $victorias, $derrotas, $tablas);
-    if ($dataToView['categoria'] === 'LIGA LOCAL')
+    if ($_POST['categoria'] === 'LIGA LOCAL')
         $categoria = 'ligaLocal';
     else
         $categoria = 'ligaInfantil';
-    header("Location: ?controller=ControladorAlumnos&action=$categoria"); // 📌 Redirigir a la lista
+    header("Location: /chess-league/public?controller=ControladorAlumnos&action=$categoria"); // 📌 Redirigir a la lista
     exit();
 } catch (Exception $e) {
     die("Error al insertar el alumno: " . $e->getMessage());

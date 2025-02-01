@@ -9,6 +9,7 @@
     <h2 class="text-center">Añadir Nuevo Alumno</h2>
 
     <form action="/chess-league/public/insert.php" method="POST">
+        <input type="hidden" name="categoria" value="<?= htmlspecialchars($categoria) ?>">
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre del Alumno:</label>
             <input type="text" name="nombre" id="nombre" class="form-control" required>
