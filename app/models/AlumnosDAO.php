@@ -51,4 +51,21 @@ class AlumnosDAO
         }
     }
     
+    public function updateResultado($id, $resultado) {
+        $this->getConection();
+        try {
+            if ($resultado === 'victoria') {
+                $sql = "UPDATE alumnos SET victorias = victorias + 1 WHERE id = ?";
+            } elseif ($resultado === 'derrota') {
+                $sql = "UPDATE alumnos SET derrotas = derrotas + 1 WHERE id = ?";
+            } elseif ($resultado === 'tablas') {
+                $sql = "UPDATE alumnos SET tablas = tablas + 1 WHERE id = ?";
+            }
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$id]);
+        } catch (PDOException $e) {
+            die("Error al actualizar resultados: " . $e->getMessage());
+        }
+    }
+    
 }

@@ -69,5 +69,19 @@ class ControladorAlumnos
         $this->view = 'delete';
         require_once '../app/views/delete.php'; // Cargar la vista de eliminación
     }
+
+    public function match() {
+        $this->page_title = 'Enfrentamiento de Alumnos';
+        $dataToView['data'] = $this->alumnosObj->getAlumnos();
+    
+        // 📌 Filtrar alumnos según la liga seleccionada
+        $categoria = $_GET['categoria'] ?? 'LIGA LOCAL';
+        $dataToView['data'] = array_filter($dataToView['data'], fn($alumno) => $alumno['categoria'] === $categoria);
+        $dataToView['categoria'] = $categoria;
+        $this->view = 'match';
+    
+        require_once '../app/views/match.php'; // Cargar la vista de enfrentamientos
+    }
+    
     
 }

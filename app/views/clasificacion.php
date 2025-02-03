@@ -69,7 +69,7 @@ $categoriaActual = (!empty($dataToView['data']) && $dataToView['data'][array_key
         <?php } ?>
     </div>
     <div class="text-center p-2">
-        <a href="?controller=ControladorAlumnos&action=match" class="btn btn-success">Enfrentar</a>
+        <a href="?controller=ControladorAlumnos&action=match&categoria=<?= urlencode($categoriaActual) ?>" class="btn btn-success">Enfrentar</a>
         <a href="/chess-league/public/generar_pdf.php?categoria=<?= urlencode($categoriaActual) ?>" class="btn btn-danger">Descargar PDF</a>
     </div>
 </div>
