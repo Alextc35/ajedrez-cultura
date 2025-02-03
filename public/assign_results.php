@@ -44,9 +44,9 @@ for ($i = 0; $i < count($jugadores) - 1; $i += 2) {
         <table class="table table-bordered">
             <thead class="table-primary">
                 <tr>
-                    <th>👤 1</th>
+                    <th>Blancas</th>
                     <th>VS</th>
-                    <th>👤 2</th>
+                    <th>Negras</th>
                     <th>Resultado</th>
                 </tr>
             </thead>
@@ -69,6 +69,13 @@ for ($i = 0; $i < count($jugadores) - 1; $i += 2) {
                 <?php } ?>
             </tbody>
         </table>
+
+        <?php
+        if ($categoria === 'LIGA LOCAL')
+            $categoria = 'ligaLocal';
+        else    
+            $categoria = 'ligaInfantil';
+        ?>
 
         <div class="text-center">
             <button type="submit" class="btn btn-success">Guardar Resultados</button>
