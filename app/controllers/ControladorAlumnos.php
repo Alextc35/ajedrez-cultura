@@ -66,8 +66,8 @@ class ControladorAlumnos
     
     public function delete() {
         $this->page_title = 'Eliminar Alumno';
-        $this->view = 'delete';
-        require_once '../app/views/delete.php'; // Cargar la vista de eliminación
+        $this->view = 'inicio';
+        require_once '/chess-league/public/delete.php'; // Cargar la vista de eliminación
     }
 
     public function match() {

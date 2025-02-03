@@ -44,9 +44,9 @@ for ($i = 0; $i < count($jugadores) - 1; $i += 2) {
         <table class="table table-bordered">
             <thead class="table-primary">
                 <tr>
-                    <th>Jugador 1</th>
+                    <th>👤 1</th>
                     <th>VS</th>
-                    <th>Jugador 2</th>
+                    <th>👤 2</th>
                     <th>Resultado</th>
                 </tr>
             </thead>
@@ -60,9 +60,9 @@ for ($i = 0; $i < count($jugadores) - 1; $i += 2) {
                             <input type="hidden" name="id1[]" value="<?= $pair[0]['id']; ?>">
                             <input type="hidden" name="id2[]" value="<?= $pair[1]['id']; ?>">
                             <select name="resultados[]" class="form-select">
-                                <option value="1-0">1-0 (Ganan blancas)</option>
-                                <option value="0-1">0-1 (Ganan negras)</option>
-                                <option value="1-1">1-1 (Tablas)</option>
+                                <option value="1-0">1-0</option>
+                                <option value="0-1">0-1</option>
+                                <option value="1-1">½ - ½</option>
                             </select>
                         </td>
                     </tr>

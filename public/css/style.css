@@ -1,68 +1,155 @@
+/* Estilos Generales */
 body {
     font-family: Arial, sans-serif;
     background-color: #333;
     margin: 0;
-    padding: 20px;
+    padding: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
 }
 
+/* Contenedor Principal */
 .table-container {
-    width: 95%;
-    max-width: 900px;
+    width: 100%;
+    max-width: 100%;
     background: #fff;
-    padding: 15px;
+    padding: 10px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
 }
 
+/* Tabla Responsive */
 .table-wrapper {
-    max-height: 80vh;
+    max-height: 75vh;
     overflow-y: auto;
+    overflow-x: auto;
     border-radius: 10px;
+    width: 100%; /* Aprovechar todo el ancho */
 }
-/* 📌 Hace que el thead sea sticky */
+
+/* 📌 Hacer que el thead sea sticky */
 thead {
     position: sticky;
     top: 0;
-    background-color: #007BFF; /* Asegura que el fondo del thead no sea transparente */
+    background-color: #007BFF;
     color: white;
-    z-index: 10; /* Para que quede sobre el contenido */
+    z-index: 1000; /* Asegurar que quede sobre las filas */
+}
+
+/* Estilos de Tabla */
+th, td {
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 14px;
 }
 
 th {
-    padding: 12px;
-    text-align: center;
-    vertical-align: middle;
+    background-color: #007BFF;
+    color: white;
 }
 
-td {
-    padding: 10px;
-    text-align: center;
+/* 📌 Ajustar el ancho de las columnas */
+th:nth-child(1), td:nth-child(1) { width: 8%; } /* Posición */
+th:nth-child(2), td:nth-child(2) { width: 20%; text-align: left; } /* Nombre */
+th:nth-child(3), td:nth-child(3),
+th:nth-child(4), td:nth-child(4),
+th:nth-child(5), td:nth-child(5),
+th:nth-child(6), td:nth-child(6) { width: 10%; } /* Estadísticas */
+th:nth-child(7), td:nth-child(7) { width: 8%; } /* Eliminar */
+
+/* 📌 Mejorar diseño de botones */
+.btn-sm {
+    padding: 6px 10px;
+    font-size: 14px;
 }
+
+/* 📌 Ajustes en la fila de botones */
+.btn-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+/* 📌 Botón Volver */
+.d-flex.justify-content-start {
+    margin-bottom: 10px;
+}
+
+/* 📌 Evitar que la tabla se encoga */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
 /* 📌 Ajustes responsivos en móviles */
 @media (max-width: 768px) {
     .table-container {
         width: 100%;
-        padding: 10px;
+        padding: 5px;
     }
 
     .table-responsive {
-        font-size: 14px; /* Hace que el texto sea más compacto */
+        font-size: 14px;
     }
 
     th, td {
-        padding: 8px;
-        font-size: 13px; /* Reduce tamaño en móviles */
+        padding: 6px;
+        font-size: 13px;
     }
 }
 
-@media (max-width: 480px) {
-    th, td {
+/* 📌 Ajustes específicos para 375x667 y 667x335 */
+@media (max-width: 400px), (max-height: 400px) {
+    body {
+        padding: 0;
+        display: block;
+    }
+
+    .table-container {
+        width: 100%;
+        padding: 5px;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
         font-size: 12px;
-        padding: 6px;
+        max-height: 70vh;
+    }
+
+    th, td {
+        font-size: 11px;
+        padding: 5px;
+    }
+
+    .btn {
+        font-size: 12px;
+        padding: 5px 8px;
+    }
+
+    /* 📌 Botones se acomodan mejor */
+    .btn-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn-sm {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* 📌 Mejorar diseño de botones en móviles */
+@media (max-width: 375px) {
+    .btn-sm {
+        padding: 5px 8px;
+        font-size: 12px;
+    }
+
+    .table-responsive {
+        max-height: 65vh;
     }
 }

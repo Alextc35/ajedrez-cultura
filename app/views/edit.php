@@ -21,6 +21,7 @@
                     <th>Derrotas</th>
                     <th>Tablas</th>
                     <th>Puntos</th>
+                    <th>🗑️</th> <!-- Eliminar -->
                 </tr>
             </thead>
             <tbody>
@@ -35,6 +36,13 @@
                     <td><input type="number" name="derrotas[]" value="<?= $alumno['derrotas']; ?>" class="form-control"></td>
                     <td><input type="number" name="tablas[]" value="<?= $alumno['tablas']; ?>" class="form-control"></td>
                     <td><?= number_format(($alumno['victorias'] * 1) + ($alumno['tablas'] * 0.5), 1); ?></td>
+                    <td>
+                        <a href="/chess-league/public/delete.php?id=<?= $alumno['id']; ?>&categoria=<?= urlencode($categoria) ?>"
+                            class="btn btn-danger btn-sm d-flex justify-content-center align-items-center"
+                            onclick="return confirm('¿Estás seguro de que quieres eliminar a <?= htmlspecialchars($alumno['nombre']); ?>?')">
+                            <i class="bi bi-trash-fill"></i>
+                        </a>
+                    </td>
                 </tr>
                 <?php } ?>
             </tbody>
