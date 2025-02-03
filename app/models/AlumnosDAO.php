@@ -22,6 +22,22 @@ class AlumnosDAO
         return $stmt->fetchAll();
     }
 
+    public function getAlumno($id) {
+        $this->getConection();
+        $sql = "SELECT * FROM $this->table WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$id]);
+        return $stmt->fetch();
+    }
+
+    // public function getAlumnosByCategoria($categoria) {
+    //     $this->getConection();
+    //     $sql = "SELECT * FROM $this->table WHERE categoria = ?";
+    //     $stmt = $this->db->prepare($sql);
+    //     $stmt->execute([$categoria]);
+    //     return $stmt->fetchAll();
+    // }
+
     public function updateAlumno($id, $nombre, $victorias, $derrotas, $tablas) {
         $this->getConection();
         $sql = "UPDATE alumnos SET nombre = ?, victorias = ?, derrotas = ?, tablas = ? WHERE id = ?";

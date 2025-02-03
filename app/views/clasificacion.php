@@ -12,7 +12,7 @@ $categoriaActual = (!empty($dataToView['data']) && $dataToView['data'][array_key
 ?>
 <div>
     <div class="table-container">
-        <a href="/chess-league/public/" class="btn btn-secondary float-start">Volver</a>
+        <a href="/chess-league/public/" class="btn btn-secondary float-start btn-sm">Volver</a>
         <h2 class="text-center"><?= $categoriaActual ?></h2>
 
         <?php if (count($dataToView['data']) > 0) { ?>

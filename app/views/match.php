@@ -1,7 +1,7 @@
 <div class="container mt-4">
-    <h2 class="text-center">Selecciona los Jugadores para Enfrentamiento</h2>
+    <h2 class="text-center text-bg-dark">Selecciona los Jugadores para Enfrentamiento</h2>
 
-    <form action="/chess-league/public/process_match.php" method="POST">
+    <form action="/chess-league/public/generate_matches.php" method="POST">
         <input type="hidden" name="categoria" value="<?= htmlspecialchars($dataToView['categoria']); ?>">
 
         <table class="table table-bordered table-striped">
