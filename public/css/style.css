@@ -3,11 +3,12 @@ body {
     font-family: Arial, sans-serif;
     background-color: #333;
     margin: 0;
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    padding: 5px;
+
+}
+
+footer, small {
+    color: #CCC;
 }
 
 /* Contenedor Principal */
@@ -29,15 +30,6 @@ body {
     width: 100%; /* Aprovechar todo el ancho */
 }
 
-/* 📌 Hacer que el thead sea sticky */
-thead {
-    position: sticky;
-    top: 0;
-    background-color: #007BFF;
-    color: white;
-    z-index: 1000; /* Asegurar que quede sobre las filas */
-}
-
 /* Estilos de Tabla */
 th, td {
     padding: 8px;
@@ -48,17 +40,7 @@ th, td {
 
 th {
     background-color: #007BFF;
-    color: white;
 }
-
-/* 📌 Ajustar el ancho de las columnas */
-th:nth-child(1), td:nth-child(1) { width: 8%; } /* Posición */
-th:nth-child(2), td:nth-child(2) { width: 20%; text-align: left; } /* Nombre */
-th:nth-child(3), td:nth-child(3),
-th:nth-child(4), td:nth-child(4),
-th:nth-child(5), td:nth-child(5),
-th:nth-child(6), td:nth-child(6) { width: 10%; } /* Estadísticas */
-th:nth-child(7), td:nth-child(7) { width: 8%; } /* Eliminar */
 
 /* 📌 Mejorar diseño de botones */
 .btn-sm {
@@ -104,10 +86,6 @@ th:nth-child(7), td:nth-child(7) { width: 8%; } /* Eliminar */
 
 /* 📌 Ajustes específicos para 375x667 y 667x335 */
 @media (max-width: 400px), (max-height: 400px) {
-    body {
-        padding: 0;
-        display: block;
-    }
 
     .table-container {
         width: 100%;
@@ -125,10 +103,6 @@ th:nth-child(7), td:nth-child(7) { width: 8%; } /* Eliminar */
         padding: 5px;
     }
 
-    .btn {
-        font-size: 12px;
-        padding: 5px 8px;
-    }
 
     /* 📌 Botones se acomodan mejor */
     .btn-container {
@@ -136,18 +110,10 @@ th:nth-child(7), td:nth-child(7) { width: 8%; } /* Eliminar */
         align-items: center;
     }
 
-    .btn-sm {
-        width: 100%;
-        text-align: center;
-    }
 }
 
 /* 📌 Mejorar diseño de botones en móviles */
 @media (max-width: 375px) {
-    .btn-sm {
-        padding: 5px 8px;
-        font-size: 12px;
-    }
 
     .table-responsive {
         max-height: 65vh;

@@ -1,34 +1,38 @@
 <?php
-include '../config/config.php';
-include '../app/models/Database.php';
+// Iniciar sesión para el manejo de datos temporales
+session_start();
 
-if(!isset($_GET['controller']))
-    $_GET['controller'] = constant("DEFAULT_CONTROLLER");
-if(!isset($_GET['action']))
-    $_GET['action'] = constant("DEFAULT_ACTION");
+// Cargar configuración y modelos
+require_once '../config/config.php';
+require_once '../app/models/Database.php';
 
-$controller_path = '../app/controllers/' . $_GET['controller'] . '.php';
+// 📌 Establecer valores predeterminados para el controlador y la acción
+$controllerName = $_GET['controller'] ?? constant("DEFAULT_CONTROLLER");
+$action = $_GET['action'] ?? constant("DEFAULT_ACTION");
 
-// Comprobamos que el controlador exista
-if(!file_exists($controller_path)) {
-    $controller_path = '../app/controllers/' . constant("DEFAULT_CONTROLLER") . '.php';
-    $_GET['controller'] = constant("DEFAULT_CONTROLLER");
-    $_GET['action'] = constant("DEFAULT_ACTION");
+// 📌 Construir la ruta del controlador
+$controllerPath = '../app/controllers/' . $controllerName . '.php';
+
+// 📌 Validar si el controlador existe, si no, cargar el predeterminado
+if (!file_exists($controllerPath)) {
+    $controllerPath = '../app/controllers/' . constant("DEFAULT_CONTROLLER") . '.php';
+    $controllerName = constant("DEFAULT_CONTROLLER");
+    $action = constant("DEFAULT_ACTION");
 }
 
-// Cargamos el controlador
-require_once $controller_path;
-$controllerName = $_GET['controller'];
+// Cargar el controlador seleccionado
+require_once $controllerPath;
 $controller = new $controllerName();
 
-// Check if method is defined
-$dataToView['data'] = array();
+// 📌 Verificar si el método (acción) existe en el controlador
+$dataToView['data'] = [];
+if (method_exists($controller, $action)) {
+    $dataToView['data'] = $controller->{$action}();
+} else {
+    die("Error: Acción '$action' no encontrada en el controlador '$controllerName'.");
+}
 
-if (method_exists($controller, $_GET['action']))
-    $dataToView['data'] = $controller->{$_GET['action']}();
-
-// Cargamos la vista
+// 📌 Cargar las vistas
 require_once '../app/views/templates/header.php';
 require_once '../app/views/' . $controller->view . '.php';
 require_once '../app/views/templates/footer.php';
-?>

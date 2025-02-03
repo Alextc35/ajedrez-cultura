@@ -1,23 +1,19 @@
 <?php
-    $categoria;
-    if ($_GET['categoria'] === 'LIGA LOCAL')
-        $categoria = 'ligaLocal';
-    else
-        $categoria = 'ligaInfantil';
+    $liga = $_GET['liga'] ?? 'LIGA LOCAL';
 ?>
-<div class="container mt-4 bg-light rounded">
+<div class="container-fluid bg-light rounded py-3">
     <h2 class="text-center">Añadir Nuevo Alumno</h2>
 
     <form action="/chess-league/public/insert.php" method="POST">
-        <input type="hidden" name="categoria" value="<?= htmlspecialchars($categoria) ?>">
+        <input type="hidden" name="liga" value="<?= htmlspecialchars($liga) ?>">
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre del Alumno:</label>
             <input type="text" name="nombre" id="nombre" class="form-control" required>
         </div>
 
         <div class="mb-3">
-            <label for="categoria" class="form-label">Categoría:</label>
-            <select name="categoria" id="categoria" class="form-select" required>
+            <label for="liga" class="form-label">Categoría:</label>
+            <select name="liga" id="liga" class="form-select" required>
                 <option value="LIGA LOCAL">LIGA LOCAL</option>
                 <option value="LIGA INFANTIL">LIGA INFANTIL</option>
             </select>
@@ -40,7 +36,7 @@
 
         <div class="text-center">
             <button type="submit" class="btn btn-success">Añadir Alumno</button>
-            <a href="?controller=ControladorAlumnos&action=<?= urlencode($categoria) ?>" class="btn btn-secondary">Cancelar</a>
+            <a href="?controller=ControladorAlumnos&action=listPorLiga&liga=<?= urlencode($liga) ?>" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
 </div>

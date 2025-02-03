@@ -1,4 +1,4 @@
-INSERT INTO alumnos (nombre, categoria, victorias, derrotas, tablas) VALUES 
+INSERT INTO alumnos (nombre, liga, victorias, derrotas, tablas) VALUES 
 ('Lucas Fernández', 'LIGA INFANTIL', 3, 2, 1),
 ('María Gómez', 'LIGA LOCAL', 5, 1, 2),
 ('Alejandro Pérez', 'LIGA LOCAL', 4, 2, 3),

@@ -9,3 +9,11 @@
     <link rel="stylesheet" href="../public/css/style.css">
 </head>
 <body>
+    <div class="d-flex flex-column justify-content-center align-items-center w-auto m-3">
+        <div class="container text-center rounded shadow bg-light p-2 m-2">
+            <h1>Selecciona la Liga</h1>
+            <p>Elige la liga a la que deseas acceder:</p>
+            <a href="?controller=ControladorAlumnos&action=listPorLiga&liga=LIGA LOCAL" class="btn btn-primary">LIGA LOCAL</a>
+            <a href="?controller=ControladorAlumnos&action=listPorLiga&liga=LIGA INFANTIL" class="btn btn-success">LIGA INFANTIL</a>
+            <p class="text-muted pt-2 ">Desarrollado por <a href="https://www.linkedin.com/in/alejandrotellezcorona/" target="_blank" class="text-decoration-none text-muted fw-bold">Alejandro Téllez Corona</a></p>
+        </div>

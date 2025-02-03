@@ -1,87 +1,128 @@
 <?php
 require_once '../app/models/AlumnosDAO.php';
 
-class ControladorAlumnos
-{
+class ControladorAlumnos {
     public string $page_title;
     public string $view;
     private AlumnosDAO $alumnosObj;
 
     public function __construct() {
-        $this->view = 'clasificacion';
-        $this->page_title = 'Liga de Ajedrez';
         $this->alumnosObj = new AlumnosDAO();
     }
 
-    public function inicio() {
-        $this->page_title = 'Inicio';
-        $this->view = 'inicio';
+    public function descripcion() {
+        $this->page_title = 'Chess League | Inicio';
+        $this->view = 'descripcion';
     }
 
-    public function ligaLocal() {
-        $this->page_title = 'Liga Local';
-        $dataToView['data'] = $this->alumnosObj->getAlumnos();
-
-        // Filtrar solo alumnos de LIGA LOCAL
-        $dataToView['data'] = array_filter($dataToView['data'], function ($alumno) {
-            return $alumno['categoria'] === 'LIGA LOCAL';
-        });
-        require_once '../app/views/clasificacion.php'; // Vista única
+    /**
+     * 📌 Lista todos los alumnos por categoría
+     */
+    public function list() {
+        $this->page_title = 'Clasificación de Alumnos';
+        $liga = $_GET['liga'] ?? null;
+        return ($liga) ? $this->alumnosObj->getAlumnosPorLiga(htmlspecialchars($liga)) : $this->alumnosObj->getAlumnos();
     }
 
-    public function ligaInfantil() {
-        $this->page_title = 'Liga Infantil';
-        $dataToView['data'] = $this->alumnosObj->getAlumnos();
+    /**
+     * 📌 Lista a los alumnos por categoría
+     */
+    public function listPorliga() {
+        // Obtener la categoría de la URL o por defecto "LIGA LOCAL"
+        $liga = $_GET['liga'] ?? 'LIGA LOCAL';
+        $this->page_title = "Chess League | $liga";
+        $this->view = 'clasificacion'; // Usamos la misma vista
+    
 
-        // Filtrar solo alumnos de LIGA INFANTIL
-        $dataToView['data'] = array_filter($dataToView['data'], function ($alumno) {
-            return $alumno['categoria'] === 'LIGA INFANTIL';
-        });
-        require_once '../app/views/clasificacion.php';
+        return $this->alumnosObj->getAlumnosPorLiga(htmlspecialchars($liga));
+    }
+    
+    public function addAlumno() {
+        $this->page_title = "Chess League | Añadir alumno";
+        $this->view = 'addAlumno';
     }
 
-    public function edit() {
-        $this->page_title = 'Editar Alumnos';
-        $dataToView['data'] = $this->alumnosObj->getAlumnos();
-    
-        // 📌 Determinar la categoría desde la URL (Si no está, usa LIGA LOCAL por defecto)
-        $categoria = isset($_GET['categoria']) && $_GET['categoria'] === 'LIGA INFANTIL' ? 'LIGA INFANTIL' : 'LIGA LOCAL';
-    
-        // 📌 Filtrar alumnos según la categoría seleccionada
-        $dataToView['data'] = array_filter($dataToView['data'], function ($alumno) use ($categoria) {
-            return $alumno['categoria'] === $categoria;
-        });
-    
-        // Pasar la categoría a la vista
-        $dataToView['categoria'] = $categoria;
-        $this->view = 'edit';
-        require_once '../app/views/edit.php';
+    /**
+     * 📌 Procesa la asignación de resultados de los enfrentamientos
+     */
+    public function assignResults() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            die("Acceso denegado.");
+        }
+
+        $id1s = $_POST['id1'] ?? [];
+        $id2s = $_POST['id2'] ?? [];
+        $resultados = $_POST['resultados'] ?? [];
+
+        for ($i = 0; $i < count($id1s); $i++) {
+            if ($resultados[$i] === '1-0') {
+                $this->alumnosObj->updateResultado($id1s[$i], 'victoria');
+                $this->alumnosObj->updateResultado($id2s[$i], 'derrota');
+            } elseif ($resultados[$i] === '0-1') {
+                $this->alumnosObj->updateResultado($id1s[$i], 'derrota');
+                $this->alumnosObj->updateResultado($id2s[$i], 'victoria');
+            } else {
+                $this->alumnosObj->updateResultado($id1s[$i], 'tablas');
+                $this->alumnosObj->updateResultado($id2s[$i], 'tablas');
+            }
+        }
+
+        header("Location: ?controller=ControladorAlumnos&action=list");
+        exit();
     }
-    
-    public function add() {
-        $this->page_title = 'Añadir Alumno';
-        $this->view = 'add';
-        require_once '../app/views/add.php'; // Cargar la vista del formulario
-    }
-    
+
+    /**
+     * 📌 Procesa la eliminación de un alumno
+     */
     public function delete() {
-        $this->page_title = 'Eliminar Alumno';
-        $this->view = 'inicio';
-        require_once '/chess-league/public/delete.php'; // Cargar la vista de eliminación
+        if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
+            $id = intval($_GET['id']);
+            if ($id > 0) {
+                $this->alumnosObj->deleteAlumno($id);
+                header("Location: ?controller=ControladorAlumnos&action=list");
+                exit();
+            }
+        }
     }
 
-    public function match() {
-        $this->page_title = 'Enfrentamiento de Alumnos';
-        $dataToView['data'] = $this->alumnosObj->getAlumnos();
-    
-        // 📌 Filtrar alumnos según la liga seleccionada
-        $categoria = $_GET['categoria'] ?? 'LIGA LOCAL';
-        $dataToView['data'] = array_filter($dataToView['data'], fn($alumno) => $alumno['categoria'] === $categoria);
-        $dataToView['categoria'] = $categoria;
-        $this->view = 'match';
-    
-        require_once '../app/views/match.php'; // Cargar la vista de enfrentamientos
+    /**
+     * 📌 Procesa la actualización de un alumno
+     */
+    public function update() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = intval($_POST['id']);
+            $nombre = htmlspecialchars($_POST['nombre']);
+            $victorias = intval($_POST['victorias']);
+            $derrotas = intval($_POST['derrotas']);
+            $tablas = intval($_POST['tablas']);
+
+            if ($id > 0) {
+                $this->alumnosObj->updateAlumno($id, $nombre, $victorias, $derrotas, $tablas);
+                header("Location: ?controller=ControladorAlumnos&action=list");
+                exit();
+            }
+        }
     }
-    
-    
+
+    /**
+     * 📌 Genera los enfrentamientos de manera aleatoria
+     */
+    public function generateMatches() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            die("Acceso denegado.");
+        }
+
+        $ids = $_POST['ids'] ?? [];
+
+        if (count($ids) < 2) {
+            die("Debes seleccionar al menos 2 jugadores para enfrentarlos.");
+        }
+
+        shuffle($ids);
+        $_SESSION['selected_players'] = $ids;
+        $_SESSION['liga'] = $_POST['liga'] ?? 'LIGA LOCAL';
+
+        header("Location: ?controller=ControladorAlumnos&action=assignResults");
+        exit();
+    }
 }

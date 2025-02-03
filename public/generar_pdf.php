@@ -10,23 +10,23 @@ if (!isset($_SESSION['dataToView']) || empty($_SESSION['dataToView']['data'])) {
 $dataToView = $_SESSION['dataToView'];
 $fecha = date('d/m/Y');
 // Obtener la categoría desde la URL
-$categoria = isset($_GET['categoria']) ? urldecode($_GET['categoria']) : 'LIGA LOCAL';
+$liga = isset($_GET['liga']) ? urldecode($_GET['liga']) : 'LIGA LOCAL';
 
 // Filtrar los datos según la categoría
-$dataToView['data'] = array_filter($dataToView['data'], function ($alumno) use ($categoria) {
-    return $alumno['categoria'] === $categoria;
+$dataToView['data'] = array_filter($dataToView['data'], function ($alumno) use ($liga) {
+    return $alumno['liga'] === $liga;
 });
 
 // Crear nuevo documento PDF
 $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
-$pdf->SetTitle("Clasificación - $categoria");
+$pdf->SetTitle("Clasificación - $liga");
 $pdf->SetMargins(10, 10, 10);
 $pdf->SetAutoPageBreak(TRUE, 10);
 $pdf->AddPage();
 
 // Título
 $pdf->SetFont('helvetica', 'B', 16);
-$pdf->Cell(0, 10, "$categoria - $fecha", 0, 1, 'C');
+$pdf->Cell(0, 10, "$liga - $fecha", 0, 1, 'C');
 
 // Espacio antes de la tabla
 $pdf->Ln(5);
@@ -73,5 +73,5 @@ $html .= '</tbody></table>';
 $pdf->writeHTML($html, true, false, false, false, '');
 
 // Salida del archivo
-$pdf->Output("$categoria.pdf", 'D'); // 'D' fuerza la descarga
+$pdf->Output("$liga.pdf", 'D'); // 'D' fuerza la descarga
 ?>
