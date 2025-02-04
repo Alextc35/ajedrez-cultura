@@ -26,7 +26,9 @@ $_SESSION['dataToView'] = ['data' => $alumnos, 'liga' => $liga]; // PDF
                 <i class="bi bi-file-earmark-pdf-fill"></i>
         </a>
     </div>
-
+    <div class="text-center p-3 pt-0">
+        <a href="?controller=ControladorAlumnos&action=match&liga=<?= urlencode($liga) ?>" class="btn btn-success d-block">Enfrentar</a>
+    </div>
     <?php if (!empty($alumnos)) { ?>
         <div class="table-responsive">
             <table class="table table-striped table-hover table-bordered w-100">
@@ -64,10 +66,6 @@ $_SESSION['dataToView'] = ['data' => $alumnos, 'liga' => $liga]; // PDF
         <div class="text-center mt-3">
             <a href="?controller=ControladorAlumnos&action=addAlumno&liga=<?= urlencode($liga) ?>" class="btn btn-primary d-block m-2">Añadir alumno</a>
             <a href="?controller=ControladorAlumnos&action=editAlumnos&liga=<?= urlencode($liga) ?>" class="btn btn-primary d-block m-2">Editar alumno</a>
-        </div>
-        <hr class="m-0 w-75 mx-auto">
-        <div class="text-center p-3">
-            <a href="?controller=ControladorAlumnos&action=match&liga=<?= urlencode($liga) ?>" class="btn btn-success d-block">Enfrentar</a>
         </div>
     <?php } else { ?>
         <p class="text-center mt-3">No hay alumnos en esta categoría.</p>
