@@ -1,16 +1,12 @@
 <?php
-    $categoria;
-    if ($dataToView['categoria'] === 'LIGA LOCAL')
-        $categoria = 'ligaLocal';
-    else
-        $categoria = 'ligaInfantil';
+    $liga = $_GET['liga'] ?? 'LIGA LOCAL';
 ?>
 <div class="container mt-4">
-    <h2 class="text-center text-bg-dark">Editar Alumnos - <?= htmlspecialchars($dataToView['categoria']); ?></h2>
+    <h2 class="text-center text-bg-dark">Editar Alumnos - <?= htmlspecialchars($liga); ?></h2>
 
     <?php if (!empty($dataToView['data'])) { ?>
-    <form action="/chess-league/public/update.php" method="POST">
-        <input type="hidden" name="categoria" value="<?= htmlspecialchars($dataToView['categoria']); ?>">
+    <form action="?controller=ControladorAlumnos&action=updateAlumnos" method="POST">
+        <input type="hidden" name="liga" value="<?= htmlspecialchars($liga); ?>">
         
         <table class="table table-bordered table-striped">
             <thead class="table-primary">
@@ -35,7 +31,7 @@
                     <td><input type="number" name="derrotas[]" value="<?= $alumno['derrotas']; ?>" class="form-control"></td>
                     <td><input type="number" name="tablas[]" value="<?= $alumno['tablas']; ?>" class="form-control"></td>
                     <td>
-                        <a href="/chess-league/public/delete.php?id=<?= $alumno['id']; ?>&categoria=<?= urlencode($categoria) ?>"
+                        <a href="?controller=ControladorAlumnos&action=deleteAlumno&id=<?= $alumno['id']; ?>&liga=<?= urlencode($liga) ?>"
                             class="btn btn-danger btn-sm d-flex justify-content-center align-items-center"
                             onclick="return confirm('¿Estás seguro de que quieres eliminar a <?= htmlspecialchars($alumno['nombre']); ?>?')">
                             <i class="bi bi-trash-fill"></i>
@@ -48,11 +44,11 @@
 
         <div class="text-center mt-3">
             <button type="submit" class="btn btn-success">Guardar Cambios</button>
-            <a href="?controller=ControladorAlumnos&action=<?= urlencode($categoria) ?>" class="btn btn-secondary">Cancelar</a>
+            <a href="?controller=ControladorAlumnos&action=listPorLiga&liga=<?= urlencode($liga) ?>" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
 
     <?php } else { ?>
-        <p class="text-center">No hay alumnos en <?= htmlspecialchars($dataToView['categoria']); ?> para editar.</p>
+        <p class="text-center">No hay alumnos en <?= htmlspecialchars($liga); ?> para editar.</p>
     <?php } ?>
 </div>

@@ -1,10 +1,11 @@
 <?php
     $liga = $_GET['liga'] ?? 'LIGA LOCAL';
+    $otraLiga = $liga === 'LIGA LOCAL' ? 'LIGA INFANTIL' : 'LIGA LOCAL';
 ?>
 <div class="container-fluid bg-light rounded py-3">
     <h2 class="text-center">Añadir Nuevo Alumno</h2>
 
-    <form action="/chess-league/public/insert.php" method="POST">
+    <form action="?controller=ControladorAlumnos&action=insertAlumno" method="POST">
         <input type="hidden" name="liga" value="<?= htmlspecialchars($liga) ?>">
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre del Alumno:</label>
@@ -12,10 +13,10 @@
         </div>
 
         <div class="mb-3">
-            <label for="liga" class="form-label">Categoría:</label>
+            <label for="liga" class="form-label">Liga:</label>
             <select name="liga" id="liga" class="form-select" required>
-                <option value="LIGA LOCAL">LIGA LOCAL</option>
-                <option value="LIGA INFANTIL">LIGA INFANTIL</option>
+                <option value="<?= $liga ?>"><?= $liga ?></option>
+                <option value="<?= $otraLiga ?>"><?= $otraLiga ?></option>
             </select>
         </div>
 

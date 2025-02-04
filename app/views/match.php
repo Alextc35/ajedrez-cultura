@@ -1,8 +1,11 @@
+<?php
+    $liga = $_GET['liga'] ?? 'LIGA LOCAL';
+?>
 <div class="container mt-4">
     <h2 class="text-center text-bg-dark">Selecciona los Jugadores para Enfrentamiento</h2>
 
-    <form action="/chess-league/public/generate_matches.php" method="POST">
-        <input type="hidden" name="categoria" value="<?= htmlspecialchars($dataToView['categoria']); ?>">
+    <form action="?controller=ControladorAlumnos&action=generateMatches" method="POST">
+        <input type="hidden" name="liga" value="<?= htmlspecialchars($liga); ?>">
 
         <table class="table table-bordered table-striped">
             <thead class="table-primary">
@@ -22,17 +25,10 @@
                 <?php } ?>
             </tbody>
         </table>
-        <?php
-            $categoria = $_GET['categoria'] ?? 'LIGA LOCAL';
-            if ($categoria === 'LIGA LOCAL')
-                $categoria = 'ligaLocal';
-            else
-                $categoria = 'ligaInfantil';
-        ?>
 
         <div class="text-center">
             <button type="submit" class="btn btn-primary">Enfrentar Jugadores</button>
-            <a href="?controller=ControladorAlumnos&action=<?= urlencode($categoria) ?>" class="btn btn-secondary">Cancelar</a>
+            <a href="?controller=ControladorAlumnos&action=listPorLiga&liga=<?= urlencode($liga) ?>" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
 </div>

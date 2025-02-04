@@ -55,7 +55,7 @@ class AlumnosDAO
      * @param int $tablas
      * @return bool
      */
-    public function insertAlumno($nombre, $liga, $victorias = 0, $derrotas = 0, $tablas = 0) {
+    public function addAlumno($nombre, $liga, $victorias = 0, $derrotas = 0, $tablas = 0) {
         $sql = "INSERT INTO $this->table (nombre, liga, victorias, derrotas, tablas)
                 VALUES (:nombre, :liga, :victorias, :derrotas, :tablas)";
         $stmt = $this->db->conection->prepare($sql);
@@ -77,7 +77,7 @@ class AlumnosDAO
      * @param int $tablas
      * @return bool
      */
-    public function updateAlumno($id, $nombre, $victorias, $derrotas, $tablas) {
+    public function updateAlumnos($id, $nombre, $victorias, $derrotas, $tablas) {
         $sql = "UPDATE $this->table 
                 SET nombre = :nombre, victorias = :victorias, derrotas = :derrotas, tablas = :tablas 
                 WHERE id = :id";
@@ -92,6 +92,18 @@ class AlumnosDAO
     }
 
     /**
+     * 📌 Elimina un alumno por su ID
+     * @param int $id
+     * @return bool
+     */
+    public function deleteAlumno($id) {
+        $sql = "DELETE FROM $this->table WHERE id = :id";
+        $stmt = $this->db->conection->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    /**
      * 📌 Actualiza los resultados de un alumno según el resultado de un enfrentamiento
      * @param int $id
      * @param string $resultado ('victoria', 'derrota', 'tablas')
@@ -100,18 +112,6 @@ class AlumnosDAO
     public function updateResultado($id, $resultado) {
         $campo = ($resultado === 'victoria') ? 'victorias' : (($resultado === 'derrota') ? 'derrotas' : 'tablas');
         $sql = "UPDATE $this->table SET $campo = $campo + 1 WHERE id = :id";
-        $stmt = $this->db->conection->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        return $stmt->execute();
-    }
-
-    /**
-     * 📌 Elimina un alumno por su ID
-     * @param int $id
-     * @return bool
-     */
-    public function deleteAlumno($id) {
-        $sql = "DELETE FROM $this->table WHERE id = :id";
         $stmt = $this->db->conection->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();

@@ -6,7 +6,7 @@ $liga = $_GET['liga'] ?? 'LIGA LOCAL';
 // Asegurar que `$dataToView['data']` esté definido antes de usarlo
 $alumnos = isset($dataToView['data']) ? $dataToView['data'] : [];
 
-$_SESSION['dataToView'] = ['data' => $alumnos, 'liga' => $liga];
+$_SESSION['dataToView'] = ['data' => $alumnos, 'liga' => $liga]; // PDF
 ?>
 
 <div class="container-fluid px-3">
@@ -66,7 +66,7 @@ $_SESSION['dataToView'] = ['data' => $alumnos, 'liga' => $liga];
 
             <div class="text-center mt-3">
                 <a href="?controller=ControladorAlumnos&action=addAlumno&liga=<?= urlencode($liga) ?>" class="btn btn-primary btn-sm">Añadir alumno</a>
-                <a href="?controller=ControladorAlumnos&action=edit&liga=<?= urlencode($liga) ?>" class="btn btn-primary btn-sm">Editar alumno</a>
+                <a href="?controller=ControladorAlumnos&action=editAlumnos&liga=<?= urlencode($liga) ?>" class="btn btn-primary btn-sm">Editar alumno</a>
             </div>
 
             <div class="text-center p-3">
