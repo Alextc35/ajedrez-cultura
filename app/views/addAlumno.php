@@ -3,7 +3,14 @@
     $otraLiga = $liga === 'LIGA LOCAL' ? 'LIGA INFANTIL' : 'LIGA LOCAL';
 ?>
 <div class="container-fluid bg-light rounded py-3">
-    <h2 class="text-center">Añadir Nuevo Alumno</h2>
+            <!-- 📌 Barra de navegación fija dentro del container -->
+            <nav class="navbar navbar-light bg-white rounded shadow">
+                <!-- 📌 Botón de Volver -->
+                <a href="/chess-league/public/" class="btn btn-secondary btn-sm">
+                    <i class="bi bi-x-lg"></i>
+                </a>
+                <h2 class="text-center">Añadir Alumnos</h2>
+        </nav>
 
     <form action="?controller=ControladorAlumnos&action=insertAlumno" method="POST">
         <input type="hidden" name="liga" value="<?= htmlspecialchars($liga) ?>">
