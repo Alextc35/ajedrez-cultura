@@ -110,10 +110,18 @@ class AlumnosDAO
      * @return bool
      */
     public function updateResultado($id, $resultado) {
-        $campo = ($resultado === 'victoria') ? 'victorias' : (($resultado === 'derrota') ? 'derrotas' : 'tablas');
-        $sql = "UPDATE $this->table SET $campo = $campo + 1 WHERE id = :id";
+        if ($resultado === 'victoria') {
+            $sql = "UPDATE alumnos SET victorias = victorias + 1 WHERE id = ?";
+        } elseif ($resultado === 'derrota') {
+            $sql = "UPDATE alumnos SET derrotas = derrotas + 1 WHERE id = ?";
+        } elseif ($resultado === 'tablas') {
+            $sql = "UPDATE alumnos SET tablas = tablas + 1 WHERE id = ?";
+        } else {
+            return; // No hacer nada si el resultado es inválido
+        }
+
         $stmt = $this->db->conection->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        return $stmt->execute();
+        $stmt->execute([$id]);
     }
+
 }

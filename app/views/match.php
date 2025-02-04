@@ -1,5 +1,6 @@
 <?php
     $liga = $_GET['liga'] ?? 'LIGA LOCAL';
+    $alumnos = $dataToView['data'] ?? [];
 ?>
 <div class="container mt-4">
     <h2 class="text-center text-bg-dark">Selecciona los Jugadores para Enfrentamiento</h2>
@@ -16,7 +17,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($dataToView['data'] as $alumno) { ?>
+                <?php foreach ($alumnos as $alumno) { ?>
                     <tr>
                         <td><input type="checkbox" name="ids[]" value="<?= $alumno['id']; ?>"></td>
                         <td><?= $alumno['id']; ?></td>

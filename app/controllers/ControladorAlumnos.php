@@ -148,28 +148,50 @@ class ControladorAlumnos {
         return $this->alumnosObj->getAlumnosPorLiga(htmlspecialchars($liga));
     }
 
-    /**
-     * 📌 Genera los enfrentamientos de manera aleatoria
-     */
-    public function generateMatches() {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            die("Acceso denegado.");
-        }
+/**
+ * 📌 Genera los enfrentamientos de manera aleatoria y los envía a la vista assign.php
+ */
+public function generateMatches() {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        die("Acceso denegado.");
+    }
 
-        $ids = $_POST['ids'] ?? [];
+    $liga = $_POST['liga'] ?? 'LIGA LOCAL';
+    $ids = $_POST['ids'] ?? [];
 
-        if (count($ids) < 2) {
-            die("Debes seleccionar al menos 2 jugadores para enfrentarlos.");
-        }
-
-        shuffle($ids);
-        $_SESSION['selected_players'] = $ids;
-        $_SESSION['liga'] = $_POST['liga'] ?? 'LIGA LOCAL';
-
-        header("Location: ?controller=ControladorAlumnos&action=assignResults");
+    if (count($ids) < 2) {
+        $_SESSION['error'] = "Debes seleccionar al menos 2 jugadores.";
+        header("Location: ?controller=ControladorAlumnos&action=match&liga=" . urlencode($liga));
         exit();
     }
 
+    shuffle($ids); // Mezclar los jugadores aleatoriamente
+
+    // 📌 Guardar solo ID y Nombre en $_SESSION
+    $jugadores = [];
+    foreach ($ids as $id) {
+        $alumno = $this->alumnosObj->getAlumno($id); // Obtener alumno por ID
+        if ($alumno) {
+            $jugadores[$id] = $alumno['nombre']; // Guardar solo el nombre con su ID
+        }
+    }
+
+    if (empty($jugadores)) {
+        $_SESSION['error'] = "No se encontraron jugadores seleccionados.";
+        header("Location: ?controller=ControladorAlumnos&action=match&liga=" . urlencode($liga));
+        exit();
+    }
+
+    // 📌 Guardar en $_SESSION solo ID y nombre
+    $_SESSION['jugadores'] = $jugadores;
+    $_SESSION['liga'] = $liga;
+
+    // 📌 Enviar los datos a la vista assign.php
+    $this->page_title = 'Asignar Enfrentamientos';
+    $this->view = 'assign';
+
+    return ['jugadores' => $jugadores, 'liga' => $liga];
+}
     /**
      * 📌 Procesa la asignación de resultados de los enfrentamientos
      */
@@ -178,24 +200,38 @@ class ControladorAlumnos {
             die("Acceso denegado.");
         }
 
+        $liga = $_POST['liga'] ?? 'LIGA LOCAL';
         $id1s = $_POST['id1'] ?? [];
         $id2s = $_POST['id2'] ?? [];
         $resultados = $_POST['resultados'] ?? [];
 
+        if (empty($id1s) || empty($id2s) || empty($resultados)) {
+            $_SESSION['error'] = "No se recibieron datos válidos.";
+            header("Location: ?controller=ControladorAlumnos&action=match&liga=" . urlencode($liga));
+            exit();
+        }
+
+        // 📌 Recorrer todos los enfrentamientos y actualizar la base de datos
         for ($i = 0; $i < count($id1s); $i++) {
-            if ($resultados[$i] === '1-0') {
-                $this->alumnosObj->updateResultado($id1s[$i], 'victoria');
-                $this->alumnosObj->updateResultado($id2s[$i], 'derrota');
-            } elseif ($resultados[$i] === '0-1') {
-                $this->alumnosObj->updateResultado($id1s[$i], 'derrota');
-                $this->alumnosObj->updateResultado($id2s[$i], 'victoria');
-            } else {
-                $this->alumnosObj->updateResultado($id1s[$i], 'tablas');
-                $this->alumnosObj->updateResultado($id2s[$i], 'tablas');
+            $id1 = intval($id1s[$i]);
+            $id2 = intval($id2s[$i]);
+            $resultado = $resultados[$i];
+
+            if ($resultado === '1-0') { // Ganan blancas
+                $this->alumnosObj->updateResultado($id1, 'victoria');
+                $this->alumnosObj->updateResultado($id2, 'derrota');
+            } elseif ($resultado === '0-1') { // Ganan negras
+                $this->alumnosObj->updateResultado($id1, 'derrota');
+                $this->alumnosObj->updateResultado($id2, 'victoria');
+            } elseif ($resultado === '1-1') { // Tablas
+                $this->alumnosObj->updateResultado($id1, 'tablas');
+                $this->alumnosObj->updateResultado($id2, 'tablas');
             }
         }
 
-        header("Location: ?controller=ControladorAlumnos&action=list");
+        $_SESSION['success'] = "Resultados guardados correctamente.";
+        header("Location: ?controller=ControladorAlumnos&action=listPorLiga&liga=" . urlencode($liga));
         exit();
     }
+
 }
