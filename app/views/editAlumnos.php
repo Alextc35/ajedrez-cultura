@@ -9,8 +9,9 @@
             <i class="bi bi-arrow-left-short ">Volver</i>
         </a>
     </div>
-            <!-- 📌 Título centrado -->
-            <h2 class="text-center">Editar Alumnos | <?= htmlspecialchars($liga); ?></h2>
+    <!-- 📌 Título centrado -->
+    <h2 class="text-center">Editar Alumnos</h2>
+    <h5 class="text-center text-muted"><?= htmlspecialchars($liga); ?></h5>
 
     <?php if (!empty($dataToView['data'])) { ?>
     <div class="table-responsive">

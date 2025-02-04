@@ -11,6 +11,51 @@ footer, small {
     color: #CCC;
 }
 
+/* Ocultar el checkbox original */
+.custom-checkbox {
+    display: none;
+}
+
+/* 📌 Estilo del contenedor del checkbox */
+.custom-checkbox-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px; /* Ajusta el tamaño del checkbox */
+    height: 30px;
+    background-color: #e9ecef; /* Color de fondo por defecto */
+    border-radius: 5px; /* Bordes redondeados */
+    border: 2px solid #007bff; /* Borde azul */
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+/* 📌 Ícono dentro del checkbox */
+.custom-checkbox-label::after {
+    content: "✔"; /* Icono de check */
+    font-size: 20px;
+    color: white;
+    opacity: 0; /* Ocultar el check al inicio */
+    transition: opacity 0.2s ease-in-out;
+}
+
+/* 📌 Cambiar color cuando está marcado */
+.custom-checkbox:checked + .custom-checkbox-label {
+    background-color: #007bff; /* Azul cuando está marcado */
+    border-color: #0056b3; /* Borde más oscuro */
+}
+
+/* 📌 Mostrar el icono de check cuando está marcado */
+.custom-checkbox:checked + .custom-checkbox-label::after {
+    opacity: 1;
+}
+
+/* 📌 Efecto hover */
+.custom-checkbox-label:hover {
+    background-color: #cce5ff;
+    border-color: #007bff;
+}
+
 @media (max-width: 768px) {
     /* 📌 Estilo base para los inputs */
     .expandable-input {
@@ -25,5 +70,14 @@ footer, small {
         z-index: 10;
         background: white;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .custom-checkbox-label {
+        width: 40px; /* Aumentar tamaño en móviles */
+        height: 40px;
+    }
+    
+    .custom-checkbox-label::after {
+        font-size: 24px; /* Hacer el check más grande */
     }
 }
