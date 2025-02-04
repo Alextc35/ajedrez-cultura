@@ -11,61 +11,8 @@ footer, small {
     color: #CCC;
 }
 
-/* Contenedor Principal */
-.table-container {
-    width: 100%;
-    max-width: 100%;
-    background: #fff;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
 
-/* Tabla Responsive */
-.table-wrapper {
-    max-height: 75vh;
-    overflow-y: auto;
-    overflow-x: auto;
-    border-radius: 10px;
-    width: 100%; /* Aprovechar todo el ancho */
-}
 
-/* Estilos de Tabla */
-th, td {
-    padding: 8px;
-    text-align: center;
-    vertical-align: middle;
-    font-size: 14px;
-}
-
-th {
-    background-color: #007BFF;
-}
-
-/* 📌 Mejorar diseño de botones */
-.btn-sm {
-    padding: 6px 10px;
-    font-size: 14px;
-}
-
-/* 📌 Ajustes en la fila de botones */
-.btn-container {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 5px;
-}
-
-/* 📌 Botón Volver */
-.d-flex.justify-content-start {
-    margin-bottom: 10px;
-}
-
-/* 📌 Evitar que la tabla se encoga */
-.table-responsive {
-    width: 100%;
-    overflow-x: auto;
-}
 
 /* 📌 Ajustes responsivos en móviles */
 @media (max-width: 768px) {
@@ -92,12 +39,6 @@ th {
         padding: 5px;
     }
 
-    .table-responsive {
-        overflow-x: auto;
-        font-size: 12px;
-        max-height: 70vh;
-    }
-
     th, td {
         font-size: 11px;
         padding: 5px;
@@ -110,12 +51,4 @@ th {
         align-items: center;
     }
 
-}
-
-/* 📌 Mejorar diseño de botones en móviles */
-@media (max-width: 375px) {
-
-    .table-responsive {
-        max-height: 65vh;
-    }
 }

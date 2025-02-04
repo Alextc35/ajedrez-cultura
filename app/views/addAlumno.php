@@ -2,21 +2,21 @@
     $liga = $_GET['liga'] ?? 'LIGA LOCAL';
     $otraLiga = $liga === 'LIGA LOCAL' ? 'LIGA INFANTIL' : 'LIGA LOCAL';
 ?>
-<div class="container-fluid bg-light rounded py-3">
-            <!-- 📌 Barra de navegación fija dentro del container -->
-            <nav class="navbar navbar-light bg-white rounded shadow">
-                <!-- 📌 Botón de Volver -->
-                <a href="/chess-league/public/" class="btn btn-secondary btn-sm">
-                    <i class="bi bi-x-lg"></i>
-                </a>
-                <h2 class="text-center">Añadir Alumnos</h2>
-        </nav>
+<div class="container bg-white p-3 rounded shadow">
+    <!-- 📌 Barra de navegación fija dentro del container -->
+    <div class="container d-flex p-0 pb-2 m-0 justify-content-between align-items-center">
+        <!-- 📌 Botón de Volver -->
+        <a href="?controller=ControladorAlumnos&action=listPorLiga&liga=<?= urlencode($liga) ?>" class="btn btn-secondary btn-sm"> 
+            <i class="bi bi-arrow-left-short">Volver</i>
+        </a>
+        <h2 class="text-center">Añadir Alumnos</h2>
+    </div>
 
     <form action="?controller=ControladorAlumnos&action=insertAlumno" method="POST">
         <input type="hidden" name="liga" value="<?= htmlspecialchars($liga) ?>">
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre del Alumno:</label>
-            <input type="text" name="nombre" id="nombre" class="form-control" required>
+            <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Introduce el nombre del alumno..." required>
         </div>
 
         <div class="mb-3">
@@ -42,9 +42,6 @@
             <input type="number" name="tablas" id="tablas" class="form-control" value="0" min="0" required>
         </div>
 
-        <div class="text-center">
-            <button type="submit" class="btn btn-success">Añadir Alumno</button>
-            <a href="?controller=ControladorAlumnos&action=listPorLiga&liga=<?= urlencode($liga) ?>" class="btn btn-secondary">Cancelar</a>
-        </div>
+        <button type="submit" class="btn btn-success d-block m-auto" onclick="return confirm('¿Quieres confirmar los ajustes?')">Añadir Alumno</button>
     </form>
 </div>
