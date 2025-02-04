@@ -32,7 +32,7 @@ $_SESSION['dataToView'] = ['data' => $alumnos, 'liga' => $liga]; // PDF
     <?php if (!empty($alumnos)) { ?>
         <div class="table-responsive">
             <table class="table table-striped table-hover table-bordered w-100">
-                <thead class="table-primary position-sticky top-0">
+                <thead class="table-primary">
                     <tr class="text-center">
                         <th class="col-1 col-sm-2">🏆</th> <!-- Posición -->
                         <th class="col-3 col-sm-4">👤</th> <!-- Nombre -->

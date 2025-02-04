@@ -10,3 +10,20 @@ body {
 footer, small {
     color: #CCC;
 }
+
+@media (max-width: 768px) {
+    /* 📌 Estilo base para los inputs */
+    .expandable-input {
+        width: 100%;
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* 📌 Cuando el input está enfocado, se expande */
+    .expandable-input:focus {
+        position: absolute;
+        width: 250px; /* Ajusta este tamaño si es necesario */
+        z-index: 10;
+        background: white;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+}

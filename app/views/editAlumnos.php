@@ -1,54 +1,70 @@
 <?php
     $liga = $_GET['liga'] ?? 'LIGA LOCAL';
 ?>
-<div class="container mt-4">
-    <h2 class="text-center text-bg-dark">Editar Alumnos - <?= htmlspecialchars($liga); ?></h2>
+<div class="container bg-white p-3 rounded shadow">
+    <!-- 📌 Barra de navegación fija dentro del container -->
+    <div class="container d-flex p-0 pb-1 justify-content-between align-items-center">
+        <!-- 📌 Botón de Volver -->
+        <a href="?controller=ControladorAlumnos&action=listPorLiga&liga=<?= urlencode($liga) ?>" class="btn btn-secondary btn-sm"> 
+            <i class="bi bi-arrow-left-short ">Volver</i>
+        </a>
+    </div>
+            <!-- 📌 Título centrado -->
+            <h2 class="text-center">Editar Alumnos | <?= htmlspecialchars($liga); ?></h2>
 
     <?php if (!empty($dataToView['data'])) { ?>
-    <form action="?controller=ControladorAlumnos&action=updateAlumnos" method="POST">
-        <input type="hidden" name="liga" value="<?= htmlspecialchars($liga); ?>">
-        
-        <table class="table table-bordered table-striped">
-            <thead class="table-primary">
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Victorias</th>
-                    <th>Derrotas</th>
-                    <th>Tablas</th>
-                    <th>🗑️</th> <!-- Eliminar -->
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($dataToView['data'] as $alumno) { ?>
-                <tr>
-                    <td>
-                        <?= $alumno['id']; ?>
+    <div class="table-responsive">
+        <form action="?controller=ControladorAlumnos&action=updateAlumnos" method="POST">
+            <input type="hidden" name="liga" value="<?= htmlspecialchars($liga); ?>">
+            
+            <table class="table table-bordered table-striped">
+                <thead class="table-primary">
+                    <tr class="text-center">
+                        <th class="col-3 col-sm-4">👤</th>
+                        <th class="col-2 col-sm-2">✅</th>
+                        <th class="col-2 col-sm-2">❌</th>
+                        <th class="col-2 col-sm-2">🤝</th>
+                        <th class="col-2 col-sm-2">🗑️</th> <!-- Eliminar -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($dataToView['data'] as $alumno) { ?>
+                    <tr>
                         <input type="hidden" name="id[]" value="<?= $alumno['id']; ?>">
-                    </td>
-                    <td><input type="text" name="nombre[]" value="<?= htmlspecialchars($alumno['nombre']); ?>" class="form-control"></td>
-                    <td><input type="number" name="victorias[]" value="<?= $alumno['victorias']; ?>" class="form-control"></td>
-                    <td><input type="number" name="derrotas[]" value="<?= $alumno['derrotas']; ?>" class="form-control"></td>
-                    <td><input type="number" name="tablas[]" value="<?= $alumno['tablas']; ?>" class="form-control"></td>
-                    <td>
-                        <a href="?controller=ControladorAlumnos&action=deleteAlumno&id=<?= $alumno['id']; ?>&liga=<?= urlencode($liga) ?>"
-                            class="btn btn-danger btn-sm d-flex justify-content-center align-items-center"
-                            onclick="return confirm('¿Estás seguro de que quieres eliminar a <?= htmlspecialchars($alumno['nombre']); ?>?')">
-                            <i class="bi bi-trash-fill"></i>
-                        </a>
-                    </td>
-                </tr>
-                <?php } ?>
-            </tbody>
-        </table>
+                        <td><input type="text" name="nombre[]" value="<?= htmlspecialchars($alumno['nombre']); ?>" class="form-control expandable-input"></td>
+                        <td><input type="number" name="victorias[]" value="<?= $alumno['victorias']; ?>" class="form-control"></td>
+                        <td><input type="number" name="derrotas[]" value="<?= $alumno['derrotas']; ?>" class="form-control"></td>
+                        <td><input type="number" name="tablas[]" value="<?= $alumno['tablas']; ?>" class="form-control"></td>
+                        <td>
+                            <a href="?controller=ControladorAlumnos&action=deleteAlumno&id=<?= $alumno['id']; ?>&liga=<?= urlencode($liga) ?>"
+                                class="btn btn-danger btn-sm d-flex justify-content-center align-items-center"
+                                onclick="return confirm('¿Estás seguro de que quieres eliminar a <?= htmlspecialchars($alumno['nombre']); ?>?')">
+                                <i class="bi bi-trash-fill"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
 
-        <div class="text-center mt-3">
-            <button type="submit" class="btn btn-success">Guardar Cambios</button>
-            <a href="?controller=ControladorAlumnos&action=listPorLiga&liga=<?= urlencode($liga) ?>" class="btn btn-secondary">Cancelar</a>
-        </div>
-    </form>
-
+            <div class="text-center mt-3">
+                <button type="submit" class="btn btn-success">Guardar Cambios</button>
+            </div>
+        </form>
+    </div>
     <?php } else { ?>
         <p class="text-center">No hay alumnos en <?= htmlspecialchars($liga); ?> para editar.</p>
     <?php } ?>
 </div>
+<script>
+document.querySelectorAll('.expandable-input').forEach(input => {
+    input.addEventListener('focus', function () {
+        this.classList.add('expanded'); // Agregar clase para expandir
+    });
+
+    input.addEventListener('blur', function () {
+        this.classList.remove('expanded'); // Remover la clase al perder el foco
+    });
+});
+
+</script>
