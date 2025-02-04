@@ -5,7 +5,7 @@
 <div class="container mt-4">
     <h2 class="text-center text-bg-dark">Selecciona los Jugadores para Enfrentamiento</h2>
 
-    <form action="?controller=ControladorAlumnos&action=generateMatches" method="POST">
+    <form action="action=generateMatches" method="POST">
         <input type="hidden" name="liga" value="<?= htmlspecialchars($liga); ?>">
 
         <table class="table table-bordered table-striped">
@@ -29,7 +29,7 @@
 
         <div class="text-center">
             <button type="submit" class="btn btn-primary">Enfrentar Jugadores</button>
-            <a href="?controller=ControladorAlumnos&action=listPorLiga&liga=<?= urlencode($liga) ?>" class="btn btn-secondary">Cancelar</a>
+            <a href="action=listPorLiga&liga=<?= urlencode($liga) ?>" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
 </div>

@@ -10,7 +10,7 @@
 <div class="container mt-4">
     <h2 class="text-center">Asignar Resultados - <?= $liga; ?></h2>
 
-    <form action="?controller=ControladorAlumnos&action=assignResults" method="POST">
+    <form action="?action=assignResults" method="POST">
         <input type="hidden" name="categoria" value="<?= $liga; ?>">
 
         <table class="table table-bordered">
@@ -46,7 +46,7 @@
 
         <div class="text-center">
             <button type="submit" class="btn btn-success">Guardar Resultados</button>
-            <a href="?controller=ControladorAlumnos&action=listPorLiga&liga=<?= urlencode($_SESSION['liga']) ?>" class="btn btn-secondary">Cancelar</a>
+            <a href="?action=listPorLiga&liga=<?= urlencode($_SESSION['liga']) ?>" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
 </div>

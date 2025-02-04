@@ -6,13 +6,13 @@
     <!-- 📌 Barra de navegación fija dentro del container -->
     <div class="container d-flex p-0 pb-2 m-0 justify-content-between align-items-center">
         <!-- 📌 Botón de Volver -->
-        <a href="?controller=ControladorAlumnos&action=listPorLiga&liga=<?= urlencode($liga) ?>" class="btn btn-secondary btn-sm"> 
+        <a href="?action=listPorLiga&liga=<?= urlencode($liga) ?>" class="btn btn-secondary btn-sm"> 
             <i class="bi bi-arrow-left-short">Volver</i>
         </a>
         <h2 class="text-center">Añadir Alumnos</h2>
     </div>
 
-    <form action="?controller=ControladorAlumnos&action=insertAlumno" method="POST">
+    <form action="?action=insertAlumno" method="POST">
         <input type="hidden" name="liga" value="<?= htmlspecialchars($liga) ?>">
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre del Alumno:</label>
