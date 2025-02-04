@@ -65,17 +65,17 @@ $_SESSION['dataToView'] = ['data' => $alumnos, 'liga' => $liga]; // PDF
             </div>
 
             <div class="text-center mt-3">
-                <a href="?controller=ControladorAlumnos&action=addAlumno&liga=<?= urlencode($liga) ?>" class="btn btn-primary btn-sm">Añadir alumno</a>
-                <a href="?controller=ControladorAlumnos&action=editAlumnos&liga=<?= urlencode($liga) ?>" class="btn btn-primary btn-sm">Editar alumno</a>
+                <a href="?controller=ControladorAlumnos&action=addAlumno&liga=<?= urlencode($liga) ?>" class="btn btn-primary d-block m-2">Añadir alumno</a>
+                <a href="?controller=ControladorAlumnos&action=editAlumnos&liga=<?= urlencode($liga) ?>" class="btn btn-primary d-block m-2">Editar alumno</a>
             </div>
 
             <div class="text-center p-3">
-                <a href="?controller=ControladorAlumnos&action=match&liga=<?= urlencode($liga) ?>" class="btn btn-success btn-sm">Enfrentar</a>
+                <a href="?controller=ControladorAlumnos&action=match&liga=<?= urlencode($liga) ?>" class="btn btn-success d-block">Enfrentar</a>
             </div>
         <?php } else { ?>
             <p class="text-center mt-3">No hay alumnos en esta categoría.</p>
             <div class="text-center">
-                <a href="?controller=ControladorAlumnos&action=add&liga=<?= urlencode($liga) ?>" class="btn btn-primary btn-sm">Añadir alumno</a>
+                <a href="?controller=ControladorAlumnos&action=add&liga=<?= urlencode($liga) ?>" class="btn btn-primary">Añadir alumno</a>
             </div>
         <?php } ?>
     </div>
