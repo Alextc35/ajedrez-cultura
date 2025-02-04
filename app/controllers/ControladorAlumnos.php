@@ -54,7 +54,7 @@ class ControladorAlumnos {
             // Validación básica
             if (empty($nombre)) {
                 $_SESSION['error'] = "El nombre del alumno es obligatorio.";
-                header("Location: ?controller=ControladorAlumnos&action=addAlumno&liga=" . urlencode($liga));
+                header("Location: ?action=addAlumno&liga=" . urlencode($liga));
                 exit();
             }
     
@@ -63,12 +63,12 @@ class ControladorAlumnos {
     
             // Redirigir a la lista de la categoría correspondiente
             $_SESSION['success'] = "Alumno añadido correctamente.";
-            header("Location: ?controller=ControladorAlumnos&action=listPorLiga&liga=" . urlencode($liga));
+            header("Location: ?action=listPorLiga&liga=" . urlencode($liga));
             exit();
         }
     
         // Si no es POST, redirigir
-        header("Location: ?controller=ControladorAlumnos&action=addAlumno&Liga=" . urlencode($liga));
+        header("Location: ?action=addAlumno&Liga=" . urlencode($liga));
         exit();
     }
     
@@ -95,7 +95,7 @@ class ControladorAlumnos {
 
             if (empty($ids)) {
                 $_SESSION['error'] = "No se enviaron datos para actualizar.";
-                header("Location: ?controller=ControladorAlumnos&action=editAlumnos&liga=" . urlencode($liga));
+                header("Location: ?action=editAlumnos&liga=" . urlencode($liga));
                 exit();
             }
 
@@ -111,7 +111,7 @@ class ControladorAlumnos {
             }
 
             $_SESSION['success'] = "Datos actualizados correctamente.";
-            header("Location: ?controller=ControladorAlumnos&action=listPorLiga&liga=" . urlencode($liga));
+            header("Location: ?action=listPorLiga&liga=" . urlencode($liga));
             exit();
         }
         die("Acceso denegado.");
@@ -126,7 +126,7 @@ class ControladorAlumnos {
             $liga = $_GET['liga'] ?? 'LIGA LOCAL';
             if ($id > 0) {
                 $this->alumnosObj->deleteAlumno($id);
-                header("Location: ?controller=ControladorAlumnos&action=listPorLiga&liga=" . urlencode($liga));
+                header("Location: ?action=listPorLiga&liga=" . urlencode($liga));
                 exit();
             }
         }
@@ -142,7 +142,7 @@ class ControladorAlumnos {
 
         if (!$alumnos) {
             $_SESSION['error'] = "No hay alumnos en esta liga.";
-            header("Location: ?controller=ControladorAlumnos&action=listPorLiga&liga=" . urlencode($liga));
+            header("Location: ?action=listPorLiga&liga=" . urlencode($liga));
             exit();
         }
         return $this->alumnosObj->getAlumnosPorLiga(htmlspecialchars($liga));
@@ -161,7 +161,7 @@ public function generateMatches() {
 
     if (count($ids) < 2) {
         $_SESSION['error'] = "Debes seleccionar al menos 2 jugadores.";
-        header("Location: ?controller=ControladorAlumnos&action=match&liga=" . urlencode($liga));
+        header("Location: ?action=match&liga=" . urlencode($liga));
         exit();
     }
 
@@ -178,7 +178,7 @@ public function generateMatches() {
 
     if (empty($jugadores)) {
         $_SESSION['error'] = "No se encontraron jugadores seleccionados.";
-        header("Location: ?controller=ControladorAlumnos&action=match&liga=" . urlencode($liga));
+        header("Location: ?action=match&liga=" . urlencode($liga));
         exit();
     }
 
@@ -207,7 +207,7 @@ public function generateMatches() {
 
         if (empty($id1s) || empty($id2s) || empty($resultados)) {
             $_SESSION['error'] = "No se recibieron datos válidos.";
-            header("Location: ?controller=ControladorAlumnos&action=match&liga=" . urlencode($liga));
+            header("Location: ?action=match&liga=" . urlencode($liga));
             exit();
         }
 
@@ -230,7 +230,7 @@ public function generateMatches() {
         }
 
         $_SESSION['success'] = "Resultados guardados correctamente.";
-        header("Location: ?controller=ControladorAlumnos&action=listPorLiga&liga=" . urlencode($liga));
+        header("Location: ?action=listPorLiga&liga=" . urlencode($liga));
         exit();
     }
 
