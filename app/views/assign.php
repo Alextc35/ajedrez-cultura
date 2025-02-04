@@ -19,7 +19,7 @@
     <h5 class="text-center text-muted"><?= htmlspecialchars($liga); ?></h5>
     <div class="table-responsive">
         <form action="?action=assignResults" method="POST">
-            <input type="hidden" name="categoria" value="<?= $liga; ?>">
+            <input type="hidden" name="liga" value="<?= $liga; ?>">
 
             <table class="table table-bordered">
                 <thead class="table-primary">
