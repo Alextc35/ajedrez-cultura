@@ -48,24 +48,10 @@
                 </tbody>
             </table>
 
-            <div class="text-center mt-3">
-                <button type="submit" class="btn btn-success">Guardar Cambios</button>
-            </div>
+            <button type="submit" class="btn btn-success d-block m-auto">Guardar Cambios</button>
         </form>
     </div>
     <?php } else { ?>
         <p class="text-center">No hay alumnos en <?= htmlspecialchars($liga); ?> para editar.</p>
     <?php } ?>
 </div>
-<script>
-document.querySelectorAll('.expandable-input').forEach(input => {
-    input.addEventListener('focus', function () {
-        this.classList.add('expanded'); // Agregar clase para expandir
-    });
-
-    input.addEventListener('blur', function () {
-        this.classList.remove('expanded'); // Remover la clase al perder el foco
-    });
-});
-
-</script>

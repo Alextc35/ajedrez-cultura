@@ -41,10 +41,11 @@
                             <td>
                                 <input type="hidden" name="id1[]" value="<?= $jugadoresIds[$i]; ?>">
                                 <input type="hidden" name="id2[]" value="<?= $jugadoresIds[$i + 1]; ?>">
-                                <select name="resultados[]" class="form-select">
-                                    <option value="1-0">1-0</option>
-                                    <option value="0-1">0-1</option>
-                                    <option value="1-1">½-½</option>
+                                <select name="resultados[]" class="form-select p-1">
+                                    <option value="" selected disabled>? - ?</option>
+                                    <option value="1-0">1 - 0</option>
+                                    <option value="0-1">0 - 1</option>
+                                    <option value="1-1">½ - ½</option>
                                 </select>
                             </td>
                         </tr>
@@ -52,9 +53,19 @@
                 </tbody>
             </table>
 
-            <div class="text-center">
-                <button type="submit" class="btn btn-success">Guardar Resultados</button>
-            </div>
+            <button type="submit" class="btn btn-success d-block m-auto">Guardar Resultados</button>
         </form>
     </div>
 </div>
+<script>
+document.querySelector("form").addEventListener("submit", function(event) {
+    let selects = document.querySelectorAll("select[name='resultados[]']");
+    for (let select of selects) {
+        if (select.value === "") {
+            alert("Por favor, selecciona un resultado para todos los enfrentamientos.");
+            event.preventDefault(); // Evita que el formulario se envíe
+            return;
+        }
+    }
+});
+</script>

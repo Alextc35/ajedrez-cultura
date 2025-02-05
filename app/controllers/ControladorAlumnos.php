@@ -136,7 +136,7 @@ class ControladorAlumnos {
     public function match() {
         $liga = $_GET['liga'] ?? 'LIGA LOCAL';
         $this->page_title = "Chess League | Enfrentar";
-        $this->view = 'alumnos/match';
+        $this->view = 'alumnos/enfrentar';
 
         $alumnos = $this->alumnosObj->getAlumnosPorLiga(htmlspecialchars($liga));
 

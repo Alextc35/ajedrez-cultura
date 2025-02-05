@@ -40,9 +40,7 @@
             </tbody>
         </table>
 
-        <div class="text-center">
-            <button type="submit" class="btn btn-primary">Enfrentar Jugadores</button>
-        </div>
+        <button type="submit" class="btn btn-primary d-block m-auto">Enfrentar Jugadores</button>
     </form>
 </div>
 

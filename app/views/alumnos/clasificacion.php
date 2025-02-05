@@ -44,13 +44,13 @@ $_SESSION['dataToView'] = ['data' => $alumnos, 'liga' => $liga]; // PDF
                 </thead>
                 <tbody>
                     <?php
-                    usort($alumnos, function ($a, $b) {
-                        return (($b['victorias'] + $b['tablas'] * 0.5) <=> ($a['victorias'] + $a['tablas'] * 0.5));
+                    usort($alumnos, function ($player1, $player2) {
+                        return (($player2['victorias'] + $player2['tablas'] * 0.5) <=> ($player1['victorias'] + $player1['tablas'] * 0.5));
                     });
-                    $cont = 1;
+                    $pos = 1;
                     foreach ($alumnos as $alumno) { ?>
                         <tr class="text-center">
-                            <td><?= $cont++ . '°'; ?></td>
+                            <td><?= $pos++ . '°'; ?></td>
                             <td class="text-start"><?= htmlspecialchars($alumno['nombre']); ?></td>
                             <td><?= $alumno['victorias']; ?></td>
                             <td><?= $alumno['derrotas']; ?></td>
