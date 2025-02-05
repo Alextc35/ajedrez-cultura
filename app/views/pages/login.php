@@ -1,4 +1,4 @@
-<div class="container bg-white p-3 rounded shadow">
+<div class="container p-3">
     <div class="row justify-content-center">
         <div class="col-md-4">
             <div class="card shadow-lg">
