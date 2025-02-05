@@ -26,53 +26,53 @@ $_SESSION['dataToView'] = ['data' => $alumnos, 'liga' => $liga]; // PDF
                 <i class="bi bi-file-earmark-pdf-fill"></i>
         </a>
     </div>
+    <?php if (!empty($alumnos)) { ?>
     <div class="text-center p-3 pt-0">
         <a href="?action=match&liga=<?= urlencode($liga) ?>" class="btn btn-success d-block">Enfrentar</a>
     </div>
-    <?php if (!empty($alumnos)) { ?>
-        <div class="table-responsive">
-            <table class="table table-striped table-hover table-bordered w-100">
-                <thead class="table-primary">
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-bordered w-100">
+            <thead class="table-primary">
+                <tr class="text-center">
+                    <th class="col-1 col-sm-2">🏆</th> <!-- Posición -->
+                    <th class="col-3 col-sm-4">👤</th> <!-- Nombre -->
+                    <th class="col-2 col-sm-2">✅</th> <!-- Victorias -->
+                    <th class="col-2 col-sm-2">❌</th> <!-- Derrotas -->
+                    <th class="col-2 col-sm-2">🤝</th> <!-- Tablas -->
+                    <th class="col-2 col-sm-2">⭐</th> <!-- Puntos -->
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                usort($alumnos, function ($player1, $player2) {
+                    return (($player2['victorias'] + $player2['tablas'] * 0.5) <=> ($player1['victorias'] + $player1['tablas'] * 0.5));
+                });
+                $pos = 1;
+                foreach ($alumnos as $alumno) { ?>
                     <tr class="text-center">
-                        <th class="col-1 col-sm-2">🏆</th> <!-- Posición -->
-                        <th class="col-3 col-sm-4">👤</th> <!-- Nombre -->
-                        <th class="col-2 col-sm-2">✅</th> <!-- Victorias -->
-                        <th class="col-2 col-sm-2">❌</th> <!-- Derrotas -->
-                        <th class="col-2 col-sm-2">🤝</th> <!-- Tablas -->
-                        <th class="col-2 col-sm-2">⭐</th> <!-- Puntos -->
+                        <td><?= $pos++ . '°'; ?></td>
+                        <td class="text-start"><?= htmlspecialchars($alumno['nombre']); ?></td>
+                        <td><?= $alumno['victorias']; ?></td>
+                        <td><?= $alumno['derrotas']; ?></td>
+                        <td><?= $alumno['tablas']; ?></td>
+                        <td><?= number_format($alumno['victorias'] + $alumno['tablas'] * 0.5, 1); ?></td>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    usort($alumnos, function ($player1, $player2) {
-                        return (($player2['victorias'] + $player2['tablas'] * 0.5) <=> ($player1['victorias'] + $player1['tablas'] * 0.5));
-                    });
-                    $pos = 1;
-                    foreach ($alumnos as $alumno) { ?>
-                        <tr class="text-center">
-                            <td><?= $pos++ . '°'; ?></td>
-                            <td class="text-start"><?= htmlspecialchars($alumno['nombre']); ?></td>
-                            <td><?= $alumno['victorias']; ?></td>
-                            <td><?= $alumno['derrotas']; ?></td>
-                            <td><?= $alumno['tablas']; ?></td>
-                            <td><?= number_format($alumno['victorias'] + $alumno['tablas'] * 0.5, 1); ?></td>
-                        </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
-            <hr class="m-0 p-0">
-        </div>
+                <?php } ?>
+            </tbody>
+        </table>
+        <hr class="m-0 p-0">
+    </div>
 
-        <div class="text-center mt-3">
-            <a href="?action=addAlumno&liga=<?= urlencode($liga) ?>" class="btn btn-primary d-block m-2">Añadir alumno</a>
-            <a href="?action=editAlumnos&liga=<?= urlencode($liga) ?>" class="btn btn-primary d-block m-2">Editar alumno</a>
-        </div>
-    <?php } else { ?>
-        <p class="text-center mt-3">No hay alumnos en esta categoría.</p>
-        <div class="text-center">
-            <a href="?action=add&liga=<?= urlencode($liga) ?>" class="btn btn-primary">Añadir alumno</a>
-        </div>
-    <?php } ?>
+    <div class="text-center mt-3">
+        <a href="?action=addAlumno&liga=<?= urlencode($liga) ?>" class="btn btn-primary d-block m-2">Añadir alumno</a>
+        <a href="?action=editAlumnos&liga=<?= urlencode($liga) ?>" class="btn btn-primary d-block m-2">Editar alumno</a>
+    </div>
+<?php } else { ?>
+    <p class="text-center">No hay alumnos en esta categoría.</p>
+    <div class="text-center">
+        <a href="?action=addAlumno&liga=<?= urlencode($liga) ?>" class="btn btn-primary">Añadir alumno</a>
+    </div>
+<?php } ?>
 </div>
 
 

@@ -85,7 +85,7 @@ class ControladorAlumnos {
     
             // Validación básica
             if (empty($nombre)) {
-                $_SESSION['error'] = "El nombre del alumno es obligatorio.";
+                // $_SESSION['error'] = "El nombre del alumno es obligatorio.";
                 header("Location: ?action=addAlumno&liga=" . urlencode($liga));
                 exit();
             }
@@ -94,7 +94,7 @@ class ControladorAlumnos {
             $this->alumnosObj->addAlumno($nombre, $liga, (int)$victorias, (int)$derrotas, (int)$tablas);
     
             // Redirigir a la lista de la categoría correspondiente
-            $_SESSION['success'] = "Alumno añadido correctamente.";
+            // $_SESSION['success'] = "Alumno añadido correctamente.";
             header("Location: ?action=listPorLiga&liga=" . urlencode($liga));
             exit();
         }
@@ -126,7 +126,7 @@ class ControladorAlumnos {
             $tablas = $_POST['tablas'] ?? [];
 
             if (empty($ids)) {
-                $_SESSION['error'] = "No se enviaron datos para actualizar.";
+                // $_SESSION['error'] = "No se enviaron datos para actualizar.";
                 header("Location: ?action=editAlumnos&liga=" . urlencode($liga));
                 exit();
             }
@@ -142,7 +142,7 @@ class ControladorAlumnos {
                 $this->alumnosObj->updateAlumnos($id, $nombre, $vict, $derrot, $tabl);
             }
 
-            $_SESSION['success'] = "Datos actualizados correctamente.";
+            // $_SESSION['success'] = "Datos actualizados correctamente.";
             header("Location: ?action=listPorLiga&liga=" . urlencode($liga));
             exit();
         }
@@ -173,7 +173,7 @@ class ControladorAlumnos {
         $alumnos = $this->alumnosObj->getAlumnosPorLiga(htmlspecialchars($liga));
 
         if (!$alumnos) {
-            $_SESSION['error'] = "No hay alumnos en esta liga.";
+            // $_SESSION['error'] = "No hay alumnos en esta liga.";
             header("Location: ?action=listPorLiga&liga=" . urlencode($liga));
             exit();
         }
@@ -192,7 +192,7 @@ public function generateMatches() {
     $ids = $_POST['ids'] ?? [];
 
     if (count($ids) < 2) {
-        $_SESSION['error'] = "Debes seleccionar al menos 2 jugadores.";
+        // $_SESSION['error'] = "Debes seleccionar al menos 2 jugadores.";
         header("Location: ?action=match&liga=" . urlencode($liga));
         exit();
     }
@@ -209,7 +209,7 @@ public function generateMatches() {
     }
 
     if (empty($jugadores)) {
-        $_SESSION['error'] = "No se encontraron jugadores seleccionados.";
+        // $_SESSION['error'] = "No se encontraron jugadores seleccionados.";
         header("Location: ?action=match&liga=" . urlencode($liga));
         exit();
     }
@@ -238,7 +238,7 @@ public function generateMatches() {
         $resultados = $_POST['resultados'] ?? [];
 
         if (empty($id1s) || empty($id2s) || empty($resultados)) {
-            $_SESSION['error'] = "No se recibieron datos válidos.";
+            // $_SESSION['error'] = "No se recibieron datos válidos.";
             header("Location: ?action=match&liga=" . urlencode($liga));
             exit();
         }
@@ -261,7 +261,7 @@ public function generateMatches() {
             }
         }
 
-        $_SESSION['success'] = "Resultados guardados correctamente.";
+        // $_SESSION['success'] = "Resultados guardados correctamente.";
         header("Location: ?action=listPorLiga&liga=" . urlencode($liga));
         exit();
     }
