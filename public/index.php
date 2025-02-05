@@ -29,4 +29,4 @@ else
 # 📌 Cargar las vistas
 require_once '../app/views/templates/header.php'; // Header
 require_once "../app/views/{$controller->view}.php";
-require_once '../app/views/templates/footer.php'; // Footer
+require_once '../app/views/templates/footer.html'; // Footer
