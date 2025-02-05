@@ -10,6 +10,38 @@ class ControladorAlumnos {
         $this->alumnosObj = new AlumnosDAO();
     }
 
+    public function login() {
+        $this->page_title = 'Chess League | Login';
+        $this->view = 'pages/login';
+    }
+
+    public function signIn() {
+        // Credenciales de acceso
+        $usuario_valido = USUARIO_VALIDO;
+        $password_valida = PASSWORD_VALIDA;
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $usuario = $_POST['usuario'] ?? '';
+            $password = $_POST['password'] ?? '';
+
+            // Validar credenciales
+            if ($usuario === $usuario_valido && $password === $password_valida) {
+                $_SESSION['usuario'] = $usuario; // Iniciar sesión
+                $this->page_title = 'Chess League | Logado';
+                $this->view = 'pages/descripcion'; // Redirigir al área protegida
+            } else {
+                $this->page_title = 'Chess League | Fallo de autenticación';
+                $_SESSION['error'] = "Usuario o contraseña incorrectos.";
+            }
+        }
+    }
+
+    public function logout() {
+        unset($_SESSION['usuario']); // Eliminar la sesión
+        $this->page_title = 'Chess League | Sesión cerrada';
+        $this->view = 'pages/login'; // Redirigir al login
+    }
+
     public function descripcion() {
         $this->page_title = 'Chess League | Inicio';
         $this->view = 'pages/descripcion';

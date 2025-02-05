@@ -26,7 +26,16 @@ if (method_exists($controller, $action))
 else
     die("Error: Acción '$action' no encontrada en el controlador '$controllerName'.");
 
+
 # 📌 Cargar las vistas
+
+// 📌 Verificar si el usuario está autenticado
 require_once '../app/views/templates/header.php'; // Header
-require_once "../app/views/{$controller->view}.php";
+if (!isset($_SESSION['usuario'])) {
+    // Si no está autenticado, mostrar solo el login
+    require_once '../app/views/pages/login.php';
+    // exit();
+} else {
+    require_once "../app/views/{$controller->view}.php";
+}
 require_once '../app/views/templates/footer.html'; // Footer

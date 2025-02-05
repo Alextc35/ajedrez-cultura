@@ -48,7 +48,7 @@
                 </tbody>
             </table>
 
-            <button type="submit" class="btn btn-success d-block m-auto">Guardar Cambios</button>
+            <button type="submit" class="btn btn-success d-block m-auto" onclick="return confirm('¿Quieres confirmar los ajustes?')">Guardar Cambios</button>
         </form>
     </div>
     <?php } else { ?>

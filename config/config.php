@@ -12,9 +12,13 @@ define("DB_PASS", "");  // Contraseña de la base de datos (vacía por defecto e
 
 # 📌 Controlador y acción por defecto
 define("DEFAULT_CONTROLLER", "ControladorAlumnos"); // Controlador de la Aplicación
-define("DEFAULT_ACTION", "descripcion"); // Acción por defecto
+define("DEFAULT_ACTION", "login"); // Acción por defecto
+
+# 📌 Credenciales de acceso
+define("USUARIO_VALIDO", "profesor"); // Usuario válido
+define("PASSWORD_VALIDA", "ligamejorada33"); // Contraseña válida
 
 # 📌 Manejo de errores (Descomentar en desarrollo para depuración)
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
