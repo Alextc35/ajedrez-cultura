@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $controller->page_title ?></title>
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="bootstrap/bootstrap-icons/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../public/css/style.min.css">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/bootstrap/bootstrap-icons/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="assets/css/style.min.css">
 </head>
 <body>
     <div class="d-flex flex-column justify-content-center align-items-center w-auto m-3">

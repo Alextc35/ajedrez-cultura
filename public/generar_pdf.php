@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once('tcpdf/tcpdf.php'); // Si descargaste TCPDF manualmente
+require_once('libs/tcpdf/tcpdf.php'); // Si descargaste TCPDF manualmente
 
 if (!isset($_SESSION['dataToView']) || empty($_SESSION['dataToView']['data'])) {
     die("No hay datos para generar el PDF");

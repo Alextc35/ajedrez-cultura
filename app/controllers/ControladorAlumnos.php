@@ -12,7 +12,7 @@ class ControladorAlumnos {
 
     public function descripcion() {
         $this->page_title = 'Chess League | Inicio';
-        $this->view = 'descripcion';
+        $this->view = 'pages/descripcion';
     }
 
     /**
@@ -31,7 +31,7 @@ class ControladorAlumnos {
         // Obtener la categoría de la URL o por defecto "LIGA LOCAL"
         $liga = $_GET['liga'] ?? 'LIGA LOCAL';
         $this->page_title = "Chess League | $liga";
-        $this->view = 'clasificacion'; // Usamos la misma vista
+        $this->view = 'alumnos/clasificacion'; // Usamos la misma vista
     
 
         return $this->alumnosObj->getAlumnosPorLiga(htmlspecialchars($liga));
@@ -40,7 +40,7 @@ class ControladorAlumnos {
     // TODO: Cambiar nombre a viewAddAlumno
     public function addAlumno() {
         $this->page_title = "Chess League | Añadir alumno";
-        $this->view = 'addAlumno';
+        $this->view = 'alumnos/add';
     }
 
     public function insertAlumno() { 
@@ -76,7 +76,7 @@ class ControladorAlumnos {
     public function editAlumnos() {
         $liga = $_GET['liga'] ?? 'LIGA LOCAL';
         $this->page_title = "Chess League | Editar alumno";
-        $this->view = 'editAlumnos';
+        $this->view = 'alumnos/edit';
 
         return $this->alumnosObj->getAlumnosPorLiga(htmlspecialchars($liga));
     }
@@ -136,7 +136,7 @@ class ControladorAlumnos {
     public function match() {
         $liga = $_GET['liga'] ?? 'LIGA LOCAL';
         $this->page_title = "Chess League | Enfrentar";
-        $this->view = 'match';
+        $this->view = 'alumnos/match';
 
         $alumnos = $this->alumnosObj->getAlumnosPorLiga(htmlspecialchars($liga));
 
@@ -188,7 +188,7 @@ public function generateMatches() {
 
     // 📌 Enviar los datos a la vista assign.php
     $this->page_title = 'Asignar Enfrentamientos';
-    $this->view = 'assign';
+    $this->view = 'alumnos/assign';
 
     return ['jugadores' => $jugadores, 'liga' => $liga];
 }
@@ -233,5 +233,4 @@ public function generateMatches() {
         header("Location: ?action=listPorLiga&liga=" . urlencode($liga));
         exit();
     }
-
 }
