@@ -47,10 +47,10 @@ $html = '<table border="1" cellpadding="5">
             <tbody>';
 
 // Ordenar los datos antes de generar el PDF
-usort($dataToView['data'], function ($a, $b) {
-    $puntosA = ($a['victorias'] * 1) + ($a['tablas'] * 0.5);
-    $puntosB = ($b['victorias'] * 1) + ($b['tablas'] * 0.5);
-    return $puntosB <=> $puntosA; // Ordenar de mayor a menor
+usort($dataToView['data'], function ($player1, $player2) {
+    $puntosPlayer1 = ($player1['victorias'] * 1) + ($player1['tablas'] * 0.5);
+    $puntosPlayer2 = ($player2['victorias'] * 1) + ($player2['tablas'] * 0.5);
+    return $puntosPlayer1 <=> $puntosPlayer2; // Ordenar de mayor a menor
 });
 
 // Agregar los datos al PDF
