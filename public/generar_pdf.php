@@ -50,7 +50,7 @@ $html = '<table border="1" cellpadding="5">
 usort($dataToView['data'], function ($player1, $player2) {
     $puntosPlayer1 = ($player1['victorias'] * 1) + ($player1['tablas'] * 0.5);
     $puntosPlayer2 = ($player2['victorias'] * 1) + ($player2['tablas'] * 0.5);
-    return $puntosPlayer1 <=> $puntosPlayer2; // Ordenar de mayor a menor
+    return $puntosPlayer2 <=> $puntosPlayer1; // Ordenar de mayor a menor
 });
 
 // Agregar los datos al PDF
