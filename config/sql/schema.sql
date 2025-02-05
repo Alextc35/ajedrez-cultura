@@ -3,8 +3,8 @@
 -- ============================================================
 
 -- 📌 Crear la base de datos si no existe
-CREATE DATABASE IF NOT EXISTS chess_league;
-USE chess_league;
+CREATE DATABASE IF NOT EXISTS ajedrez_clase;
+USE ajedrez_clase;
 
 -- 📌 Eliminar tabla alumnos si ya existe (para evitar errores en pruebas)
 DROP TABLE IF EXISTS alumnos;
@@ -28,37 +28,37 @@ CREATE TABLE alumnos (
 -- 📌 INSERCIÓN DE DATOS DE PRUEBA (Opcional)
 -- ============================================================
 
-INSERT INTO alumnos (nombre, liga, victorias, derrotas, tablas) VALUES
-('Lucas Fernández', 'LIGA INFANTIL', 3, 2, 1),
-('María Gómez', 'LIGA LOCAL', 5, 1, 2),
-('Alejandro Pérez', 'LIGA LOCAL', 4, 2, 3),
-('Daniel López', 'LIGA INFANTIL', 6, 0, 2),
-('Sofía Ramírez', 'LIGA LOCAL', 3, 4, 1),
-('Miguel Torres', 'LIGA INFANTIL', 4, 3, 2),
-('Carla Ruiz', 'LIGA LOCAL', 2, 5, 0),
-('Javier Navarro', 'LIGA INFANTIL', 5, 1, 3),
-('Andrea Ortega', 'LIGA LOCAL', 6, 0, 2),
-('Pablo Jiménez', 'LIGA INFANTIL', 3, 3, 2),
-('Raúl Sánchez', 'LIGA LOCAL', 2, 4, 1),
-('Elena Castillo', 'LIGA INFANTIL', 4, 2, 2),
-('David Márquez', 'LIGA LOCAL', 5, 1, 1),
-('Clara Domínguez', 'LIGA INFANTIL', 6, 0, 3),
-('Tomás Herrera', 'LIGA LOCAL', 3, 3, 2),
-('Isabel Medina', 'LIGA INFANTIL', 5, 1, 1),
-('Hugo Vega', 'LIGA LOCAL', 4, 2, 2),
-('Natalia Ríos', 'LIGA INFANTIL', 3, 3, 2),
-('Cristian Guzmán', 'LIGA LOCAL', 5, 1, 1),
-('Camila Muñoz', 'LIGA INFANTIL', 6, 0, 3),
-('Fernando León', 'LIGA LOCAL', 4, 2, 2),
-('Valeria Paredes', 'LIGA INFANTIL', 3, 3, 2),
-('Martín Castro', 'LIGA LOCAL', 5, 1, 1),
-('Sara Núñez', 'LIGA INFANTIL', 6, 0, 2);
+-- INSERT INTO alumnos (nombre, liga, victorias, derrotas, tablas) VALUES
+-- ('Lucas Fernández', 'LIGA INFANTIL', 3, 2, 1),
+-- ('María Gómez', 'LIGA LOCAL', 5, 1, 2),
+-- ('Alejandro Pérez', 'LIGA LOCAL', 4, 2, 3),
+-- ('Daniel López', 'LIGA INFANTIL', 6, 0, 2),
+-- ('Sofía Ramírez', 'LIGA LOCAL', 3, 4, 1),
+-- ('Miguel Torres', 'LIGA INFANTIL', 4, 3, 2),
+-- ('Carla Ruiz', 'LIGA LOCAL', 2, 5, 0),
+-- ('Javier Navarro', 'LIGA INFANTIL', 5, 1, 3),
+-- ('Andrea Ortega', 'LIGA LOCAL', 6, 0, 2),
+-- ('Pablo Jiménez', 'LIGA INFANTIL', 3, 3, 2),
+-- ('Raúl Sánchez', 'LIGA LOCAL', 2, 4, 1),
+-- ('Elena Castillo', 'LIGA INFANTIL', 4, 2, 2),
+-- ('David Márquez', 'LIGA LOCAL', 5, 1, 1),
+-- ('Clara Domínguez', 'LIGA INFANTIL', 6, 0, 3),
+-- ('Tomás Herrera', 'LIGA LOCAL', 3, 3, 2),
+-- ('Isabel Medina', 'LIGA INFANTIL', 5, 1, 1),
+-- ('Hugo Vega', 'LIGA LOCAL', 4, 2, 2),
+-- ('Natalia Ríos', 'LIGA INFANTIL', 3, 3, 2),
+-- ('Cristian Guzmán', 'LIGA LOCAL', 5, 1, 1),
+-- ('Camila Muñoz', 'LIGA INFANTIL', 6, 0, 3),
+-- ('Fernando León', 'LIGA LOCAL', 4, 2, 2),
+-- ('Valeria Paredes', 'LIGA INFANTIL', 3, 3, 2),
+-- ('Martín Castro', 'LIGA LOCAL', 5, 1, 1),
+-- ('Sara Núñez', 'LIGA INFANTIL', 6, 0, 2);
 
 -- ============================================================
 -- 📌 COMPROBAR DATOS INSERTADOS
 -- ============================================================
 
-SELECT * FROM alumnos;
+-- SELECT * FROM alumnos;
 
 -- ============================================================
 -- 📌 COMANDOS PARA IMPORTAR ESTE ARCHIVO SQL EN MYSQL

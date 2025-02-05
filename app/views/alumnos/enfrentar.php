@@ -1,4 +1,7 @@
 <?php
+    if (!isset($_SESSION['usuario'])) {
+        die("No estás autenticado");
+    }
     $liga = $_GET['liga'] ?? 'LIGA LOCAL';
     $alumnos = $dataToView['data'] ?? [];
 ?>

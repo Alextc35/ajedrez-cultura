@@ -1,4 +1,7 @@
 <?php
+    if (!isset($_SESSION['usuario'])) {
+        die("No estás autenticado");
+    }
     $liga = htmlspecialchars($_SESSION['liga'] ?? 'LIGA LOCAL');
     $jugadores = $_SESSION['jugadores'] ?? [];
 

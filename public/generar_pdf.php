@@ -1,6 +1,10 @@
 <?php
 session_start();
 
+if (!isset($_SESSION['usuario'])) {
+    die("No estás autenticado");
+}
+
 require_once('libs/tcpdf/tcpdf.php'); // Si descargaste TCPDF manualmente
 
 if (!isset($_SESSION['dataToView']) || empty($_SESSION['dataToView']['data'])) {

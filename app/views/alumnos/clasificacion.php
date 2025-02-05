@@ -1,5 +1,7 @@
 <?php
-
+if (!isset($_SESSION['usuario'])) {
+    die("No estás autenticado");
+}
 // Determinar la categoría actual
 $liga = $_GET['liga'] ?? 'LIGA LOCAL';
 
@@ -22,7 +24,7 @@ $_SESSION['dataToView'] = ['data' => $alumnos, 'liga' => $liga]; // PDF
         <h2><?= htmlspecialchars($liga) ?></h2>
 
         <!-- 📌 Botón para descargar PDF -->
-        <a href="/chess-league/public/generar_pdf.php?liga=<?= urlencode($liga) ?>" class="btn btn-danger">
+        <a href="/public/generar_pdf.php?liga=<?= urlencode($liga) ?>" class="btn btn-danger">
                 <i class="bi bi-file-earmark-pdf-fill"></i>
         </a>
     </div>

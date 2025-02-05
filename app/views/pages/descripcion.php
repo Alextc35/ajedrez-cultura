@@ -1,3 +1,8 @@
+<?php
+if (!isset($_SESSION['usuario'])) {
+    die("No estás autenticado");
+}
+?>
 <div class="text-center">
     <a href="?action=logout" class="btn btn-danger d-block m-2">Cerrar Sesión</a>
 </div>

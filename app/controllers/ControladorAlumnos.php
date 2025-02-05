@@ -1,6 +1,5 @@
 <?php
 require_once '../app/models/AlumnosDAO.php';
-
 class ControladorAlumnos {
     public string $page_title;
     public string $view;

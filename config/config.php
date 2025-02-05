@@ -7,8 +7,8 @@
 # 📌 Configuración de la Base de Datos
 define("DB_HOST", "localhost");  // Servidor de la base de datos
 define("DB_NAME", "ajedrez_clase");  // Nombre de la base de datos
-define("DB_USER", "root");  // Usuario de la base de datos
-define("DB_PASS", "");  // Contraseña de la base de datos (vacía por defecto en XAMPP)
+define("DB_USER", "admin");  // Usuario de la base de datos
+define("DB_PASS", "ligamejorada33");  // Contraseña de la base de datos (vacía por defecto en XAMPP)
 
 # 📌 Controlador y acción por defecto
 define("DEFAULT_CONTROLLER", "ControladorAlumnos"); // Controlador de la Aplicación
