@@ -19,7 +19,12 @@
         <table class="table table-bordered table-striped">
             <thead class="table-primary">
                 <tr>
-                    <th class="text-center"><input type="checkbox" id="selectAll"></th>
+                    <th>
+                        <div class="form-check form-switch d-flex justify-content-center align-items-center">
+                            <input class="form-check-input" type="checkbox" id="selectAll">
+                            <label class="form-check-label" for="selectAll">👤</label>
+                        </div>
+                    </th>
                     <th>Nombre</th>
                 </tr>
             </thead>
@@ -27,8 +32,7 @@
                 <?php foreach ($alumnos as $alumno) { ?>
                     <tr class="text-center align-middle">
                         <td>
-                            <input type="checkbox" id="check<?= $alumno['id']; ?>" name="ids[]" value="<?= $alumno['id']; ?>" class="custom-checkbox">
-                            <label for="check<?= $alumno['id']; ?>" class="custom-checkbox-label"></label>
+                            <input type="checkbox" name="ids[]" value="<?= $alumno['id']; ?>" class="form-check-input">
                         </td>
                         <td class="text-start"><?= htmlspecialchars($alumno['nombre']); ?></td>
                     </tr>

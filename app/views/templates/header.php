@@ -6,7 +6,7 @@
     <title><?= $controller->page_title ?></title>
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="bootstrap/bootstrap-icons/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../public/css/style.css">
+    <link rel="stylesheet" href="../public/css/style.min.css">
 </head>
 <body>
     <div class="d-flex flex-column justify-content-center align-items-center w-auto m-3">

@@ -32,10 +32,10 @@
                     <?php foreach ($dataToView['data'] as $alumno) { ?>
                     <tr>
                         <input type="hidden" name="id[]" value="<?= $alumno['id']; ?>">
-                        <td><input type="text" name="nombre[]" value="<?= htmlspecialchars($alumno['nombre']); ?>" class="form-control expandable-input"></td>
-                        <td><input type="number" name="victorias[]" value="<?= $alumno['victorias']; ?>" class="form-control"></td>
-                        <td><input type="number" name="derrotas[]" value="<?= $alumno['derrotas']; ?>" class="form-control"></td>
-                        <td><input type="number" name="tablas[]" value="<?= $alumno['tablas']; ?>" class="form-control"></td>
+                        <td><input type="text" name="nombre[]" value="<?= htmlspecialchars($alumno['nombre']); ?>" class="form-control p-1 expandable-input"></td>
+                        <td><input type="number" name="victorias[]" value="<?= $alumno['victorias']; ?>" class="form-control p-1"></td>
+                        <td><input type="number" name="derrotas[]" value="<?= $alumno['derrotas']; ?>" class="form-control p-1"></td>
+                        <td><input type="number" name="tablas[]" value="<?= $alumno['tablas']; ?>" class="form-control p-1"></td>
                         <td>
                             <a href="?action=deleteAlumno&id=<?= $alumno['id']; ?>&liga=<?= urlencode($liga) ?>"
                                 class="btn btn-danger btn-sm d-flex justify-content-center align-items-center"
