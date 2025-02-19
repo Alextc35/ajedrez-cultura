@@ -1,8 +1,8 @@
 <?php
-    $paginaActual = $_GET['action'] ?? ''; // Obtener la acción actual
+    $paginaActual = $arrHandler['action'] ?? ''; // Obtener la acción actual
 
     // Si el usuario no está autenticado o está en 'assign', deshabilitamos los enlaces
-    $deshabilitado = (!isset($_SESSION['usuario']) || $paginaActual === 'generateMatches') ? 'disabled' : '';
+    $deshabilitado = $paginaActual === 'generateMatches' ? 'disabled' : '';
 ?>
 <!DOCTYPE html>
 <html lang="es">
