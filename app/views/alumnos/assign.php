@@ -1,7 +1,4 @@
 <?php
-    if (!isset($_SESSION['usuario'])) {
-        die("No estás autenticado");
-    }
     $liga = htmlspecialchars($_SESSION['liga'] ?? 'LIGA LOCAL');
     $jugadores = $_SESSION['jugadores'] ?? [];
 
@@ -14,14 +11,14 @@
     <!-- 📌 Barra de navegación fija dentro del container -->
     <div class="container d-flex p-0 pb-1 justify-content-between align-items-center">
         <!-- 📌 Botón de Volver -->
-        <a href="?action=listPorLiga&liga=<?= urlencode($liga) ?>" class="btn btn-secondary btn-sm" onclick="return confirm('Si vuelves atrás, los enfrentamientos generados se perderán. ¿Estás seguro de que deseas continuar?')"> 
+        <a href="<?= constant('DEFAULT_INDEX') ?>ControladorAlumnos/listPorLiga?liga=<?= urlencode($liga) ?>" class="btn btn-secondary btn-sm" onclick="return confirm('Si vuelves atrás, los enfrentamientos generados se perderán. ¿Estás seguro de que deseas continuar?')">
             <i class="bi bi-arrow-left-short ">Volver</i>
         </a>
     </div>
     <h2 class="text-center">Asignar Resultados</h2>
     <h5 class="text-center text-muted"><?= htmlspecialchars($liga); ?></h5>
     <div class="table-responsive">
-        <form action="?action=assignResults" method="POST">
+        <form action="<?= constant('DEFAULT_INDEX') ?>ControladorAlumnos/assignResults" method="POST">
             <input type="hidden" name="liga" value="<?= $liga; ?>">
 
             <table class="table table-bordered">
@@ -34,7 +31,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php 
+                    <?php
                     $jugadoresIds = array_keys($jugadores);
                     for ($i = 0; $i < count($jugadoresIds) - 1; $i += 2) { ?>
                         <tr class="text-center align-middle">
@@ -55,8 +52,7 @@
                     <?php } ?>
                 </tbody>
             </table>
-
-            <button type="submit" class="btn btn-success d-block m-auto">Guardar Resultados</button>
+            <button type="submit" class="btn btn-success d-block m-auto" onclick="return confirm('¿Quieres confirmar los resultados?')">Guardar Resultados</button>
         </form>
     </div>
 </div>

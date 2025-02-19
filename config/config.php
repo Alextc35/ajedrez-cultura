@@ -12,11 +12,13 @@ define("DB_PASS", "");  // Contraseña de la base de datos (vacía por defecto e
 
 # 📌 Controlador y acción por defecto
 define("DEFAULT_CONTROLLER", "ControladorAlumnos"); // Controlador de la Aplicación
-define("DEFAULT_ACTION", "login"); // Acción por defecto
+define("DEFAULT_ACTION", "inicio"); // Acción por defecto
 
-# 📌 Credenciales de acceso
-define("USUARIO_VALIDO", "profesor"); // Usuario válido
-define("PASSWORD_VALIDA", "ligamejorada33"); // Contraseña válida
+define("DEFAULT_CONTROLLER_LOGIN", "ControladorLogin");
+define("DEFAULT_ACTION_LOGIN", "login");
+
+// ubicación de index
+define("DEFAULT_INDEX", "http://localhost/chess-league/public/index.php/");
 
 # 📌 Manejo de errores (Descomentar en desarrollo para depuración)
 // ini_set('display_errors', 1);

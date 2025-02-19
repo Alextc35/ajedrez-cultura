@@ -1,13 +1,10 @@
 <?php
-
+require_once 'Conexion.php';
 class AlumnosDAO
 {
     private $table = 'alumnos';
-    private $db;
 
-    public function __construct() {
-        $this->db = new Database();
-    }
+    public function __construct() {}
 
     /**
      * 📌 Obtiene todos los alumnos de la base de datos
@@ -15,7 +12,7 @@ class AlumnosDAO
      */
     public function getAlumnos() {
         $sql = "SELECT * FROM $this->table";
-        $stmt = $this->db->conection->prepare($sql);
+        $stmt = Conexion::getInstancia()->getConexion()->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -27,7 +24,7 @@ class AlumnosDAO
      */
     public function getAlumnosPorLiga($liga) {
         $sql = "SELECT * FROM $this->table WHERE liga = :liga";
-        $stmt = $this->db->conection->prepare($sql);
+        $stmt = Conexion::getInstancia()->getConexion()->prepare($sql);
         $stmt->bindParam(':liga', $liga, PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -40,7 +37,7 @@ class AlumnosDAO
      */
     public function getAlumno($id) {
         $sql = "SELECT * FROM $this->table WHERE id = :id";
-        $stmt = $this->db->conection->prepare($sql);
+        $stmt = Conexion::getInstancia()->getConexion()->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -58,7 +55,7 @@ class AlumnosDAO
     public function addAlumno($nombre, $liga, $victorias = 0, $derrotas = 0, $tablas = 0) {
         $sql = "INSERT INTO $this->table (nombre, liga, victorias, derrotas, tablas)
                 VALUES (:nombre, :liga, :victorias, :derrotas, :tablas)";
-        $stmt = $this->db->conection->prepare($sql);
+        $stmt = Conexion::getInstancia()->getConexion()->prepare($sql);
         return $stmt->execute([
             ':nombre' => $nombre,
             ':liga' => $liga,
@@ -81,7 +78,7 @@ class AlumnosDAO
         $sql = "UPDATE $this->table 
                 SET nombre = :nombre, victorias = :victorias, derrotas = :derrotas, tablas = :tablas 
                 WHERE id = :id";
-        $stmt = $this->db->conection->prepare($sql);
+        $stmt = Conexion::getInstancia()->getConexion()->prepare($sql);
         return $stmt->execute([
             ':id' => $id,
             ':nombre' => $nombre,
@@ -98,7 +95,7 @@ class AlumnosDAO
      */
     public function deleteAlumno($id) {
         $sql = "DELETE FROM $this->table WHERE id = :id";
-        $stmt = $this->db->conection->prepare($sql);
+        $stmt = Conexion::getInstancia()->getConexion()->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
@@ -120,7 +117,7 @@ class AlumnosDAO
             return; // No hacer nada si el resultado es inválido
         }
 
-        $stmt = $this->db->conection->prepare($sql);
+        $stmt = Conexion::getInstancia()->getConexion()->prepare($sql);
         $stmt->execute([$id]);
     }
 
