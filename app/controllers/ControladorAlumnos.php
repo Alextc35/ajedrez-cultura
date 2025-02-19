@@ -30,19 +30,6 @@ class ControladorAlumnos
         return ($liga) ? $this->alumnosObj->getAlumnosPorLiga(htmlspecialchars($liga)) : $this->alumnosObj->getAlumnos();
     }
 
-    /**
-     * 📌 Lista a los alumnos por categoría
-     */
-    public function listPorLiga() {
-        // Obtener la categoría de la URL o por defecto "LIGA LOCAL"
-        $liga = $_GET['liga'] ?? 'LIGA LOCAL';
-        $this->page_title = "Chess League | $liga";
-        $this->view = 'alumnos/clasificacion'; // Usamos la misma vista
-
-
-        return $this->alumnosObj->getAlumnosPorLiga(htmlspecialchars($liga));
-    }
-
     // TODO: Cambiar nombre a viewAddAlumno
     public function addAlumno() {
         $this->page_title = "Chess League | Añadir alumno";
@@ -69,7 +56,7 @@ class ControladorAlumnos
 
             // Redirigir a la lista de la categoría correspondiente
             // $_SESSION['success'] = "Alumno añadido correctamente.";
-            header("Location: " . constant('DEFAULT_INDEX') . "ControladorAlumnos/listPorLiga?liga=" . urlencode($liga));
+            header("Location: " . constant('DEFAULT_INDEX') . "ControladorAlumnos/list?liga=" . urlencode($liga));
             exit();
         }
 
@@ -117,7 +104,7 @@ class ControladorAlumnos
             }
 
             // $_SESSION['success'] = "Datos actualizados correctamente.";
-            header("Location: " . constant('DEFAULT_INDEX') . "ControladorAlumnos/listPorLiga?liga=" . urlencode($liga));
+            header("Location: " . constant('DEFAULT_INDEX') . "ControladorAlumnos/list?liga=" . urlencode($liga));
             exit();
         }
         die("Acceso denegado.");
@@ -132,7 +119,7 @@ class ControladorAlumnos
             $liga = $_GET['liga'] ?? 'LIGA LOCAL';
             if ($id > 0) {
                 $this->alumnosObj->deleteAlumno($id);
-                header("Location: " . constant('DEFAULT_INDEX') . "ControladorAlumnos/listPorLiga?liga=" . urlencode($liga));
+                header("Location: " . constant('DEFAULT_INDEX') . "ControladorAlumnos/list?liga=" . urlencode($liga));
                 exit();
             }
         }
@@ -221,7 +208,7 @@ class ControladorAlumnos
             }
 
             // $_SESSION['success'] = "Resultados guardados correctamente.";
-            header("Location: " . constant('DEFAULT_INDEX') . "ControladorAlumnos/listPorLiga?liga=" . urlencode($liga));
+            header("Location: " . constant('DEFAULT_INDEX') . "ControladorAlumnos/list?liga=" . urlencode($liga));
             exit();
         }
     }

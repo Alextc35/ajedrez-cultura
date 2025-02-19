@@ -11,7 +11,7 @@
     <!-- 📌 Barra de navegación fija dentro del container -->
     <div class="container d-flex p-0 pb-1 justify-content-between align-items-center">
         <!-- 📌 Botón de Volver -->
-        <a href="<?= constant('DEFAULT_INDEX') ?>ControladorAlumnos/listPorLiga?liga=<?= urlencode($liga) ?>" class="btn btn-secondary btn-sm" onclick="return confirm('Si vuelves atrás, los enfrentamientos generados se perderán. ¿Estás seguro de que deseas continuar?')">
+        <a href="<?= constant('DEFAULT_INDEX') ?>ControladorAlumnos/list?liga=<?= urlencode($liga) ?>" class="btn btn-secondary btn-sm" onclick="return confirm('Si vuelves atrás, los enfrentamientos generados se perderán. ¿Estás seguro de que deseas continuar?')">
             <i class="bi bi-arrow-left-short ">Volver</i>
         </a>
     </div>

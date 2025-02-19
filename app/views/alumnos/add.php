@@ -9,7 +9,7 @@
     <!-- 📌 Barra de navegación fija dentro del container -->
     <div class="container d-flex p-0 pb-2 m-0 justify-content-between align-items-center">
         <!-- 📌 Botón de Volver -->
-        <a href="<?= constant('DEFAULT_INDEX')?>ControladorAlumnos/listPorLiga?liga=<?= urlencode($liga) ?>" class="btn btn-secondary btn-sm">
+        <a href="<?= constant('DEFAULT_INDEX')?>ControladorAlumnos/list?liga=<?= urlencode($liga) ?>" class="btn btn-secondary btn-sm">
             <i class="bi bi-arrow-left-short">Volver</i>
         </a>
         <h2 class="text-center">Añadir Alumnos</h2>
