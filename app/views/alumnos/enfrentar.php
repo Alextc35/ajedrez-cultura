@@ -1,7 +1,4 @@
 <?php
-    if (!isset($_SESSION['usuario'])) {
-        die("No estás autenticado");
-    }
     $liga = $_GET['liga'] ?? 'LIGA LOCAL';
     $alumnos = $dataToView['data'] ?? [];
 ?>
@@ -9,14 +6,14 @@
     <!-- 📌 Barra de navegación fija dentro del container -->
     <div class="container d-flex p-0 pb-1 justify-content-between align-items-center">
         <!-- 📌 Botón de Volver -->
-        <a href="?action=listPorLiga&liga=<?= urlencode($liga) ?>" class="btn btn-secondary btn-sm"> 
+        <a href="<?= constant('DEFAULT_INDEX') ?>ControladorAlumnos/list?liga=<?= urlencode($liga) ?>" class="btn btn-secondary btn-sm">
             <i class="bi bi-arrow-left-short ">Volver</i>
         </a>
     </div>
     <h2 class="text-center">Selecciona los Jugadores para enfrentarlos</h2>
     <h5 class="text-center text-muted"><?= htmlspecialchars($liga); ?></h5>
 
-    <form action="?action=generateMatches" method="POST">
+    <form action="<?= constant('DEFAULT_INDEX') ?>ControladorAlumnos/generateMatches" method="POST">
         <input type="hidden" name="liga" value="<?= htmlspecialchars($liga); ?>">
 
         <table class="table table-bordered table-striped">
@@ -43,7 +40,7 @@
             </tbody>
         </table>
 
-        <button type="submit" class="btn btn-primary d-block m-auto">Enfrentar Jugadores</button>
+        <button type="submit" name="matches" class="btn btn-primary d-block m-auto">Enfrentar Jugadores</button>
     </form>
 </div>
 

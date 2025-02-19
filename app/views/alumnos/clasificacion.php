@@ -1,7 +1,4 @@
 <?php
-if (!isset($_SESSION['usuario'])) {
-    die("No estás autenticado");
-}
 // Determinar la categoría actual
 $liga = $_GET['liga'] ?? 'LIGA LOCAL';
 
@@ -16,7 +13,7 @@ $_SESSION['dataToView'] = ['data' => $alumnos, 'liga' => $liga]; // PDF
     <!-- 📌 Barra de navegación fija dentro del container -->
     <div class="container d-flex p-0 pb-3 justify-content-between align-items-center">
         <!-- 📌 Botón de Volver -->
-        <a href="?action=descripcion" class="btn btn-secondary">
+        <a href="<?= constant('DEFAULT_INDEX')?>ControladorAlumnos/inicio" class="btn btn-secondary">
             <i class="bi bi-x-lg"></i>
         </a>
 
@@ -30,7 +27,7 @@ $_SESSION['dataToView'] = ['data' => $alumnos, 'liga' => $liga]; // PDF
     </div>
     <?php if (!empty($alumnos)) { ?>
     <div class="text-center p-3 pt-0">
-        <a href="?action=match&liga=<?= urlencode($liga) ?>" class="btn btn-success d-block">Enfrentar</a>
+        <a href="<?= constant('DEFAULT_INDEX')?>ControladorAlumnos/match?liga=<?= urlencode($liga) ?>" class="btn btn-success d-block">Enfrentar</a>
     </div>
     <div class="table-responsive">
         <table class="table table-striped table-hover table-bordered w-100">
@@ -66,13 +63,13 @@ $_SESSION['dataToView'] = ['data' => $alumnos, 'liga' => $liga]; // PDF
     </div>
 
     <div class="text-center mt-3">
-        <a href="?action=addAlumno&liga=<?= urlencode($liga) ?>" class="btn btn-primary d-block m-2">Añadir alumno</a>
-        <a href="?action=editAlumnos&liga=<?= urlencode($liga) ?>" class="btn btn-primary d-block m-2">Editar alumno</a>
+        <a href="<?= constant('DEFAULT_INDEX')?>ControladorAlumnos/addAlumno?liga=<?= urlencode($liga) ?>" class="btn btn-primary d-block m-2">Añadir alumno</a>
+        <a href="<?= constant('DEFAULT_INDEX')?>ControladorAlumnos/editAlumnos?liga=<?= urlencode($liga) ?>" class="btn btn-primary d-block m-2">Editar alumno</a>
     </div>
 <?php } else { ?>
     <p class="text-center">No hay alumnos en esta categoría.</p>
     <div class="text-center">
-        <a href="?action=addAlumno&liga=<?= urlencode($liga) ?>" class="btn btn-primary">Añadir alumno</a>
+        <a href="<?= constant('DEFAULT_INDEX')?>ControladorAlumnos/addAlumno?liga=<?= urlencode($liga) ?>" class="btn btn-primary">Añadir alumno</a>
     </div>
 <?php } ?>
 </div>

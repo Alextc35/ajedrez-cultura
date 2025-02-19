@@ -11,7 +11,7 @@
                         <?php unset($_SESSION['error']); // Eliminar el mensaje de error después de mostrarlo ?>
                     <?php endif; ?>
 
-                    <form action="?action=signIn" method="POST">
+                    <form method="POST">
                         <div class="mb-3">
                             <label for="usuario" class="form-label">Usuario:</label>
                             <input type="text" id="usuario" name="usuario" class="form-control" required>
@@ -21,7 +21,7 @@
                             <input type="password" id="password" name="password" class="form-control" required>
                         </div>
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">Acceder</button>
+                            <button type="submit" name="login" value="login" class="btn btn-primary">Acceder</button>
                         </div>
                     </form>
                 </div>

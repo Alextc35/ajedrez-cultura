@@ -74,4 +74,7 @@ $pdf->writeHTML($html, true, false, false, false, '');
 
 // Salida del archivo
 $pdf->Output("$liga.pdf", 'D'); // 'D' fuerza la descarga
+
+//
+//unset($_SESSION['dataToView']);
 ?>
