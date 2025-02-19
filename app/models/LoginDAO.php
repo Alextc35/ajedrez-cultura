@@ -9,7 +9,7 @@ CREATE TABLE usuarios (
 );
 
 INSERT INTO usuarios (usuario, password)
-VALUES ('profesor', MD5('ligamejorada33'));
+VALUES ('admin', 'admin');
 */
 class LoginDAO
 {
