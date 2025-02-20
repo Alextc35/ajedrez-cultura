@@ -2,7 +2,7 @@
     $paginaActual = $arrHandler['action'] ?? ''; // Obtener la acción actual
 
     // Si el usuario no está autenticado o está en 'assign', deshabilitamos los enlaces
-    $deshabilitado = $paginaActual === 'generateMatches' ? 'disabled' : '';
+    $deshabilitado = $paginaActual === 'generateMatches' || !isset($_SESSION['usuario']) ? 'disabled' : '';
 ?>
 <!DOCTYPE html>
 <html lang="es">
