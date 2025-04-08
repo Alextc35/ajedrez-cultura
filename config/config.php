@@ -18,7 +18,7 @@ define("DEFAULT_CONTROLLER_LOGIN", "ControladorLogin");
 define("DEFAULT_ACTION_LOGIN", "login");
 
 // ubicación de index
-define("DEFAULT_INDEX", "http://localhost/chess-league/public/index.php/");
+define("DEFAULT_INDEX", "http://localhost/ajedrez-cultura/public/index.php/");
 
 # 📌 Manejo de errores (Descomentar en desarrollo para depuración)
 // ini_set('display_errors', 1);
