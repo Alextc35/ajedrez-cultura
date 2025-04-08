@@ -8,7 +8,7 @@ class Handler
         $uriPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
         // Definir el prefijo base a eliminar (ajusta si es necesario)
-        $basePath = "/chess-league/public/";
+        $basePath = "/ajedrez-cultura/public/";
 
         // Eliminar el prefijo base de la URI
         if (strpos($uriPath, $basePath) === 0) {
