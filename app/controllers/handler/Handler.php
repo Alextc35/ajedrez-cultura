@@ -33,8 +33,8 @@ class Handler
         }
 
         // Determinar el controlador y la acción
-        $controller = !empty($uriPartida[0]) ? filter_var($uriPartida[0], FILTER_SANITIZE_STRING) : $defaultController;
-        $action = !empty($uriPartida[1]) ? filter_var($uriPartida[1], FILTER_SANITIZE_STRING) : $defaultAction;
+        $controller = !empty($uriPartida[0]) ? filter_var($uriPartida[0], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH) : $defaultController;
+        $action = !empty($uriPartida[1]) ? filter_var($uriPartida[1], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH) : $defaultAction;        
 
         // Retornar los valores correctos
         return [

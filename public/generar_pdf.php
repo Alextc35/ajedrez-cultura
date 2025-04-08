@@ -17,6 +17,10 @@ $dataToView['data'] = array_filter($dataToView['data'], function ($alumno) use (
     return $alumno['liga'] === $liga;
 });
 
+if (empty($dataToView['data'])) {
+    die("No hay datos filtrados por liga: $liga");
+}
+
 // Crear nuevo documento PDF
 $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
 $pdf->SetTitle("Clasificación - $liga");
@@ -59,7 +63,7 @@ foreach ($dataToView['data'] as $alumno) {
     $puntos = ($alumno['victorias'] * 1) + ($alumno['tablas'] * 0.5);
     $html .= '<tr>
                 <td>' . $cont++ . '°</td>
-                <td>' . htmlspecialchars($alumno['nombre']) . '</td>
+                <td>' . $alumno['nombre'] . '</td>
                 <td>' . $alumno['victorias'] . '</td>
                 <td>' . $alumno['derrotas'] . '</td>
                 <td>' . $alumno['tablas'] . '</td>
@@ -72,9 +76,14 @@ $html .= '</tbody></table>';
 // Agregar tabla al PDF
 $pdf->writeHTML($html, true, false, false, false, '');
 
+if (ob_get_length()) {
+    ob_end_clean(); // Limpia cualquier salida previa
+}
+
 // Salida del archivo
 $pdf->Output("$liga.pdf", 'D'); // 'D' fuerza la descarga
 
+exit;
 //
 //unset($_SESSION['dataToView']);
 ?>

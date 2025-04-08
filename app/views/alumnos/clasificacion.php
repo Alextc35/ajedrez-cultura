@@ -21,8 +21,8 @@ $_SESSION['dataToView'] = ['data' => $alumnos, 'liga' => $liga]; // PDF
         <h2><?= htmlspecialchars($liga) ?></h2>
 
         <!-- 📌 Botón para descargar PDF -->
-        <a href="generar_pdf.php?liga=<?= urlencode($liga) ?>" class="btn btn-danger">
-                <i class="bi bi-file-earmark-pdf-fill"></i>
+        <a href="/ajedrez-cultura/public/generar_pdf.php?liga=<?= urlencode($liga) ?>" class="btn btn-danger">
+            <i class="bi bi-file-earmark-pdf-fill"></i>
         </a>
     </div>
     <?php if (!empty($alumnos)) { ?>
