@@ -45,7 +45,7 @@ La herramienta permite a los organizadores llevar el control de los jugadores, r
 
 ## 📄 Uso
 
-1. Accede a la interfaz web desde tu navegador (`http://localhost/ajedrez-cultura`).
+1. Accede a la interfaz web desde tu navegador (`http://localhost/ajedrez-cultura/public/index.php`).
 2. Añade jugadores a cada liga.
 3. Enfréntalos y registra los resultados de las partidas.
 4. Genera un PDF con las clasificaciones desde el botón correspondiente.
