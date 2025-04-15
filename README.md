@@ -18,8 +18,8 @@ La herramienta permite a los organizadores llevar el control de los jugadores, r
 ## 🛠️ Tecnologías utilizadas
 
 - **PHP** (puro, sin frameworks)
+- **Bootstrap** (frontend)
 - **MySQL** (gestión de datos)
-- **HTML/CSS**
 - **TCPDF** (para la generación de PDFs)
 
 ---
