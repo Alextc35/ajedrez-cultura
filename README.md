@@ -33,13 +33,13 @@ La herramienta permite a los organizadores llevar el control de los jugadores, r
    ```
 2. Sube el contenido a tu servidor web (por ejemplo, Apache).
 3. Crea una base de datos MySQL y ejecuta el script de creación de tablas con extensión `.sql`.
-4. Configura la conexión a la base de datos en `config/config.php`:
+4. Configura la conexión a la base de datos en `config/config.txt`:
 
-    ```php
-    define('DB_SERVER', 'localhost');
-    define('DB_USERNAME', 'tu_usuario');
-    define('DB_PASSWORD', 'tu_contraseña');
-    define('DB_NAME', 'nombre_de_tu_base_de_datos');
+    ```txt
+    DB_SERVER=localhost
+    DB_USERNAME=tu_usuario
+    DB_PASSWORD=tu_contraseña
+    DB_NAME=nombre_de_tu_base_de_datos
     ```
 6. Asegúrate de tener habilitado PHP en tu servidor.
 
