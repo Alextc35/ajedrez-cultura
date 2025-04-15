@@ -1,36 +1,29 @@
 <?php
-require_once '../app/models/LoginDAO.php';
-class ControladorLogin
+require_once '../src/models/LoginDAO.php';
+class ControladorAuth
 {
-    # 🧬 Atributos
-    public string $page_title;
-    public string $view;
+    public string $page_title = "";
+    public string $view = "";
     private LoginDAO $loginDAO;
 
-    # 👷 Constructor
     public function __construct() {
         $this->loginDAO = new LoginDAO();
     }
 
-    # 🛠️ Métodos
-    // Iniciar sesión
     public function login() {
+        $config = Config::getInstancia();
         $this->page_title = 'Chess League | Inicio de sesión';
-        $this->view = 'pages/login';
+        $this->view = 'auth/login';
 
         if (isset($_POST['login'])) {
-
-            // Obtener el usuario y la contraseña
             $usuario = isset($_POST['usuario']) ? $_POST['usuario'] : null;
             $password = isset($_POST['password']) ? $_POST['password'] : null;
 
             if ($usuario && $password) {
-                // Llamo al metodo comprobarUsuario
                 $verificado = $this->loginDAO->comprobarUsuario($usuario, $password);
                 if ($verificado) {
-                    // Almacenamos el nombre de la sesión
                     $_SESSION['usuario'] = $usuario;
-                    header("Location: " . constant('DEFAULT_INDEX') . "ControladorAlumnos/inicio");
+                    header("Location:" .  $config->getParametro('DEFAULT_INDEX') . "ControladorAuth/inicio");
                 } else {
                     $this->page_title = 'Chess League | Fallo de sesión';
                     $_SESSION['error'] = "El usuario o la password no coinciden";
@@ -41,10 +34,16 @@ class ControladorLogin
         }
     }
 
-    // Acción de eliminar la sesión
+    public function inicio() {
+        unset($_SESSION['dataToView'], $_SESSION['jugadores'], $_SESSION['liga']);
+        $this->page_title = 'Chess League | Inicio';
+        $this->view = 'auth/inicio';
+    }
+
     public function logout() {
-        unset($_SESSION['usuario']); // Eliminar la sesión
+        $config = Config::getInstancia();
+        unset($_SESSION['usuario']);
         session_destroy();
-        header("Location:" . constant('DEFAULT_INDEX'));
+        header("Location:" . $config->getParametro('DEFAULT_INDEX'));
     }
 }

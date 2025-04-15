@@ -1,0 +1,17 @@
+#parámetros de la base de datos
+DB_HOST=localhost
+DB_PUERTO=3306
+DB_NAME=ajedrez_clase
+DB_USER=root
+DB_PASS=
+
+#Opciones por defecto
+DEFAULT_CONTROLLER=ControladorAuth
+DEFAULT_ACTION=inicio
+
+#Opciones añadidas para el login
+DEFAULT_CONTROLLER_LOGIN=ControladorAuth
+DEFAULT_ACTION_LOGIN=login
+
+#ubicación de index sin http:
+DEFAULT_INDEX=//localhost/ajedrez-cultura/public/index.php/

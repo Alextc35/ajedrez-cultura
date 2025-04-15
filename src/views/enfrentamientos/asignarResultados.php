@@ -1,4 +1,5 @@
 <?php
+    $config = Config::getInstancia();
     $liga = htmlspecialchars($_SESSION['liga'] ?? 'LIGA LOCAL');
     $jugadores = $_SESSION['jugadores'] ?? [];
 
@@ -8,17 +9,15 @@
     }
 ?>
 <div class="container bg-white p-3 rounded shadow">
-    <!-- 📌 Barra de navegación fija dentro del container -->
     <div class="container d-flex p-0 pb-1 justify-content-between align-items-center">
-        <!-- 📌 Botón de Volver -->
-        <a href="<?= constant('DEFAULT_INDEX') ?>ControladorAlumnos/list?liga=<?= urlencode($liga) ?>" class="btn btn-secondary btn-sm" onclick="return confirm('Si vuelves atrás, los enfrentamientos generados se perderán. ¿Estás seguro de que deseas continuar?')">
+        <a href="<?= $config->getParametro('DEFAULT_INDEX') ?>ControladorLigas/clasificacion?liga=<?= urlencode($liga) ?>" class="btn btn-secondary btn-sm" onclick="return confirm('Si vuelves atrás, los enfrentamientos generados se perderán. ¿Estás seguro de que deseas continuar?')">
             <i class="bi bi-arrow-left-short ">Volver</i>
         </a>
     </div>
     <h2 class="text-center">Asignar Resultados</h2>
     <h5 class="text-center text-muted"><?= htmlspecialchars($liga); ?></h5>
     <div class="table-responsive">
-        <form action="<?= constant('DEFAULT_INDEX') ?>ControladorAlumnos/assignResults" method="POST">
+        <form action="<?= $config->getParametro('DEFAULT_INDEX') ?>ControladorEnfrentamientos/asignarResultadosProcess" method="POST">
             <input type="hidden" name="liga" value="<?= $liga; ?>">
 
             <table class="table table-bordered">
@@ -33,7 +32,8 @@
                 <tbody>
                     <?php
                     $jugadoresIds = array_keys($jugadores);
-                    for ($i = 0; $i < count($jugadoresIds) - 1; $i += 2) { ?>
+                    $numJugadores = count($jugadoresIds);
+                    for ($i = 0; $i < $numJugadores - 1; $i += 2) { ?>
                         <tr class="text-center align-middle">
                             <td><?= htmlspecialchars($jugadores[$jugadoresIds[$i]]); ?></td>
                             <td>vs</td>
@@ -46,6 +46,24 @@
                                     <option value="1-0">1 - 0</option>
                                     <option value="0-1">0 - 1</option>
                                     <option value="1-1">½ - ½</option>
+                                </select>
+                            </td>
+                        </tr>
+                    <?php } 
+                    if ($numJugadores % 2 === 1) {
+                        $ultimoId = $jugadoresIds[$numJugadores - 1]; ?>
+                        <tr class="text-center align-middle table-warning">
+                            <td><?= htmlspecialchars($jugadores[$ultimoId]); ?></td>
+                            <td>vs</td>
+                            <td><strong>BYE</strong></td>
+                            <td>
+                                <input type="hidden" name="id1[]" value="<?= $ultimoId; ?>">
+                                <input type="hidden" name="id2[]" value="bye">
+                                <select name="resultados[]" class="form-select p-1">
+                                        <option value="" selected disabled>? - ?</option>
+                                        <option value="1-0">1 - 0</option>
+                                        <option value="0-1">0 - 1</option>
+                                        <option value="1-1">½ - ½</option>
                                 </select>
                             </td>
                         </tr>
@@ -62,7 +80,7 @@ document.querySelector("form").addEventListener("submit", function(event) {
     for (let select of selects) {
         if (select.value === "") {
             alert("Por favor, selecciona un resultado para todos los enfrentamientos.");
-            event.preventDefault(); // Evita que el formulario se envíe
+            event.preventDefault();
             return;
         }
     }

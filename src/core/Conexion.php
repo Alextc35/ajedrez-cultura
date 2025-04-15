@@ -1,26 +1,27 @@
 <?php
-require_once '../config/config.php';
+require_once '../src/core/Config.php';
 class Conexion
 {
     private static $instancia = null;
     private $conexion;
 
     private function __construct() {
-        // parámetros de la BD
-        $host = constant('DB_HOST');
-        $dbname = constant('DB_NAME');
-        $username = constant('DB_USER');
-        $password = constant('DB_PASS');
+        $config = Config::getInstancia();
+
+        $host = $config->getParametro('DB_HOST');
+        $port = $config->getParametro('DB_PUERTO');
+        $dbname = $config->getParametro('DB_NAME');
+        $username = $config->getParametro('DB_USER');
+        $password = $config->getParametro('DB_PASS');
 
         try {
-            $this->conexion = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+            $this->conexion = new PDO("mysql:host=$host;port=$port;dbname=$dbname", $username, $password);
             $this->conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            exit("Error al conectar a la base de datos: " . $e->getMessage()); // si no me puedo conectar salgo del programa
+            exit("Error al conectar a la base de datos: " . $e->getMessage());
         }
     }
 
-    // si no existe la instancia se crea y se referencia por la clase
     public static function getInstancia() {
         if (Conexion::$instancia === null) {
             Conexion::$instancia = new Conexion();

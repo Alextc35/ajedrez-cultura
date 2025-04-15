@@ -1,16 +1,6 @@
 <?php
-require_once 'Conexion.php';
-/*
-CREATE TABLE usuarios (
-    id INT UNSIGNED AUTO_INCREMENT,
-    usuario VARCHAR(20) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    PRIMARY KEY (id)
-);
+require_once '../src/core/Conexion.php';
 
-INSERT INTO usuarios (usuario, password)
-VALUES ('admin', 'admin');
-*/
 class LoginDAO
 {
     private $table = 'usuarios';
@@ -26,9 +16,9 @@ class LoginDAO
             $aux = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($aux && $password == $aux['password']) {
-                return true; // Usuario y contraseña válidos
+                return true;
             } else {
-                return false; // Credenciales incorrectas
+                return false;
             }
         } catch (PDOException $e) {
             error_log("Error en la consulta: " . $e->getMessage());

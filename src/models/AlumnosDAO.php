@@ -1,10 +1,11 @@
 <?php
-require_once 'Conexion.php';
+require_once '../src/core/Conexion.php';
 class AlumnosDAO
 {
     private $table = 'alumnos';
 
-    public function __construct() {}
+    public function __construct() {
+    }
 
     /**
      * 📌 Obtiene todos los alumnos de la base de datos

@@ -24,6 +24,17 @@ CREATE TABLE alumnos (
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Fecha de inscripción
 );
 
+-- 📌 Tabla: usuarios
+CREATE TABLE usuarios (
+    id INT UNSIGNED AUTO_INCREMENT,
+    usuario VARCHAR(20) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+INSERT INTO usuarios (usuario, password)
+VALUES ('admin', 'admin');
+
 -- ============================================================
 -- 📌 INSERCIÓN DE DATOS DE PRUEBA (Opcional)
 -- ============================================================

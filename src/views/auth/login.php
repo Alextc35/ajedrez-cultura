@@ -4,11 +4,9 @@
             <div class="card shadow-lg">
                 <div class="card-body">
                     <h2 class="text-center mb-4">Iniciar Sesión</h2>
-
-                    <!-- Mostrar error si las credenciales son incorrectas -->
                     <?php if (isset($_SESSION['error'])): ?>
                         <div class="alert alert-danger"><?= $_SESSION['error']; ?></div>
-                        <?php unset($_SESSION['error']); // Eliminar el mensaje de error después de mostrarlo ?>
+                        <?php unset($_SESSION['error']); ?>
                     <?php endif; ?>
 
                     <form method="POST">
