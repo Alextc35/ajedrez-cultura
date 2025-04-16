@@ -94,7 +94,7 @@ if (empty($jugadoresSeleccionados)) {
                     if ($numJugadores % 2 === 1) {
                         $ultimoId = $jugadoresIds[$numJugadores - 1];
                         ?>
-                        <tr class="text-center align-middle table-warning">
+                        <tr class="text-center align-middle">
                             <td><?php renderJugadorSelect('id1', $ultimoId, $jugadores, true); ?></td>
                             <td>vs</td>
                             <td><?php renderJugadorSelect('id2', 'bye', $jugadores, true); ?></td>
@@ -231,27 +231,24 @@ function actualizarResultadoSegunBYE() {
         const select = celda?.querySelector(".resultado-select");
         const auto = celda?.querySelector(".resultado-auto");
 
-        if (id1 && id2 && select && auto) {
-            const esBye = id1.value === 'bye' || id2.value === 'bye';
+        if (!id1 || !id2 || !celda || !select || !auto) return;
 
-            if (esBye) {
-                // 🔁 Solo cambiar el texto visible
-                if (id1.value === 'bye') {
-                    auto.textContent = "0 - 1"; // Gana negras
-                } else if (id2.value === 'bye') {
-                    auto.textContent = "1 - 0"; // Gana blancas
-                } else {
-                    auto.textContent = "Victoria automática";
-                }
+        const valor1 = id1.value;
+        const valor2 = id2.value;
 
-                select.classList.add("d-none");
-                auto.classList.remove("d-none");
-            } else {
-                select.classList.remove("d-none");
-                auto.classList.add("d-none");
-                auto.textContent = "Victoria automática"; // Reiniciar por si acaso
-            }
+        const esBye = valor1 === 'bye' || valor2 === 'bye';
+
+        // Mostrar/ocultar victoria automática
+        select.classList.toggle("d-none", esBye);
+        auto.classList.toggle("d-none", !esBye);
+
+        // Cambiar texto si hay BYE
+        if (esBye) {
+            auto.textContent = valor1 === 'bye' ? "0 - 1" : "1 - 0";
         }
+
+        // Añadir o quitar color de fondo
+        fila.classList.toggle("table-warning", esBye);
     });
 }
 
