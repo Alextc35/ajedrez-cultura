@@ -133,29 +133,36 @@ document.querySelector("form").addEventListener("submit", function(event) {
     }
 });
 
-// 🟦 Alternar modo edición
 const btnEditar = document.getElementById("btnEditar");
 let modoEdicionActivo = false;
 
 btnEditar.addEventListener("click", function () {
-    modoEdicionActivo = !modoEdicionActivo;
+    if (!modoEdicionActivo) {
+        // Activar modo edición
+        modoEdicionActivo = true;
+        btnEditar.textContent = "Guardar enfrentamientos";
 
-    document.querySelectorAll(".modo-edicion").forEach(el =>
-        el.classList.toggle("d-none", !modoEdicionActivo)
-    );
-    document.querySelectorAll(".modo-lectura").forEach(el =>
-        el.classList.toggle("d-none", modoEdicionActivo)
-    );
+        document.querySelectorAll(".modo-edicion").forEach(el => el.classList.remove("d-none"));
+        document.querySelectorAll(".modo-lectura").forEach(el => el.classList.add("d-none"));
+    } else {
+        // Guardar cambios y salir de edición
+        modoEdicionActivo = false;
+        btnEditar.textContent = "Editar enfrentamientos";
 
-    btnEditar.textContent = modoEdicionActivo
-        ? "Cancelar edición"
-        : "Editar enfrentamientos";
+        document.querySelectorAll(".modo-edicion").forEach(el => el.classList.add("d-none"));
+        document.querySelectorAll(".modo-lectura").forEach((el, i) => {
+            const select = document.querySelectorAll(".modo-edicion")[i];
+            if (select && select.tagName === "SELECT") {
+                const selectedText = select.options[select.selectedIndex]?.textContent ?? '';
+                el.textContent = selectedText;
+            }
+            el.classList.remove("d-none");
+        });
 
-    if (modoEdicionActivo) {
-        controlarOpcionesBye();
+        actualizarResultadoSegunBYE();  // Reforzamos el resultado visual
     }
-    actualizarResultadoSegunBYE();
 });
+
 
 // 🟨 Mostrar/ocultar "Victoria automática"
 function actualizarResultadoSegunBYE() {
