@@ -41,12 +41,11 @@
 
         <button type="submit" name="matches" class="btn btn-primary d-block m-auto">Enfrentar Jugadores</button>
     </form>
-    <p class="text-center text-danger fw-semibold m-3">
+    <!-- <p class="text-center text-danger fw-semibold m-3">
         ⚠️ Los enfrentamientos están en estado <u>experimental</u>.  
         Pueden surgir fallos no esperados.  
         <strong>Editar enfrentamientos solo si es estrictamente necesario.</strong>
-    </p>
-
+    </p> -->
 </div>
 
 <script>
