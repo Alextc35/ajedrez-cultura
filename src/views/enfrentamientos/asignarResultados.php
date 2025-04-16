@@ -39,6 +39,7 @@ if (empty($jugadoresSeleccionados)) {
                         <th>vs</th>
                         <th>Negras</th>
                         <th>Resultado</th>
+                        <th class="modo-edicion d-none">Eliminar</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -67,13 +68,9 @@ if (empty($jugadoresSeleccionados)) {
                         $id2 = $jugadoresIds[$i + 1];
                         ?>
                         <tr class="text-center align-middle">
-                            <td>
-                                <?php renderJugadorSelect('id1', $id1, $jugadores, true); ?>
-                            </td>
+                            <td><?php renderJugadorSelect('id1', $id1, $jugadores, true); ?></td>
                             <td>vs</td>
-                            <td>
-                                <?php renderJugadorSelect('id2', $id2, $jugadores, true); ?>
-                            </td>
+                            <td><?php renderJugadorSelect('id2', $id2, $jugadores, true); ?></td>
                             <td class="resultado-celda">
                                 <select name="resultados[]" class="form-select p-1 resultado-select">
                                     <option value="" selected disabled>? - ?</option>
@@ -83,6 +80,11 @@ if (empty($jugadoresSeleccionados)) {
                                 </select>
                                 <span class="text-success fw-semibold d-none resultado-auto">Victoria automática</span>
                             </td>
+                            <td class="modo-edicion d-none text-center">
+                                <button type="button" class="btn btn-sm btn-outline-danger eliminar-fila" title="Eliminar enfrentamiento">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
                         </tr>
                     <?php }
 
@@ -90,13 +92,9 @@ if (empty($jugadoresSeleccionados)) {
                         $ultimoId = $jugadoresIds[$numJugadores - 1];
                         ?>
                         <tr class="text-center align-middle table-warning">
-                            <td>
-                                <?php renderJugadorSelect('id1', $ultimoId, $jugadores, true); ?>
-                            </td>
+                            <td><?php renderJugadorSelect('id1', $ultimoId, $jugadores, true); ?></td>
                             <td>vs</td>
-                            <td>
-                                <?php renderJugadorSelect('id2', 'bye', $jugadores, true); ?>
-                            </td>
+                            <td><?php renderJugadorSelect('id2', 'bye', $jugadores, true); ?></td>
                             <td class="resultado-celda">
                                 <select name="resultados[]" class="form-select p-1 resultado-select">
                                     <option value="" selected disabled>? - ?</option>
@@ -106,11 +104,18 @@ if (empty($jugadoresSeleccionados)) {
                                 </select>
                                 <span class="text-success fw-semibold resultado-auto">Victoria automática</span>
                             </td>
+                            <td class="modo-edicion d-none text-center">
+                                <button type="button" class="btn btn-sm btn-outline-danger eliminar-fila" title="Eliminar enfrentamiento">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
                         </tr>
                     <?php } ?>
                 </tbody>
             </table>
-
+            <button type="button" id="btnAñadir" class="btn btn-outline-success d-block d-none mb-3 w-100">
+                + Añadir enfrentamiento
+            </button>
             <button type="submit" class="btn btn-success d-block m-auto" onclick="return confirm('¿Quieres confirmar los resultados?')">
                 Guardar Resultados
             </button>
@@ -118,116 +123,201 @@ if (empty($jugadoresSeleccionados)) {
     </div>
 </div>
 
+
 <script>
+function generarOpcionesJugadores(roleLabel) {
+    const jugadores = <?= json_encode($jugadores); ?>;
+    let html = `<option value="" selected disabled>${roleLabel}</option>`;
+
+    for (const id in jugadores) {
+        html += `<option value="${id}">${jugadores[id]}</option>`;
+    }
+
+    html += `<option value="bye">BYE</option>`;
+    return html;
+}
+
+// Validar resultados antes de enviar
 document.querySelector("form").addEventListener("submit", function(event) {
     let selects = document.querySelectorAll("select[name='resultados[]']");
+    let selectsJugadores = document.querySelectorAll("select[name='id1[]'], select[name='id2[]']");
     for (let select of selects) {
-        // Ignorar si el <select> está oculto (porque hay BYE)
         if (select.classList.contains("d-none")) continue;
-
         if (select.value === "") {
             alert("Por favor, selecciona un resultado para todos los enfrentamientos.");
             event.preventDefault();
             return;
         }
     }
-});
+    // Validar que no quede ningún 'Jugador X' como opción activa
+    for (let select of selectsJugadores) {
+        const selectedText = select.options[select.selectedIndex]?.textContent;
+        if (selectedText?.includes("Jugador 1") || selectedText?.includes("Jugador 2")) {
+            alert("Por favor, selecciona un jugador válido en todos los enfrentamientos.");
+            event.preventDefault();
+            return;
+        }
+    }
+    // Validar que no haya jugadores repetidos
+    const jugadoresUsados = new Set();
+    const id1s = document.querySelectorAll("select[name='id1[]']");
+    const id2s = document.querySelectorAll("select[name='id2[]']");
 
-const btnEditar = document.getElementById("btnEditar");
-let modoEdicionActivo = false;
+    for (let i = 0; i < id1s.length; i++) {
+        const jugador1 = id1s[i].value;
+        const jugador2 = id2s[i].value;
 
-btnEditar.addEventListener("click", function () {
-    if (!modoEdicionActivo) {
-        // Activar modo edición
-        modoEdicionActivo = true;
-        btnEditar.textContent = "Guardar enfrentamientos";
+        // Ignorar si alguno está vacío o aún con texto por defecto
+        if (!jugador1 || !jugador2 || jugador1 === "" || jugador2 === "") continue;
 
-        document.querySelectorAll(".modo-edicion").forEach(el => el.classList.remove("d-none"));
-        document.querySelectorAll(".modo-lectura").forEach(el => el.classList.add("d-none"));
-    } else {
-        // Guardar cambios y salir de edición
-        modoEdicionActivo = false;
-        btnEditar.textContent = "Editar enfrentamientos";
+        if (jugadoresUsados.has(jugador1) || jugadoresUsados.has(jugador2)) {
+            alert("Un mismo jugador no puede participar en más de un enfrentamiento.");
+            event.preventDefault();
+            return;
+        }
 
-        document.querySelectorAll(".modo-edicion").forEach(el => el.classList.add("d-none"));
-        document.querySelectorAll(".modo-lectura").forEach((el, i) => {
-            const select = document.querySelectorAll(".modo-edicion")[i];
-            if (select && select.tagName === "SELECT") {
-                const selectedText = select.options[select.selectedIndex]?.textContent ?? '';
-                el.textContent = selectedText;
-            }
-            el.classList.remove("d-none");
-        });
-
-        actualizarResultadoSegunBYE();  // Reforzamos el resultado visual
+        jugadoresUsados.add(jugador1);
+        jugadoresUsados.add(jugador2);
     }
 });
 
+// Editar/guardar enfrentamientos
+const btnEditar = document.getElementById("btnEditar");
+const btnAñadir = document.getElementById("btnAñadir");
+let modoEdicionActivo = false;
 
-// 🟨 Mostrar/ocultar "Victoria automática"
+btnEditar.addEventListener("click", function () {
+    modoEdicionActivo = !modoEdicionActivo;
+
+    document.querySelectorAll(".modo-edicion").forEach(el =>
+        el.classList.toggle("d-none", !modoEdicionActivo)
+    );
+    document.querySelectorAll(".modo-lectura").forEach((el, i) =>
+        el.classList.toggle("d-none", modoEdicionActivo)
+    );
+
+    btnEditar.textContent = modoEdicionActivo
+        ? "Guardar enfrentamientos"
+        : "Editar enfrentamientos";
+
+    btnAñadir.classList.toggle("d-none", !modoEdicionActivo);
+
+    // Si se está guardando (saliendo de edición)
+    if (!modoEdicionActivo) {
+        document.querySelectorAll("select[name='id1[]'], select[name='id2[]']").forEach((select, i) => {
+            const selectedText = select.options[select.selectedIndex]?.textContent ?? '';
+            const span = select.parentElement.querySelector(".modo-lectura");
+            if (span) span.textContent = selectedText;
+        });
+    }
+
+    setTimeout(() => {
+        actualizarResultadoSegunBYE();
+        controlarOpcionesBye();
+    }, 0);
+});
+
+// Mostrar/ocultar victoria automática
 function actualizarResultadoSegunBYE() {
-    const filas = document.querySelectorAll("tr");
+    document.querySelectorAll("tbody tr").forEach(fila => {
+        const id1 = fila.querySelector("select[name='id1[]']");
+        const id2 = fila.querySelector("select[name='id2[]']");
+        const celda = fila.querySelector(".resultado-celda");
+        const select = celda?.querySelector(".resultado-select");
+        const auto = celda?.querySelector(".resultado-auto");
 
-    filas.forEach(fila => {
-        const select1 = fila.querySelector("select[name='id1[]']");
-        const select2 = fila.querySelector("select[name='id2[]']");
-        const celdaResultado = fila.querySelector(".resultado-celda");
-
-        if (select1 && select2 && celdaResultado) {
-            const esBye = select1.value === "bye" || select2.value === "bye";
-            const selectResultado = celdaResultado.querySelector(".resultado-select");
-            const textoAuto = celdaResultado.querySelector(".resultado-auto");
-
-            if (esBye) {
-                selectResultado.classList.add("d-none");
-                textoAuto.classList.remove("d-none");
-            } else {
-                selectResultado.classList.remove("d-none");
-                textoAuto.classList.add("d-none");
-            }
+        if (id1 && id2 && select && auto) {
+            const esBye = id1.value === 'bye' || id2.value === 'bye';
+            select.classList.toggle("d-none", esBye);
+            auto.classList.toggle("d-none", !esBye);
         }
     });
 }
 
-// 🛑 Limitar a un solo BYE seleccionado por ronda
+// Solo permitir un BYE
 function controlarOpcionesBye() {
     const selects = document.querySelectorAll("select[name='id1[]'], select[name='id2[]']");
     let byeSeleccionado = false;
 
-    // Detectar si ya hay algún "bye" seleccionado
-    selects.forEach(select => {
-        if (select.value === 'bye') {
-            byeSeleccionado = true;
-        }
-    });
+    selects.forEach(s => { if (s.value === 'bye') byeSeleccionado = true; });
 
-    // Activar o desactivar opción BYE
     selects.forEach(select => {
-        const opciones = select.querySelectorAll("option");
-
+        const opciones = select.querySelectorAll("option[value='bye']");
         opciones.forEach(opt => {
-            if (opt.value === 'bye') {
-                if (byeSeleccionado && select.value !== 'bye') {
-                    opt.disabled = true;
-                    opt.hidden = true;
-                } else {
-                    opt.disabled = false;
-                    opt.hidden = false;
-                }
-            }
+            opt.disabled = byeSeleccionado && select.value !== 'bye';
+            opt.hidden = byeSeleccionado && select.value !== 'bye';
         });
     });
 }
 
-// Ejecutar validaciones al cargar y al cambiar selects
-document.querySelectorAll("select[name='id1[]'], select[name='id2[]']").forEach(select => {
-    select.addEventListener("change", () => {
+// Eliminar fila
+document.addEventListener("click", function (e) {
+    if (e.target.closest(".eliminar-fila")) {
+        const fila = e.target.closest("tr");
+
+        // Confirmación antes de eliminar
+        const confirmar = confirm("¿Estás seguro de que deseas eliminar este enfrentamiento?");
+        if (!confirmar) return;
+
+        if (fila) fila.remove();
         actualizarResultadoSegunBYE();
         controlarOpcionesBye();
+    }
+});
+
+// Añadir nueva fila
+btnAñadir.addEventListener("click", function () {
+    const confirmar = confirm("¿Estás seguro de que deseas añadir un nuevo enfrentamiento?");
+    if (!confirmar) return;
+
+    const tbody = document.querySelector("tbody");
+
+    const fila = document.createElement("tr");
+    fila.className = "text-center align-middle";
+    fila.innerHTML = `
+        <td>
+            <select name="id1[]" class="form-select modo-edicion">
+                ${generarOpcionesJugadores("Jugador 1")}
+            </select>
+            <span class="modo-lectura d-none"></span>
+        </td>
+        <td>vs</td>
+        <td>
+            <select name="id2[]" class="form-select modo-edicion">
+                ${generarOpcionesJugadores("Jugador 2")}
+            </select>
+            <span class="modo-lectura d-none"></span>
+        </td>
+        <td class="resultado-celda">
+            <select name="resultados[]" class="form-select p-1 resultado-select">
+                <option value="" selected disabled>? - ?</option>
+                <option value="1-0">1 - 0</option>
+                <option value="0-1">0 - 1</option>
+                <option value="1-1">\u00bd - \u00bd</option>
+            </select>
+            <span class="text-success fw-semibold d-none resultado-auto">Victoria automática</span>
+        </td>
+        <td class="modo-edicion text-center">
+            <button type="button" class="btn btn-sm btn-outline-danger eliminar-fila" title="Eliminar enfrentamiento">
+                <i class="bi bi-trash"></i>
+            </button>
+        </td>
+    `;
+
+    tbody.appendChild(fila);
+
+    actualizarResultadoSegunBYE();
+    controlarOpcionesBye();
+
+    fila.querySelectorAll("select[name='id1[]'], select[name='id2[]']").forEach(select => {
+        select.addEventListener("change", () => {
+            actualizarResultadoSegunBYE();
+            controlarOpcionesBye();
+        });
     });
 });
 
-// Ejecutar al cargar
+// Inicialización
 actualizarResultadoSegunBYE();
 controlarOpcionesBye();
 </script>
