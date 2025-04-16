@@ -343,8 +343,24 @@ document.querySelectorAll("select[name='id1[]'], select[name='id2[]']").forEach(
     });
 });
 
-
 // Inicialización
 actualizarResultadoSegunBYE();
 controlarOpcionesBye();
+
+let cambiosDetectados = false;
+
+// Detectar cualquier cambio en selects
+document.querySelectorAll("select").forEach(select => {
+    select.addEventListener("change", () => {
+        cambiosDetectados = true;
+    });
+});
+
+// Avisar si intenta recargar o cerrar la pestaña
+window.addEventListener("beforeunload", function (e) {
+    if (cambiosDetectados) {
+        e.preventDefault();
+        e.returnValue = ""; // requerido para mostrar el mensaje en navegadores modernos
+    }
+});
 </script>
