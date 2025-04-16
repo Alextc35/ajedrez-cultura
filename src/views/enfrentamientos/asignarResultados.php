@@ -32,6 +32,9 @@ if (empty($jugadoresSeleccionados)) {
             <button type="button" class="btn btn-outline-primary d-block mb-2 m-auto" id="btnEditar">
                 Editar enfrentamientos
             </button>
+            <p id="avisoMovil" class="text-center text-warning fw-semibold d-none m-2">
+                ⚠️ Para una mejor experiencia en dispositivos móviles, se recomienda girar el dispositivo a modo horizontal.
+            </p>
             <table class="table table-bordered">
                 <thead class="table-primary">
                     <tr class="text-center align-middle">
@@ -202,6 +205,8 @@ btnEditar.addEventListener("click", function () {
 
     btnAñadir.classList.toggle("d-none", !modoEdicionActivo);
 
+    document.getElementById("avisoMovil").classList.toggle("d-none", !modoEdicionActivo);
+
     // Si se está guardando (saliendo de edición)
     if (!modoEdicionActivo) {
         document.querySelectorAll("select[name='id1[]'], select[name='id2[]']").forEach((select, i) => {
@@ -316,6 +321,15 @@ btnAñadir.addEventListener("click", function () {
         });
     });
 });
+
+// Añadir eventos "change" a selects existentes al cargar
+document.querySelectorAll("select[name='id1[]'], select[name='id2[]']").forEach(select => {
+    select.addEventListener("change", () => {
+        actualizarResultadoSegunBYE();
+        controlarOpcionesBye();
+    });
+});
+
 
 // Inicialización
 actualizarResultadoSegunBYE();
