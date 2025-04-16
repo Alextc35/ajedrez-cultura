@@ -233,8 +233,24 @@ function actualizarResultadoSegunBYE() {
 
         if (id1 && id2 && select && auto) {
             const esBye = id1.value === 'bye' || id2.value === 'bye';
-            select.classList.toggle("d-none", esBye);
-            auto.classList.toggle("d-none", !esBye);
+
+            if (esBye) {
+                // 🔁 Solo cambiar el texto visible
+                if (id1.value === 'bye') {
+                    auto.textContent = "0 - 1"; // Gana negras
+                } else if (id2.value === 'bye') {
+                    auto.textContent = "1 - 0"; // Gana blancas
+                } else {
+                    auto.textContent = "Victoria automática";
+                }
+
+                select.classList.add("d-none");
+                auto.classList.remove("d-none");
+            } else {
+                select.classList.remove("d-none");
+                auto.classList.add("d-none");
+                auto.textContent = "Victoria automática"; // Reiniciar por si acaso
+            }
         }
     });
 }
