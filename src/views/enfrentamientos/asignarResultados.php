@@ -355,12 +355,4 @@ document.querySelectorAll("select").forEach(select => {
         cambiosDetectados = true;
     });
 });
-
-// Avisar si intenta recargar o cerrar la pestaña
-window.addEventListener("beforeunload", function (e) {
-    if (cambiosDetectados) {
-        e.preventDefault();
-        e.returnValue = ""; // requerido para mostrar el mensaje en navegadores modernos
-    }
-});
 </script>
