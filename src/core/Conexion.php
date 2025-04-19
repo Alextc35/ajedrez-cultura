@@ -29,7 +29,7 @@ class Conexion
         return Conexion::$instancia;
     }
 
-    public function getConexion() : PDO {
+    public function getConexion(): PDO {
         return $this->conexion;
     }
 }

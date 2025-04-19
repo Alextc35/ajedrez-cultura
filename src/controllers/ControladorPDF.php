@@ -16,6 +16,8 @@ class ControladorPDF
         
         // Filtrar los datos según la categoría
         $dataToView['data'] = array_filter($dataToView['data'], function ($alumno) use ($liga) {
+            print_r ($alumno);
+            exit;
             return $alumno['liga'] === $liga;
         });
         
@@ -87,4 +89,71 @@ class ControladorPDF
         
         exit;
     }
+
+    public function generarPDF2() {
+        require_once('libs/tcpdf/tcpdf.php');
+
+        if (!isset($_SESSION['dataToView']) || empty($_SESSION['dataToView']['data'])) {
+            die("No hay datos para generar el PDF");
+        }
+
+        $dataToView = $_SESSION['dataToView'];
+        $fecha = date('d/m/Y');
+
+        // Ordenar alfabéticamente por nombre
+        usort($dataToView['data'], fn($a, $b) => $a['nombre'] <=> $b['nombre']);
+
+        // Crear PDF
+        $pdf = new TCPDF('L', 'mm', 'A4', true, 'UTF-8', false); // Horizontal
+        $pdf->SetTitle("Asistencia Escuela Ajedrez - $fecha");
+        $pdf->SetMargins(10, 10, 10);
+        $pdf->SetAutoPageBreak(TRUE, 10);
+        $pdf->AddPage();
+
+        $pdf->SetFont('helvetica', 'B', 14);
+        $pdf->Cell(0, 10, "ESCUELA DE AJEDREZ MEJORADA DEL CAMPO 2024 – 2025", 0, 1, 'C');
+        $pdf->Ln(3);
+
+        // Tabla de asistencia
+        $pdf->SetFont('helvetica', '', 10);
+        $html = '<table border="1" cellpadding="4">
+                    <thead style="background-color:#f2f2f2;">
+                        <tr>
+                            <th><b>ALUMNO</b></th>
+                            <th><b>AÑO</b></th>
+                            <th>Oct</th>
+                            <th>Nov</th>
+                            <th>Dic</th>
+                            <th>Ene</th>
+                            <th>Feb</th>
+                            <th>Mar</th>
+                            <th>Abr</th>
+                            <th>May</th>
+                            <th>Jun</th>
+                        </tr>
+                    </thead>
+                    <tbody>';
+
+        foreach ($dataToView['data'] as $alumno) {
+            $html .= '<tr>
+                        <td>' . htmlspecialchars($alumno['nombre']) . '</td>
+                        <td>' . htmlspecialchars($alumno['anio_nacimiento']) . '</td>';
+            for ($i = 0; $i < 9; $i++) {
+                $html .= '<td></td>';
+            }
+            $html .= '</tr>';
+        }
+
+        $html .= '</tbody></table>';
+
+        $pdf->writeHTML($html, true, false, false, false, '');
+
+        if (ob_get_length()) {
+            ob_end_clean();
+        }
+
+        $pdf->Output("Asistencia_Ajedrez.pdf", 'D'); // Forzar descarga
+
+        exit;
+    } 
 }

@@ -1,17 +1,27 @@
 <?php
 require_once '../src/models/AlumnosDAO.php';
+require_once '../src/models/TorneosDAO.php';
+require_once '../src/models/EnfrentamientosDAO.php';
 class ControladorEnfrentamientos
 {
     public string $page_title = "";
     public string $view = "";
     private AlumnosDAO $alumnosObj;
+    private TorneosDAO $torneosDAO;
+    private EnfrentamientosDAO $enfrentamientosDAO;
+    private Config $config;
 
     public function __construct() {
         $this->alumnosObj = new AlumnosDAO();
+        $this->torneosDAO = new TorneosDAO();
+        $this->enfrentamientosDAO = new EnfrentamientosDAO();
+        $this->config = Config::getInstancia();
     }
 
     public function enfrentar() {
-        $liga = $_GET['liga'] ?? 'LIGA LOCAL';
+        $torneoId = $_GET['torneoId'] ?? null;
+        $liga = $_GET['liga'] ?? 'Local';
+
         $this->page_title = "Chess League | Enfrentar";
         $this->view = 'enfrentamientos/enfrentar';
         return $this->alumnosObj->getAlumnosPorLiga(htmlspecialchars($liga));
@@ -19,13 +29,20 @@ class ControladorEnfrentamientos
 
     public function asignarResultados() {
         $config = Config::getInstancia();
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $liga = $_POST['liga'] ?? 'LIGA LOCAL';
+            $liga = $_POST['liga'] ?? 'Local';
+            $torneoId = $_POST['torneoId'] ?? null;
+            
+            if ($liga === 'Local') {
+                $TorneoId = 4;
+            } else {
+                $TorneoId = 3;
+            }
             $ids = $_POST['ids'] ?? [];
 
             if (count($ids) < 2) {
-                // $_SESSION['error'] = "Debes seleccionar al menos 2 jugadores.";
-                header("Location: " . $config->getParametro('DEFAULT_INDEX') . "ControladorLigas/clasificacion?liga=" . urlencode($liga));
+                header("Location: " . $config->getParametro('DEFAULT_INDEX') . "ControladorLigas/seleccionarTorneo?id=" . $TorneoId . "&liga=" . urlencode($liga));
                 exit();
             }
 
@@ -35,74 +52,97 @@ class ControladorEnfrentamientos
             foreach ($ids as $id) {
                 $alumno = $this->alumnosObj->getAlumno($id);
                 if ($alumno) {
-                    $jugadores[$id] = $alumno['nombre'];
+                    $jugadores[] = [ 'id' => $id, 'nombre' => $alumno['nombre'] ];
                 }
             }
+
             if (empty($jugadores)) {
                 // $_SESSION['error'] = "No se encontraron jugadores seleccionados.";
-                header("Location: " . $config->getParametro('DEFAULT_INDEX') . "ControladorLigas/clasificacion?liga=" . urlencode($liga));
+                header("Location: " . $config->getParametro('DEFAULT_INDEX') . "ControladorLigas/seleccionarTorneo?id=" . $TorneoId . "&liga=" . urlencode($liga));
                 exit();
             }
 
-            $_SESSION['jugadores'] = $jugadores;
-            $_SESSION['liga'] = $liga;
-
             $this->page_title = 'Chess League | Asignar Resultados';
             $this->view = 'enfrentamientos/asignarResultados';
+
+            $alumnosLiga = $this->alumnosObj->getAlumnosPorLiga($liga);
+
+            return [
+                'jugadores' => $jugadores,
+                'liga' => $liga,
+                'torneoId' => $torneoId,
+                'alumnos' => $alumnosLiga
+            ];
 
         }
     }
 
     public function asignarResultadosProcess() {
-        $config = Config::getInstancia();
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            die("Acceso no permitido.");
+        }
     
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $liga = $_POST['liga'] ?? 'LIGA LOCAL';
-            $id1s = $_POST['id1'] ?? [];
-            $id2s = $_POST['id2'] ?? [];
-            $resultados = $_POST['resultados'] ?? [];
+        $id1s = $_POST['id1'] ?? [];
+        $id2s = $_POST['id2'] ?? [];
+        $resultados = $_POST['resultados'] ?? [];
+        $liga = $_POST['liga'] ?? 'Local';
+        $torneoId = $_POST['torneoId'] ?? null;
     
-            if (empty($id1s) || empty($id2s) || empty($resultados)) {
-                header("Location: " . $config->getParametro('DEFAULT_INDEX') . "ControladorEnfrentamientos/enfrentar?liga=" . urlencode($liga));
-                exit();
+        $torneo = $this->torneosDAO->getTorneoPorId($torneoId);
+    
+        if (!$torneo) {
+            die("No se encontró un torneo activo para la liga $liga.");
+        }
+    
+        $torneoId = $torneo['id'];
+    
+        for ($i = 0; $i < count($resultados); $i++) {
+            $id1 = $id1s[$i] === 'bye' ? null : $id1s[$i];
+            $id2 = $id2s[$i] === 'bye' ? null : $id2s[$i];
+            $resultadoTexto = $resultados[$i];
+        
+            if (empty($id1) && empty($id2)) continue;
+
+            // Si hay BYE
+            if (is_null($id1) || is_null($id2)) {
+                $resultado = is_null($id1) ? 'negras' : 'blancas';
+                $this->enfrentamientosDAO->crearEnfrentamiento($torneoId, $id1, $id2, $resultado, date('Y-m-d'));
+                continue;
             }
     
-            for ($i = 0, $j = 0; $i < count($id1s); $i++) {
-                $rawId1 = $id1s[$i];
-                $rawId2 = $id2s[$i];
-            
-                // Si alguno es BYE → victoria automática
-                if ($rawId1 === "bye" || $rawId2 === "bye") {
-                    $jugador = $rawId1 === "bye" ? intval($rawId2) : intval($rawId1);
-                    if ($jugador > 0) {
-                        $this->alumnosObj->updateResultado($jugador, 'victoria');
-                    }
-                    continue; // no se incrementa $j
-                }
-            
-                // Enfrentamiento real: usamos $resultados[$j]
-                $id1 = intval($rawId1);
-                $id2 = intval($rawId2);
-                $resultado = $resultados[$j]; // 🔁 este índice solo avanza si no hay BYE
-                $j++;
-            
-                switch ($resultado) {
-                    case '1-0':
-                        $this->alumnosObj->updateResultado($id1, 'victoria');
-                        $this->alumnosObj->updateResultado($id2, 'derrota');
-                        break;
-                    case '0-1':
-                        $this->alumnosObj->updateResultado($id1, 'derrota');
-                        $this->alumnosObj->updateResultado($id2, 'victoria');
-                        break;
-                    case '1-1':
-                        $this->alumnosObj->updateResultado($id1, 'tablas');
-                        $this->alumnosObj->updateResultado($id2, 'tablas');
-                        break;
-                }
-            }            
-            header("Location: " . $config->getParametro('DEFAULT_INDEX') . "ControladorLigas/clasificacion?liga=" . urlencode($liga));
-            exit();
+            // 🧠 Resultado estándar
+            if ($resultadoTexto === '1-0') {
+                $resultado = 'blancas';
+            } elseif ($resultadoTexto === '0-1') {
+                $resultado = 'negras';
+            } elseif ($resultadoTexto === '1-1') {
+                $resultado = 'tablas';
+            } else {
+                continue; // Formato inválido
+            }
+    
+            // Guardar enfrentamiento
+            $this->enfrentamientosDAO->crearEnfrentamiento(
+                $torneoId,
+                $id1,
+                $id2,
+                $resultado,
+                date('Y-m-d')
+            );
         }
-    }    
+    
+        // Redirigir a la clasificación de la liga
+        header("Location: " . $this->config->getParametro('DEFAULT_INDEX') . "ControladorLigas/clasificacion?torneoId=" . urlencode($torneoId) . "&liga=" . urlencode($liga));
+        exit();
+    }       
+    
+    public function actualizarResultado($enfrentamientoId, $resultado) {
+        $sql = "UPDATE enfrentamientos SET resultado = :resultado WHERE id = :id";
+        $stmt = Conexion::getInstancia()->getConexion()->prepare($sql);
+        return $stmt->execute([
+            ':resultado' => $resultado,
+            ':id' => $enfrentamientoId
+        ]);
+    }
+    
 }

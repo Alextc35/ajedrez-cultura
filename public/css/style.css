@@ -5,6 +5,21 @@ body {
     padding: 5px;
 }
 
+.table-responsive-sticky {
+    max-height: 500px; /* O el alto que quieras */
+    overflow-y: auto;
+}
+
+.table-responsive-sticky thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.movil-warning {
+    display: none;
+}
+
 @media (max-width: 768px) {
     .expandable-input {
         width: 100%;
@@ -14,5 +29,9 @@ body {
             max-width: 230px;
             z-index: 10;
         }
+    }
+
+    .movil-warning {
+        display: block;
     }
 }

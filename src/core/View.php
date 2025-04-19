@@ -1,4 +1,5 @@
 <?php
+require_once '../src/core/Config.php';
 /**
  * Clase View
  * ------------------------
@@ -12,8 +13,11 @@
  * - $nombreVista: nombre del archivo de vista (sin ruta)
  * - $dataToView: array asociativo con datos que se expondrán en la vista
  */
-class View {
+class View
+{
     public static function render(string $nombreVista, array $dataToView) {
+        $config = Config::getInstancia();
+        $index = $config->getParametro('DEFAULT_INDEX');
         extract($dataToView);
 
         include("../src/views/templates/header.php");

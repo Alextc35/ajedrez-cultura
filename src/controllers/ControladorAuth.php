@@ -1,18 +1,22 @@
 <?php
-require_once '../src/models/LoginDAO.php';
+require_once '../src/models/UsuariosDAO.php';
+require_once '../src/models/LogsLoginDAO.php';
 class ControladorAuth
 {
     public string $page_title = "";
     public string $view = "";
-    private LoginDAO $loginDAO;
+    public Config $config;
+    private UsuariosDAO $usuariosDAO;
+    private LogsLoginDAO $logsLoginDAO;
 
     public function __construct() {
-        $this->loginDAO = new LoginDAO();
+        $this->config = Config::getInstancia();
+        $this->usuariosDAO = new UsuariosDAO();
+        $this->logsLoginDAO = new LogsLoginDAO();
     }
 
     public function login() {
-        $config = Config::getInstancia();
-        $this->page_title = 'Chess League | Inicio de sesión';
+        $this->page_title = 'Ajedrez Cultura | Inicio de sesión';
         $this->view = 'auth/login';
 
         if (isset($_POST['login'])) {
@@ -20,30 +24,34 @@ class ControladorAuth
             $password = isset($_POST['password']) ? $_POST['password'] : null;
 
             if ($usuario && $password) {
-                $verificado = $this->loginDAO->comprobarUsuario($usuario, $password);
+                $verificado = $this->usuariosDAO->comprobarUsuario($usuario, $password);
                 if ($verificado) {
                     $_SESSION['usuario'] = $usuario;
-                    header("Location:" .  $config->getParametro('DEFAULT_INDEX') . "ControladorAuth/inicio");
+                    $this->registrarLogin($usuario);
+                    header("Location:" .  $this->config->getParametro('DEFAULT_INDEX') . "ControladorAuth/inicio");
                 } else {
-                    $this->page_title = 'Chess League | Fallo de sesión';
+                    $this->page_title = 'Ajedrez Cultura | Fallo de sesión';
                     $_SESSION['error'] = "El usuario o la password no coinciden";
                 }
-            } else {
-                $_SESSION['error'] = "Por favor, completa todos los campos";
             }
         }
     }
 
-    public function inicio() {
-        unset($_SESSION['dataToView'], $_SESSION['jugadores'], $_SESSION['liga']);
-        $this->page_title = 'Chess League | Inicio';
-        $this->view = 'auth/inicio';
-    }
-
     public function logout() {
-        $config = Config::getInstancia();
         unset($_SESSION['usuario']);
         session_destroy();
-        header("Location:" . $config->getParametro('DEFAULT_INDEX'));
+        
+        header("Location:" . $this->config->getParametro('DEFAULT_INDEX'));
+    }
+
+    public function inicio() {
+        $this->page_title = 'Ajedrez Cultura | Inicio';
+        $this->view = 'auth/inicio';
+
+        unset($_SESSION['dataToView'], $_SESSION['jugadores'], $_SESSION['liga'],  $_SESSION['torneos'], $_SESSION['torneo_id']);
+    }
+
+    private function registrarLogin(string $usuario): void {
+        $this->logsLoginDAO->registrarLogin($usuario);
     }
 }

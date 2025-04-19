@@ -1,0 +1,7 @@
+CREATE TABLE logs_login (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(100) NOT NULL,
+    fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+    ip VARCHAR(45),
+    user_agent TEXT
+);

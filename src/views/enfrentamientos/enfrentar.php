@@ -1,11 +1,12 @@
 <?php
     $config = Config::getInstancia();
-    $liga = $_GET['liga'] ?? 'LIGA LOCAL';
+    $liga = $_GET['liga'] ?? 'Local';
+    $torneoId = $_GET['torneoId'] ?? null;
     $alumnos = $dataToView['data'] ?? [];
 ?>
 <div class="container bg-white p-3 rounded shadow">
     <div class="container d-flex p-0 pb-1 justify-content-between align-items-center">
-        <a href="<?= $config->getParametro('DEFAULT_INDEX') ?>ControladorLigas/clasificacion?liga=<?= urlencode($liga) ?>" class="btn btn-secondary btn-sm">
+        <a href="<?= $config->getParametro('DEFAULT_INDEX') ?>ControladorLigas/clasificacion?torneoId=<?= urlencode($torneoId); ?>&liga=<?= urlencode($liga) ?>" class="btn btn-secondary btn-sm">
             <i class="bi bi-arrow-left-short ">Volver</i>
         </a>
     </div>
@@ -14,6 +15,7 @@
 
     <form action="<?= $config->getParametro('DEFAULT_INDEX') ?>ControladorEnfrentamientos/asignarResultados" method="POST">
         <input type="hidden" name="liga" value="<?= htmlspecialchars($liga); ?>">
+        <input type="hidden" name="torneoId" value="<?= htmlspecialchars($torneoId); ?>">
 
         <table class="table table-bordered table-striped">
             <thead class="table-primary">

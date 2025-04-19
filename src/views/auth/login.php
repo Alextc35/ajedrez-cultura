@@ -19,7 +19,7 @@
                             <input type="password" id="password" name="password" class="form-control" required>
                         </div>
                         <div class="d-grid">
-                            <button type="submit" name="login" value="login" class="btn btn-primary">Acceder</button>
+                            <button type="submit" name="login" value="login" class="btn btn-success">Acceder</button>
                         </div>
                     </form>
                 </div>

@@ -1,29 +1,3 @@
--- ============================================================
--- 📌 CREACIÓN DE BASE DE DATOS PARA CHESS LEAGUE
--- ============================================================
-
--- 📌 Crear la base de datos si no existe
-CREATE DATABASE IF NOT EXISTS ajedrez_clase;
-USE ajedrez_clase;
-
--- 📌 Eliminar tabla alumnos si ya existe (para evitar errores en pruebas)
-DROP TABLE IF EXISTS alumnos;
-
--- ============================================================
--- 📌 CREACIÓN DE TABLAS
--- ============================================================
-
--- 📌 Tabla: alumnos
-CREATE TABLE alumnos (
-    id INT AUTO_INCREMENT PRIMARY KEY, -- Identificador único
-    nombre VARCHAR(100) NOT NULL,      -- Nombre del alumno
-    liga ENUM('LIGA LOCAL', 'LIGA INFANTIL') NOT NULL DEFAULT 'LIGA LOCAL', -- Liga restringida
-    victorias INT UNSIGNED NOT NULL DEFAULT 0, -- Número de victorias
-    derrotas INT UNSIGNED NOT NULL DEFAULT 0,  -- Número de derrotas
-    tablas INT UNSIGNED NOT NULL DEFAULT 0,    -- Número de tablas (empates)
-    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Fecha de inscripción
-);
-
 -- 📌 Tabla: usuarios
 CREATE TABLE usuarios (
     id INT UNSIGNED AUTO_INCREMENT,
@@ -35,52 +9,80 @@ CREATE TABLE usuarios (
 INSERT INTO usuarios (usuario, password)
 VALUES ('admin', 'admin');
 
--- ============================================================
--- 📌 INSERCIÓN DE DATOS DE PRUEBA (Opcional)
--- ============================================================
+CREATE TABLE logs_login (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(100) NOT NULL,
+    fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+    ip VARCHAR(45),
+    user_agent TEXT
+);
 
--- INSERT INTO alumnos (nombre, liga, victorias, derrotas, tablas) VALUES
--- ('Lucas Fernández', 'LIGA INFANTIL', 3, 2, 1),
--- ('María Gómez', 'LIGA LOCAL', 5, 1, 2),
--- ('Alejandro Pérez', 'LIGA LOCAL', 4, 2, 3),
--- ('Daniel López', 'LIGA INFANTIL', 6, 0, 2),
--- ('Sofía Ramírez', 'LIGA LOCAL', 3, 4, 1),
--- ('Miguel Torres', 'LIGA INFANTIL', 4, 3, 2),
--- ('Carla Ruiz', 'LIGA LOCAL', 2, 5, 0),
--- ('Javier Navarro', 'LIGA INFANTIL', 5, 1, 3),
--- ('Andrea Ortega', 'LIGA LOCAL', 6, 0, 2),
--- ('Pablo Jiménez', 'LIGA INFANTIL', 3, 3, 2),
--- ('Raúl Sánchez', 'LIGA LOCAL', 2, 4, 1),
--- ('Elena Castillo', 'LIGA INFANTIL', 4, 2, 2),
--- ('David Márquez', 'LIGA LOCAL', 5, 1, 1),
--- ('Clara Domínguez', 'LIGA INFANTIL', 6, 0, 3),
--- ('Tomás Herrera', 'LIGA LOCAL', 3, 3, 2),
--- ('Isabel Medina', 'LIGA INFANTIL', 5, 1, 1),
--- ('Hugo Vega', 'LIGA LOCAL', 4, 2, 2),
--- ('Natalia Ríos', 'LIGA INFANTIL', 3, 3, 2),
--- ('Cristian Guzmán', 'LIGA LOCAL', 5, 1, 1),
--- ('Camila Muñoz', 'LIGA INFANTIL', 6, 0, 3),
--- ('Fernando León', 'LIGA LOCAL', 4, 2, 2),
--- ('Valeria Paredes', 'LIGA INFANTIL', 3, 3, 2),
--- ('Martín Castro', 'LIGA LOCAL', 5, 1, 1),
--- ('Sara Núñez', 'LIGA INFANTIL', 6, 0, 2);
+CREATE TABLE alumnos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    anio_nacimiento YEAR NOT NULL,
+    liga ENUM('Local', 'Infantil') NOT NULL,
+    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    fecha_modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
--- ============================================================
--- 📌 COMPROBAR DATOS INSERTADOS
--- ============================================================
+INSERT INTO alumnos (nombre, anio_nacimiento, liga)
+VALUES 
+('Lucas Martínez', 2010, 'Infantil'),
+('María García', 2008, 'Local'),
+('Carlos Pérez', 2011, 'Infantil'),
+('Ana Torres', 2007, 'Local');
 
--- SELECT * FROM alumnos;
 
--- ============================================================
--- 📌 COMANDOS PARA IMPORTAR ESTE ARCHIVO SQL EN MYSQL
--- ============================================================
+CREATE TABLE torneos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    liga ENUM('Local', 'Infantil') NOT NULL,
+    fecha_inicio DATE NOT NULL,
+    fecha_fin DATE NOT NULL
+);
 
--- 📌 Opción 1: Usando MySQL desde la terminal (CMD o Bash)
--- Ejecutar este comando en la terminal dentro del directorio donde está `schema.sql`
--- mysql -u tu_usuario -p < schema.sql
+INSERT INTO torneos (nombre, liga, fecha_inicio, fecha_fin)
+VALUES 
+('Torneo Oct-Dic Infantil', 'Infantil', '2024-10-01', '2024-12-15'),
+('Torneo Oct-Dic Local', 'Local', '2024-10-01', '2024-12-15'),
+('Torneo Ene-Abr Infantil', 'Infantil', '2025-01-10', '2025-04-10'),
+('Torneo Ene-Abr Local', 'Local', '2025-01-10', '2025-04-10');
 
--- 📌 Opción 2: Usando phpMyAdmin
--- 1️⃣ Abre phpMyAdmin y selecciona la base de datos `chess_league`
--- 2️⃣ Ve a la pestaña "Importar"
--- 3️⃣ Selecciona el archivo `schema.sql`
--- 4️⃣ Haz clic en "Ejecutar" y verifica los datos.
+
+CREATE TABLE enfrentamientos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    torneo_id INT NOT NULL,
+    alumno1_id INT NULL,
+    alumno2_id INT NULL,
+    resultado ENUM('tablas', 'blancas', 'negras') NOT NULL,
+    fecha DATE NOT NULL,
+    FOREIGN KEY (torneo_id) REFERENCES torneos(id),
+    FOREIGN KEY (alumno1_id) REFERENCES alumnos(id),
+    FOREIGN KEY (alumno2_id) REFERENCES alumnos(id)
+);
+
+INSERT INTO enfrentamientos (torneo_id, alumno1_id, alumno2_id, resultado, fecha)
+VALUES 
+(1, 1, 3, 'blancas', '2024-10-12'),
+(2, 2, 4, 'tablas', '2024-10-13'),
+(1, 3, 1, 'negras', '2024-10-20'),
+(2, 4, 2, 'blancas', '2024-10-21');
+
+
+CREATE TABLE pagos_mensuales (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    alumno_id INT NOT NULL,
+    mes ENUM('Septiembre', 'Octubre', 'Noviembre', 'Diciembre', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio') NOT NULL,
+    anio YEAR NOT NULL,
+    pagado BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (alumno_id) REFERENCES alumnos(id)
+);
+
+INSERT INTO pagos_mensuales (alumno_id, mes, anio, pagado)
+VALUES 
+(1, 'Octubre', 2024, TRUE),
+(1, 'Noviembre', 2024, FALSE),
+(2, 'Octubre', 2024, TRUE),
+(3, 'Octubre', 2024, TRUE),
+(4, 'Octubre', 2024, FALSE);

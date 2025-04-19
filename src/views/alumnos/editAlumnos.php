@@ -1,55 +1,58 @@
 <?php
-    if (!isset($_SESSION['usuario'])) {
-        die("No estás autenticado");
-    }
-    $config = Config::getInstancia();
-    $liga = $_GET['liga'] ?? 'LIGA LOCAL';
+if (!isset($_SESSION['usuario'])) {
+    die("No estás autenticado");
+}
 ?>
+
 <div class="container bg-white p-3 rounded shadow">
     <div class="container d-flex p-0 pb-1 justify-content-between align-items-center">
-        <a href="<?= $config->getParametro('DEFAULT_INDEX')?>ControladorLigas/clasificacion?liga=<?= urlencode($liga) ?>" class="btn btn-secondary btn-sm">
+        <a href="<?= $index ?>ControladorAlumnos/listAlumnos" class="btn btn-secondary btn-sm">
             <i class="bi bi-arrow-left-short ">Volver</i>
         </a>
     </div>
+
     <h2 class="text-center">Editar Alumnos</h2>
-    <h5 class="text-center text-muted"><?= htmlspecialchars($liga); ?></h5>
 
     <?php if (!empty($dataToView['data'])) { ?>
     <div class="table-responsive">
-        <form action="<?= $config->getParametro('DEFAULT_INDEX')?>ControladorAlumnos/updateAlumnos" method="POST">
-            <input type="hidden" name="liga" value="<?= htmlspecialchars($liga); ?>">
-            
+        <form action="<?= $index ?>ControladorAlumnos/updateAlumnos" method="POST">
+
             <table class="table table-bordered table-striped">
-                <thead class="table-primary">
-                    <tr class="text-center">
-                        <th class="col-3 col-sm-4">👤</th>
-                        <th class="col-2 col-sm-2">✅</th>
-                        <th class="col-2 col-sm-2">❌</th>
-                        <th class="col-2 col-sm-2">🤝</th>
-                        <th class="col-2 col-sm-2">🗑️</th>
-                    </tr>
+                <thead class="table-primary text-center">
+                <tr>
+                    <th class="col-4 col-md-5">Nombre</th>
+                    <th class="col-4 col-md-2">Año</th>
+                    <th class="col-4 col-md-3">Liga</th>
+                    <th class="col-12 col-md-2">Eliminar</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($dataToView['data'] as $alumno) { ?>
+                    <?php foreach ($dataToView['data'] as $alumno): ?>
                     <tr>
                         <input type="hidden" name="id[]" value="<?= $alumno['id']; ?>">
-                        <td><input type="text" name="nombre[]" value="<?= htmlspecialchars($alumno['nombre']); ?>" class="form-control p-1 expandable-input"></td>
-                        <td><input type="number" name="victorias[]" value="<?= $alumno['victorias']; ?>" class="form-control p-1"></td>
-                        <td><input type="number" name="derrotas[]" value="<?= $alumno['derrotas']; ?>" class="form-control p-1"></td>
-                        <td><input type="number" name="tablas[]" value="<?= $alumno['tablas']; ?>" class="form-control p-1"></td>
+                        <td><input type="text" name="nombre[]" value="<?= htmlspecialchars($alumno['nombre']); ?>" class="form-control expandable-input"></td>
+                        <td><input type="number" name="anio_nacimiento[]" value="<?= $alumno['anio_nacimiento']; ?>" class="form-control expandable-input"></td>
                         <td>
-                            <a href="<?= $config->getParametro('DEFAULT_INDEX')?>ControladorAlumnos/deleteAlumno?id=<?= $alumno['id']; ?>&liga=<?= urlencode($liga) ?>"
-                                class="btn btn-danger btn-sm d-flex justify-content-center align-items-center"
-                                onclick="return confirm('¿Estás seguro de que quieres eliminar a <?= htmlspecialchars($alumno['nombre']); ?>?')">
+                            <select name="liga[]" class="form-select">
+                                <option value="Local" <?= $alumno['liga'] === 'Local' ? 'selected' : '' ?>>Local</option>
+                                <option value="Infantil" <?= $alumno['liga'] === 'Infantil' ? 'selected' : '' ?>>Infantil</option>
+                            </select>
+                        </td>
+                        <td class="text-center align-middle">
+                            <a href="<?= $index ?>ControladorAlumnos/deleteAlumno?id=<?= $alumno['id']; ?>"
+                                class="btn btn-danger btn-sm"
+                                onclick="return confirm('¿Eliminar a <?= htmlspecialchars($alumno['nombre']); ?>?')">
                                 <i class="bi bi-trash-fill"></i>
                             </a>
                         </td>
                     </tr>
-                    <?php } ?>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
 
-            <button type="submit" class="btn btn-success d-block m-auto" onclick="return confirm('¿Quieres confirmar los ajustes?')">Guardar Cambios</button>
+            <button type="submit" class="btn btn-success d-block m-auto mt-3" onclick="return confirm('¿Confirmar los cambios?')">
+                Guardar Cambios
+            </button>
         </form>
     </div>
     <?php } else { ?>

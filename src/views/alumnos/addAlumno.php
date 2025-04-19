@@ -1,49 +1,41 @@
 <?php
-    $config = Config::getInstancia();
-    if (!isset($_SESSION['usuario'])) {
-        die("No estás autenticado");
-    }
-    $liga = $_GET['liga'] ?? 'LIGA LOCAL';
-    $otraLiga = $liga === 'LIGA LOCAL' ? 'LIGA INFANTIL' : 'LIGA LOCAL';
+$config = Config::getInstancia();
 ?>
-<div class="container bg-white p-3 rounded shadow">
-    <div class="container d-flex p-0 pb-2 m-0 justify-content-between align-items-center">
-        <a href="<?= $config->getParametro('DEFAULT_INDEX')?>ControladorLigas/clasificacion?liga=<?= urlencode($liga) ?>" class="btn btn-secondary btn-sm">
-            <i class="bi bi-arrow-left-short">Volver</i>
-        </a>
-        <h2 class="text-center">Añadir Alumnos</h2>
-    </div>
 
-    <form action="<?= $config->getParametro('DEFAULT_INDEX')?>ControladorAlumnos/insertAlumno" method="POST">
-        <input type="hidden" name="liga" value="<?= htmlspecialchars($liga) ?>">
+<div class="container bg-white p-4 rounded shadow mt-4">
+    <h2 class="text-center mb-4">Añadir nuevo alumno</h2>
+
+    <form method="POST" action="<?= $config->getParametro('DEFAULT_INDEX') ?>ControladorAlumnos/insertAlumno">
         <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre del Alumno:</label>
-            <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Introduce el nombre del alumno..." required>
+            <label for="nombre" class="form-label">Nombre del alumno</label>
+            <input type="text" class="form-control" name="nombre" id="nombre" required>
         </div>
 
         <div class="mb-3">
-            <label for="liga" class="form-label">Liga:</label>
+            <label for="anio_nacimiento" class="form-label">Año de nacimiento</label>
+            <input type="number" class="form-control" name="anio_nacimiento" id="anio_nacimiento" min="2000" max="<?= date('Y') ?>" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="liga" class="form-label">Liga</label>
             <select name="liga" id="liga" class="form-select" required>
-                <option value="<?= $liga ?>"><?= $liga ?></option>
-                <option value="<?= $otraLiga ?>"><?= $otraLiga ?></option>
+                <option value="Local">Local</option>
+                <option value="Infantil">Infantil</option>
             </select>
         </div>
 
-        <div class="mb-3">
-            <label for="victorias" class="form-label">Victorias:</label>
-            <input type="number" name="victorias" id="victorias" class="form-control" value="0" min="0" required>
-        </div>
+        <!-- Estos campos se pueden ocultar si no los usas desde el formulario -->
+        <input type="hidden" name="victorias" value="0">
+        <input type="hidden" name="derrotas" value="0">
+        <input type="hidden" name="tablas" value="0">
 
-        <div class="mb-3">
-            <label for="derrotas" class="form-label">Derrotas:</label>
-            <input type="number" name="derrotas" id="derrotas" class="form-control" value="0" min="0" required>
+        <div class="d-flex justify-content-between">
+            <a href="<?= $config->getParametro('DEFAULT_INDEX') ?>ControladorAlumnos/listAlumnos" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Volver
+            </a>
+            <button type="submit" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Guardar alumno
+            </button>
         </div>
-
-        <div class="mb-3">
-            <label for="tablas" class="form-label">Tablas:</label>
-            <input type="number" name="tablas" id="tablas" class="form-control" value="0" min="0" required>
-        </div>
-
-        <button type="submit" class="btn btn-success d-block m-auto" onclick="return confirm('¿Quieres confirmar los ajustes?')">Añadir Alumno</button>
     </form>
 </div>

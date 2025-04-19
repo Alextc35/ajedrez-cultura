@@ -1,16 +1,12 @@
 <?php
 require_once '../src/core/Conexion.php';
+
 class AlumnosDAO
 {
     private $table = 'alumnos';
 
-    public function __construct() {
-    }
+    public function __construct() {}
 
-    /**
-     * 📌 Obtiene todos los alumnos de la base de datos
-     * @return array
-     */
     public function getAlumnos() {
         $sql = "SELECT * FROM $this->table";
         $stmt = Conexion::getInstancia()->getConexion()->prepare($sql);
@@ -18,24 +14,41 @@ class AlumnosDAO
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * 📌 Obtiene los alumnos por categoría (LIGA LOCAL o LIGA INFANTIL)
-     * @param string $liga
-     * @return array
-     */
-    public function getAlumnosPorLiga($liga) {
-        $sql = "SELECT * FROM $this->table WHERE liga = :liga";
-        $stmt = Conexion::getInstancia()->getConexion()->prepare($sql);
-        $stmt->bindParam(':liga', $liga, PDO::PARAM_STR);
+    public function getAlumnosConPagos() {
+        $conexion = Conexion::getInstancia()->getConexion();
+    
+        $sql = "SELECT id, nombre, anio_nacimiento, liga FROM $this->table";
+        $stmt = $conexion->prepare($sql);
         $stmt->execute();
+        $alumnos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        $meses = ['Octubre', 'Noviembre', 'Diciembre', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'];
+    
+        foreach ($alumnos as &$alumno) {
+            $sqlPagos = "SELECT mes, anio, pagado FROM pagos_mensuales WHERE alumno_id = ?";
+            $stmtPagos = $conexion->prepare($sqlPagos);
+            $stmtPagos->execute([$alumno['id']]);
+    
+            $pagos = array_fill_keys($meses, null); // Iniciar todos los meses con null
+    
+            foreach ($stmtPagos->fetchAll(PDO::FETCH_ASSOC) as $pago) {
+                $pagos[$pago['mes']] = (bool) $pago['pagado'];
+            }
+    
+            $alumno['pagos'] = $pagos;
+        }
+    
+        return $alumnos;
+    }    
+
+    public function getAlumnosPorLiga($liga) {
+        $sql = "SELECT id, nombre FROM alumnos WHERE liga = ?";
+        $stmt = Conexion::getInstancia()->getConexion()->prepare($sql);
+        $stmt->execute([$liga]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * 📌 Obtiene los datos de un alumno por su ID
-     * @param int $id
-     * @return array|false
-     */
+
     public function getAlumno($id) {
         $sql = "SELECT * FROM $this->table WHERE id = :id";
         $stmt = Conexion::getInstancia()->getConexion()->prepare($sql);
@@ -44,82 +57,88 @@ class AlumnosDAO
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * 📌 Inserta un nuevo alumno en la base de datos
-     * @param string $nombre
-     * @param string $liga
-     * @param int $victorias
-     * @param int $derrotas
-     * @param int $tablas
-     * @return bool
-     */
-    public function addAlumno($nombre, $liga, $victorias = 0, $derrotas = 0, $tablas = 0) {
-        $sql = "INSERT INTO $this->table (nombre, liga, victorias, derrotas, tablas)
-                VALUES (:nombre, :liga, :victorias, :derrotas, :tablas)";
+    public function addAlumno($nombre, $anio = null, $liga, $victorias = 0, $derrotas = 0, $tablas = 0) {
+        $sql = "INSERT INTO $this->table (nombre, anio_nacimiento, liga)
+                VALUES (:nombre, :anio, :liga)";
         $stmt = Conexion::getInstancia()->getConexion()->prepare($sql);
         return $stmt->execute([
             ':nombre' => $nombre,
-            ':liga' => $liga,
-            ':victorias' => $victorias,
-            ':derrotas' => $derrotas,
-            ':tablas' => $tablas
+            ':anio' => $anio,
+            ':liga' => $liga
         ]);
     }
 
-    /**
-     * 📌 Actualiza los datos de un alumno
-     * @param int $id
-     * @param string $nombre
-     * @param int $victorias
-     * @param int $derrotas
-     * @param int $tablas
-     * @return bool
-     */
-    public function updateAlumnos($id, $nombre, $victorias, $derrotas, $tablas) {
+    public function updateAlumno($id, $nombre, $anio_nacimiento, $liga) {
         $sql = "UPDATE $this->table 
-                SET nombre = :nombre, victorias = :victorias, derrotas = :derrotas, tablas = :tablas 
+                SET nombre = :nombre, anio_nacimiento = :anio_nacimiento, liga = :liga 
                 WHERE id = :id";
         $stmt = Conexion::getInstancia()->getConexion()->prepare($sql);
         return $stmt->execute([
             ':id' => $id,
             ':nombre' => $nombre,
-            ':victorias' => $victorias,
-            ':derrotas' => $derrotas,
-            ':tablas' => $tablas
+            ':anio_nacimiento' => $anio_nacimiento,
+            ':liga' => $liga
         ]);
-    }
+    }    
 
-    /**
-     * 📌 Elimina un alumno por su ID
-     * @param int $id
-     * @return bool
-     */
     public function deleteAlumno($id) {
-        $sql = "DELETE FROM $this->table WHERE id = :id";
-        $stmt = Conexion::getInstancia()->getConexion()->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        return $stmt->execute();
+        $conexion = Conexion::getInstancia()->getConexion();
+    
+        try {
+            $conexion->beginTransaction();
+    
+            // 1. Eliminar pagos del alumno
+            $sqlPagos = "DELETE FROM pagos_mensuales WHERE alumno_id = :id";
+            $stmtPagos = $conexion->prepare($sqlPagos);
+            $stmtPagos->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmtPagos->execute();
+
+            // Eliminar enfrentamientos donde participe como alumno1 o alumno2
+            $sqlEnfrentamientos = "DELETE FROM enfrentamientos WHERE alumno1_id = :id OR alumno2_id = :id";
+            $stmtEnfrentamientos = $conexion->prepare($sqlEnfrentamientos);
+            $stmtEnfrentamientos->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmtEnfrentamientos->execute();
+
+    
+            // 2. Eliminar al alumno
+            $sqlAlumno = "DELETE FROM $this->table WHERE id = :id";
+            $stmtAlumno = $conexion->prepare($sqlAlumno);
+            $stmtAlumno->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmtAlumno->execute();
+    
+            $conexion->commit();
+            return true;
+        } catch (PDOException $e) {
+            $conexion->rollBack();
+            throw $e;
+        }
     }
 
     /**
-     * 📌 Actualiza los resultados de un alumno según el resultado de un enfrentamiento
-     * @param int $id
-     * @param string $resultado ('victoria', 'derrota', 'tablas')
-     * @return bool
+     * ✅ Guarda o actualiza el pago mensual de un alumno
      */
-    public function updateResultado($id, $resultado) {
-        if ($resultado === 'victoria') {
-            $sql = "UPDATE alumnos SET victorias = victorias + 1 WHERE id = ?";
-        } elseif ($resultado === 'derrota') {
-            $sql = "UPDATE alumnos SET derrotas = derrotas + 1 WHERE id = ?";
-        } elseif ($resultado === 'tablas') {
-            $sql = "UPDATE alumnos SET tablas = tablas + 1 WHERE id = ?";
+    public function guardarPagoMensual($alumnoId, $mes, $anio, $pagado) {
+        $conexion = Conexion::getInstancia()->getConexion();
+        // Comprobar si existe el registro
+        $checkSql = "SELECT COUNT(*) FROM pagos_mensuales WHERE alumno_id = ? AND mes = ? AND anio = ?";
+        $check = $conexion->prepare($checkSql);
+        $check->execute([$alumnoId, $mes, $anio]);
+        $existe = $check->fetchColumn();
+
+        if ($existe) {
+            // Update
+            $sql = "UPDATE pagos_mensuales SET pagado = :pagado WHERE alumno_id = :alumno_id AND mes = :mes AND anio = :anio";
         } else {
-            return; // No hacer nada si el resultado es inválido
+            // Insert
+            $sql = "INSERT INTO pagos_mensuales (alumno_id, mes, anio, pagado) VALUES (:alumno_id, :mes, :anio, :pagado)";
         }
 
-        $stmt = Conexion::getInstancia()->getConexion()->prepare($sql);
-        $stmt->execute([$id]);
+        $stmt = $conexion->prepare($sql);
+        return $stmt->execute([
+            ':alumno_id' => $alumnoId,
+            ':mes' => $mes,
+            ':anio' => $anio,
+            ':pagado' => $pagado ? 1 : 0
+        ]);
     }
-
 }

@@ -1,25 +1,23 @@
 <?php
 $config = Config::getInstancia();
-$liga = htmlspecialchars($_SESSION['liga'] ?? 'LIGA LOCAL');
 
-// Obtener TODOS los alumnos de la liga actual
-$jugadoresData = $_SESSION['dataToView']['data'] ?? [];
+$liga = htmlspecialchars($dataToView['data']['liga'] ?? 'Local');
+$torneoId = htmlspecialchars($dataToView['data']['torneoId'] ?? null);
+
+$jugadoresSeleccionados = $dataToView['data']['jugadores'] ?? [];
+$alumnosLiga = $dataToView['data']['alumnos'] ?? [];
+
 $jugadores = [];
-foreach ($jugadoresData as $alumno) {
+foreach ($alumnosLiga as $alumno) {
     $jugadores[$alumno['id']] = $alumno['nombre'];
 }
 
-$jugadoresSeleccionados = $_SESSION['jugadores'] ?? [];
-
-if (empty($jugadoresSeleccionados)) {
-    echo "<p class='text-danger text-center'>No hay jugadores seleccionados.</p>";
-    exit();
-}
 ?>
+
 
 <div class="container bg-white p-3 rounded shadow">
     <div class="container d-flex p-0 pb-1 justify-content-between align-items-center">
-        <a href="<?= $config->getParametro('DEFAULT_INDEX') ?>ControladorLigas/clasificacion?liga=<?= urlencode($liga) ?>" class="btn btn-secondary btn-sm" onclick="return confirm('Si vuelves atrás, los enfrentamientos generados se perderán. ¿Estás seguro de que deseas continuar?')">
+        <a href="<?= $config->getParametro('DEFAULT_INDEX') ?>ControladorLigas/clasificacion?torneoId=<?= urlencode($torneoId) ?>&liga=<?= urlencode($liga) ?>" class="btn btn-secondary btn-sm" onclick="return confirm('Si vuelves atrás, los enfrentamientos generados se perderán. ¿Estás seguro de que deseas continuar?')">
             <i class="bi bi-arrow-left-short"> Volver</i>
         </a>
     </div>
@@ -29,10 +27,11 @@ if (empty($jugadoresSeleccionados)) {
     <div class="table-responsive">
         <form action="<?= $config->getParametro('DEFAULT_INDEX') ?>ControladorEnfrentamientos/asignarResultadosProcess" method="POST">
             <input type="hidden" name="liga" value="<?= $liga; ?>">
+            <input type="hidden" name="torneoId" value="<?= $torneoId; ?>">
             <button type="button" class="btn btn-outline-primary d-block mb-2 m-auto" id="btnEditar">
                 Editar enfrentamientos
             </button>
-            <p id="avisoMovil" class="text-center text-warning fw-semibold d-none m-2">
+            <p id="avisoMovil" class="text-center text-warning fw-semibold movil-warning m-2">
                 ⚠️ Para una mejor experiencia en dispositivos móviles, se recomienda girar el dispositivo a modo horizontal.
             </p>
             <table class="table table-bordered">
@@ -47,7 +46,7 @@ if (empty($jugadoresSeleccionados)) {
                 </thead>
                 <tbody>
                     <?php
-                    $jugadoresIds = array_keys($jugadoresSeleccionados);
+                    $jugadoresIds = array_column($jugadoresSeleccionados, 'id');
                     $numJugadores = count($jugadoresIds);
 
                     function renderJugadorSelect($name, $selectedId, $jugadores, $includeBye = false) {
