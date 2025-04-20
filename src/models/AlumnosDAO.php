@@ -57,7 +57,7 @@ class AlumnosDAO
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function addAlumno($nombre, $anio = null, $liga, $victorias = 0, $derrotas = 0, $tablas = 0) {
+    public function addAlumno($nombre, $anio, $liga) {
         $sql = "INSERT INTO $this->table (nombre, anio_nacimiento, liga)
                 VALUES (:nombre, :anio, :liga)";
         $stmt = Conexion::getInstancia()->getConexion()->prepare($sql);
