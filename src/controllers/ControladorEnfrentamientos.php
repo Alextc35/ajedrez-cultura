@@ -19,11 +19,13 @@ class ControladorEnfrentamientos
     }
 
     public function enfrentar() {
-        $torneoId = $_GET['torneoId'] ?? null;
         $liga = $_GET['liga'] ?? 'Local';
 
-        $this->page_title = "Chess League | Enfrentar";
+        $this->page_title = "Ajedrez Cultura | Enfrentar";
         $this->view = 'enfrentamientos/enfrentar';
+
+        unset($_SESSION['dataToView'], $dataToView['session']['dataToView']);
+
         return $this->alumnosObj->getAlumnosPorLiga(htmlspecialchars($liga));
     }
 
@@ -62,7 +64,7 @@ class ControladorEnfrentamientos
                 exit();
             }
 
-            $this->page_title = 'Chess League | Asignar Resultados';
+            $this->page_title = 'Ajedrez Cultura | Asignar Resultados';
             $this->view = 'enfrentamientos/asignarResultados';
 
             $alumnosLiga = $this->alumnosObj->getAlumnosPorLiga($liga);

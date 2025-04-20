@@ -12,9 +12,9 @@ $desactivado = empty($dataToView['data']) ? 'disabled' : '';
         <h3 class="text-center">Mensualidad</h3>
         <div>
             <button id="toggleEdit" class="btn btn-primary btn-sm <?= $desactivado ?>">Editar</button>
-            <a href="<?= $config->getParametro('DEFAULT_INDEX') ?>ControladorPDF/generarPDF2" class="btn btn-danger disabled">
+            <!-- <a href="<?= $config->getParametro('DEFAULT_INDEX') ?>ControladorPDF/generarPDF2" class="btn btn-danger disabled">
                 <i class="bi bi-file-earmark-pdf-fill"></i>
-            </a>
+            </a> -->
         </div>
     </div>
 

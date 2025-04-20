@@ -1,8 +1,10 @@
 <?php
 session_start();
 
-// ini_set('display_errors', 1);
-// error_reporting(E_ALL);
+/*
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+*/
 
 require_once '../src/core/Config.php';
 require_once '../src/core/Handler.php';
@@ -44,5 +46,5 @@ if (method_exists($controller, $action)) {
 
 View::render($controller->view, $dataToView);
 
- echo "<pre style='color:white;'>dataToView "; print_r($dataToView); echo "</pre>";
+# echo "<pre style='color:white;'>dataToView "; print_r($dataToView); echo "</pre>";
 # echo "<pre style='color:white;'>SESION "; print_r($_SESSION); echo "</pre>";
