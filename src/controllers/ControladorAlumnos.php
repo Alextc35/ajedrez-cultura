@@ -28,7 +28,8 @@ class ControladorAlumnos
     
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nombre = $_POST['nombre'] ?? '';
-            $anio = $_POST['anio_nacimiento'] ?? '';
+            $anio = $_POST['anio_nacimiento'] ?? null;
+            $anio = ($anio === '' || $anio === null) ? null : (int)$anio;            
     
             if (empty($nombre)) {
                 header("Location: ?action=addAlumno&liga=" . urlencode($liga));

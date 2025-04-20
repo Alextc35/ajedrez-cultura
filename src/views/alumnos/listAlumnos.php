@@ -43,7 +43,13 @@ $desactivado = empty($dataToView['data']) ? 'disabled' : '';
                     <?php foreach ($alumnos as $index => $alumno): ?>
                         <tr data-index="<?= $index ?>">
                             <td class="text-start"><?= htmlspecialchars($alumno['nombre']) ?></td>
-                            <td><?= htmlspecialchars($alumno['anio_nacimiento']) ?></td>
+                            <td>
+                                <?= 
+                                    $alumno['anio_nacimiento'] === null || $alumno['anio_nacimiento'] == 0
+                                    ? '–' 
+                                    : htmlspecialchars($alumno['anio_nacimiento']) 
+                                ?>
+                            </td>
                             <?php 
                                 $mesMap = ['Octubre', 'Noviembre', 'Diciembre', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'];
                                 $monthNumMap = [10, 11, 12, 1, 2, 3, 4, 5, 6];

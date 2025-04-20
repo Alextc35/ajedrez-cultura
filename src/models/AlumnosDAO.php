@@ -61,24 +61,27 @@ class AlumnosDAO
         $sql = "INSERT INTO $this->table (nombre, anio_nacimiento, liga)
                 VALUES (:nombre, :anio, :liga)";
         $stmt = Conexion::getInstancia()->getConexion()->prepare($sql);
-        return $stmt->execute([
-            ':nombre' => $nombre,
-            ':anio' => $anio,
-            ':liga' => $liga
-        ]);
-    }
+    
+        $stmt->bindValue(':nombre', $nombre);
+        $stmt->bindValue(':anio', $anio, is_null($anio) ? PDO::PARAM_NULL : PDO::PARAM_INT);
+        $stmt->bindValue(':liga', $liga);
+    
+        return $stmt->execute();
+    }    
 
     public function updateAlumno($id, $nombre, $anio_nacimiento, $liga) {
         $sql = "UPDATE $this->table 
                 SET nombre = :nombre, anio_nacimiento = :anio_nacimiento, liga = :liga 
                 WHERE id = :id";
+    
         $stmt = Conexion::getInstancia()->getConexion()->prepare($sql);
-        return $stmt->execute([
-            ':id' => $id,
-            ':nombre' => $nombre,
-            ':anio_nacimiento' => $anio_nacimiento,
-            ':liga' => $liga
-        ]);
+    
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':nombre', $nombre);
+        $stmt->bindValue(':anio_nacimiento', $anio_nacimiento, is_null($anio_nacimiento) ? PDO::PARAM_NULL : PDO::PARAM_INT);
+        $stmt->bindValue(':liga', $liga);
+    
+        return $stmt->execute();
     }    
 
     public function deleteAlumno($id) {
