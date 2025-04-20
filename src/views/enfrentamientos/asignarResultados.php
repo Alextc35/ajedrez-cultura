@@ -244,6 +244,7 @@ function actualizarResultadoSegunBYE() {
         // Cambiar texto si hay BYE
         if (esBye) {
             auto.textContent = valor1 === 'bye' ? "0 - 1" : "1 - 0";
+            select.value = valor1 === 'bye' ? "0-1" : "1-0";
         }
 
         // Añadir o quitar color de fondo
