@@ -1,7 +1,7 @@
 CREATE TABLE alumnos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
-    anio_nacimiento YEAR NOT NULL,
+    anio_nacimiento YEAR NULL,
     liga ENUM('Local', 'Infantil') NOT NULL,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP

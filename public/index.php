@@ -44,5 +44,5 @@ if (method_exists($controller, $action)) {
 
 View::render($controller->view, $dataToView);
 
-# echo "<pre style='color:white;'>dataToView "; print_r($dataToView); echo "</pre>";
+ echo "<pre style='color:white;'>dataToView "; print_r($dataToView); echo "</pre>";
 # echo "<pre style='color:white;'>SESION "; print_r($_SESSION); echo "</pre>";

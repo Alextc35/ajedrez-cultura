@@ -67,7 +67,7 @@ $_SESSION['dataToView']['data'] = $dataToView['data'];
     <?php } else { ?>
         <p class="text-center">No hay alumnos en esta categoría.</p>
         <div class="text-center">
-            <a href="<?= $index ?>ControladorAlumnos/addAlumno?liga=<?= urlencode($liga) ?>" class="btn btn-primary">Añadir alumno</a>
+            <a href="<?= $index ?>ControladorAlumnos/addAlumno" class="btn btn-primary">Añadir alumno</a>
         </div>
     <?php } ?>
 </div>

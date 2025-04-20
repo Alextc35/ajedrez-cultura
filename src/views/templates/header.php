@@ -1,10 +1,9 @@
 <?php
     $titulo = $dataToView['controlador']->page_title ?? '';
     $index = Config::getInstancia()->getParametro('DEFAULT_INDEX');
-    $deshabilitado = ($dataToView['handler']['action'] ?? '') === 'asignarResultados' || !isset($_SESSION['usuario']) ? 'disabled' : '';
-    $gestionAlumnos = ($dataToView['handler']['action'] ?? '') === 'listAlumnos' || !isset($_SESSION['usuario']) ? 'disabled' : '';
-    $ligas = ($dataToView['handler']['action'] ?? '') === 'seleccionarLiga' || !isset($_SESSION['usuario']) ? 'disabled' : '';
-    $clasificacion = ($dataToView['handler']['action'] ?? '') === 'clasificacion' || !isset($_SESSION['usuario']) ? 'disabled' : '';
+    $listAlumnos = ($dataToView['handler']['action'] ?? '') === 'listAlumnos' || !isset($_SESSION['usuario']) ? 'disabled' : '';
+    $seleccionarLiga = ($dataToView['handler']['action'] ?? '') === 'seleccionarLiga' || !isset($_SESSION['usuario']) ? 'disabled' : '';
+    $asignarResultados = ($dataToView['handler']['action'] ?? '') === 'asignarResultados' || !isset($_SESSION['usuario']) ? 'disabled' : '';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -27,7 +26,7 @@
         <div class="container text-center rounded shadow bg-light p-2 m-2">
             <h1>Ajedrez Cultura</h1>
             <p>Elige la opción deseada:</p>
-            <a href="<?= $index ?>ControladorAlumnos/listAlumnos" class="btn btn-primary d-block m-2 <?= $deshabilitado ?> <?= $gestionAlumnos ?>" <?= $deshabilitado ? 'tabindex="-1" aria-disabled="true"' : '' ?>>GESTIÓN DE ALUMNOS</a>
-            <a href="<?= $index ?>ControladorLigas/seleccionarLiga" class="btn btn-success d-block m-2 <?= $deshabilitado ?> <?= $ligas ?> <?= $clasificacion?>" <?= $deshabilitado ? 'tabindex="-1" aria-disabled="true"' : '' ?>>LIGAS</a>
+            <a href="<?= $index ?>ControladorAlumnos/listAlumnos" class="btn btn-primary d-block m-2 <?= $asignarResultados ?> <?= $listAlumnos ?>" <?= $asignarResultados ? 'tabindex="-1" aria-disabled="true"' : '' ?>>GESTIÓN DE ALUMNOS</a>
+            <a href="<?= $index ?>ControladorLigas/seleccionarLiga" class="btn btn-success d-block m-2 <?= $asignarResultados ?> <?= $seleccionarLiga ?> <?= $clasificacion?>" <?= $asignarResultados ? 'tabindex="-1" aria-disabled="true"' : '' ?>>LIGAS</a>
             <p class="text-muted pt-2 ">Desarrollado por <a href="https://www.linkedin.com/in/alejandrotellezcorona/" target="_blank" class="text-decoration-none text-muted fw-bold">Alejandro Téllez Corona</a></p>
         </div>

@@ -1,6 +1,7 @@
 <?php
 $config = Config::getInstancia();
 $alumnos = isset($dataToView['data']) ? $dataToView['data'] : [];
+$desactivado = empty($dataToView['data']) ? 'disabled' : '';
 ?>
 
 <div class="container bg-white p-3 rounded shadow">
@@ -10,7 +11,7 @@ $alumnos = isset($dataToView['data']) ? $dataToView['data'] : [];
         </a>
         <h3 class="text-center">Mensualidad</h3>
         <div>
-            <button id="toggleEdit" class="btn btn-primary btn-sm">Editar</button>
+            <button id="toggleEdit" class="btn btn-primary btn-sm <?= $desactivado ?>">Editar</button>
             <a href="<?= $config->getParametro('DEFAULT_INDEX') ?>ControladorPDF/generarPDF2" class="btn btn-danger disabled">
                 <i class="bi bi-file-earmark-pdf-fill"></i>
             </a>
@@ -68,8 +69,8 @@ $alumnos = isset($dataToView['data']) ? $dataToView['data'] : [];
         <p class="text-center">No hay alumnos apuntados...</p>
     <?php } ?>
 
-    <a href="<?= $config->getParametro('DEFAULT_INDEX') ?>ControladorAlumnos/addAlumno" class="btn btn-success d-block mt-3 m-2">Añadir alumno</a>
-    <a href="<?= $config->getParametro('DEFAULT_INDEX')?>ControladorAlumnos/editAlumnos" class="btn btn-primary d-block m-2">Editar alumno</a>
+    <a id="addAlumno" href="<?= $config->getParametro('DEFAULT_INDEX') ?>ControladorAlumnos/addAlumno" class="btn btn-success d-block mt-3 m-2 <?= $desactivado ?>">Añadir alumno</a>
+    <a id="editAlumnos" href="<?= $config->getParametro('DEFAULT_INDEX')?>ControladorAlumnos/editAlumnos" class="btn btn-primary d-block m-2 <?= $desactivado ?>">Editar alumnos</a>
 
     <!-- 🧾 Formulario oculto para envío clásico -->
     <form id="formPagos" method="POST" action="<?= $config->getParametro('DEFAULT_INDEX') ?>ControladorAlumnos/guardarPagos">
@@ -92,6 +93,9 @@ document.getElementById('toggleEdit').addEventListener('click', function () {
     const mesMap = ['Octubre', 'Noviembre', 'Diciembre', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'];
     const monthMap = [10, 11, 12, 1, 2, 3, 4, 5, 6];
     const pagosPayload = [];
+
+    document.getElementById('addAlumno').classList.toggle('disabled', editMode);
+    document.getElementById('editAlumnos').classList.toggle('disabled', editMode);
 
     rows.forEach((row, rowIndex) => {
         const alumnoId = alumnoInfo[rowIndex].id;

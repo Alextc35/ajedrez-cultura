@@ -7,7 +7,7 @@
     </div>
 
     <div class="d-flex flex-column gap-2 text-center">
-        <a href="<?= $index ?>ControladorLigas/seleccionarTorneo?id=4&liga=Local" class="btn btn-secondary">LIGA LOCAL</a>
-        <a href="<?= $index ?>ControladorLigas/seleccionarTorneo?id=3&liga=Infantil" class="btn btn-secondary">LIGA INFANTIL</a>
+        <a href="<?= $index ?>ControladorLigas/seleccionarTorneo?id=1&liga=Local" class="btn btn-secondary">LIGA LOCAL</a>
+        <a href="<?= $index ?>ControladorLigas/seleccionarTorneo?id=2&liga=Infantil" class="btn btn-secondary">LIGA INFANTIL</a>
     </div>
 </div>

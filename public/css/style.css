@@ -11,7 +11,7 @@ body {
 }
 
 .table-responsive-sticky {
-    max-height: 500px; /* O el alto que quieras */
+    max-height: 500px;
     overflow-y: auto;
 }
 

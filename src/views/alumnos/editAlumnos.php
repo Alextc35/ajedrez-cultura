@@ -6,15 +6,17 @@ if (!isset($_SESSION['usuario'])) {
 
 <div class="container bg-white p-3 rounded shadow">
     <div class="container d-flex p-0 pb-1 justify-content-between align-items-center">
-        <a href="<?= $index ?>ControladorAlumnos/listAlumnos" class="btn btn-secondary btn-sm">
-            <i class="bi bi-arrow-left-short ">Volver</i>
+        <a href="<?= $index ?>ControladorAlumnos/listAlumnos" class="btn btn-secondary">
+            <i class="bi bi-arrow-left-short "></i>
         </a>
     </div>
-
     <h2 class="text-center">Editar Alumnos</h2>
 
     <?php if (!empty($dataToView['data'])) { ?>
     <div class="table-responsive">
+        <p class="text-center text-warning fw-semibold movil-warning">
+            ⚠️ Para una mejor experiencia en dispositivos móviles, se recomienda girar el dispositivo a modo horizontal.
+        </p>
         <form action="<?= $index ?>ControladorAlumnos/updateAlumnos" method="POST">
 
             <table class="table table-bordered table-striped">
@@ -51,11 +53,12 @@ if (!isset($_SESSION['usuario'])) {
             </table>
 
             <button type="submit" class="btn btn-success d-block m-auto mt-3" onclick="return confirm('¿Confirmar los cambios?')">
-                Guardar Cambios
+                <i class="bi bi-plus-circle"></i> Guardar Cambios
             </button>
         </form>
     </div>
     <?php } else { ?>
-        <p class="text-center">No hay alumnos en <?= htmlspecialchars($liga); ?> para editar.</p>
+        <p class="text-center">No hay alumnos registrados para editar.</p>
+        <a href="<?= $config->getParametro('DEFAULT_INDEX') ?>ControladorAlumnos/addAlumno" class="btn btn-success d-block mt-3 m-2">Añadir alumno</a>
     <?php } ?>
 </div>

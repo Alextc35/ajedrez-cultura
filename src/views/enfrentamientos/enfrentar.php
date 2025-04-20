@@ -6,8 +6,8 @@
 ?>
 <div class="container bg-white p-3 rounded shadow">
     <div class="container d-flex p-0 pb-1 justify-content-between align-items-center">
-        <a href="<?= $config->getParametro('DEFAULT_INDEX') ?>ControladorLigas/clasificacion?torneoId=<?= urlencode($torneoId); ?>&liga=<?= urlencode($liga) ?>" class="btn btn-secondary btn-sm">
-            <i class="bi bi-arrow-left-short ">Volver</i>
+        <a href="<?= $config->getParametro('DEFAULT_INDEX') ?>ControladorLigas/clasificacion?torneoId=<?= urlencode($torneoId); ?>&liga=<?= urlencode($liga) ?>" class="btn btn-secondary">
+            <i class="bi bi-arrow-left-short"></i>
         </a>
     </div>
     <h2 class="text-center">Selecciona los Jugadores para enfrentarlos</h2>

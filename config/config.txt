@@ -1,7 +1,7 @@
 #parámetros de la base de datos
 DB_HOST=localhost
 DB_PUERTO=3306
-DB_NAME=cultura_ajedrez
+DB_NAME=ajedrez_clase
 DB_USER=root
 DB_PASS=
 
