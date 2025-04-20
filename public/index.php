@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+// ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+
 require_once '../src/core/Config.php';
 require_once '../src/core/Handler.php';
 require_once '../src/core/View.php';
@@ -8,7 +11,7 @@ require_once '../src/core/View.php';
 $config = Config::getInstancia();
 $arrHandler = Handler::getControllerAction();
 
-echo "<pre style='color:white;'>HANDLER "; print_r($arrHandler); echo "</pre>";
+# echo "<pre style='color:white;'>HANDLER "; print_r($arrHandler); echo "</pre>";
 
 if (!isset($_SESSION['usuario'])) {
     $controller_path = "../src/controllers/" . $config->getParametro("DEFAULT_CONTROLLER_LOGIN") . ".php";
@@ -41,5 +44,5 @@ if (method_exists($controller, $action)) {
 
 View::render($controller->view, $dataToView);
 
-echo "<pre style='color:white;'>dataToView "; print_r($dataToView); echo "</pre>";
-echo "<pre style='color:white;'>SESION "; print_r($_SESSION); echo "</pre>";
+# echo "<pre style='color:white;'>dataToView "; print_r($dataToView); echo "</pre>";
+# echo "<pre style='color:white;'>SESION "; print_r($_SESSION); echo "</pre>";
