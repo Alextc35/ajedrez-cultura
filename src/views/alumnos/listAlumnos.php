@@ -75,7 +75,7 @@ $desactivado = empty($dataToView['data']) ? 'disabled' : '';
         <p class="text-center">No hay alumnos apuntados...</p>
     <?php } ?>
 
-    <a id="addAlumno" href="<?= $config->getParametro('DEFAULT_INDEX') ?>ControladorAlumnos/addAlumno" class="btn btn-success d-block mt-3 m-2 <?= $desactivado ?>">Añadir alumno</a>
+    <a id="addAlumno" href="<?= $config->getParametro('DEFAULT_INDEX') ?>ControladorAlumnos/addAlumno" class="btn btn-success d-block mt-3 m-2">Añadir alumno</a>
     <a id="editAlumnos" href="<?= $config->getParametro('DEFAULT_INDEX')?>ControladorAlumnos/editAlumnos" class="btn btn-primary d-block m-2 <?= $desactivado ?>">Editar alumnos</a>
 
     <!-- 🧾 Formulario oculto para envío clásico -->
