@@ -25,7 +25,7 @@ class Config {
     private $arrParametros;
 
     private function __construct() {
-        $strNombreFichero = '..\..\config\config.txt';
+        $strNombreFichero = '../../config/config.txt';
         $arrAux = ['DB_HOST', 'DB_PUERTO', 'DB_NAME', 'DB_USER', 'DB_PASS', 'DEFAULT_CONTROLLER', 'DEFAULT_ACTION', 'DEFAULT_CONTROLLER_LOGIN', 'DEFAULT_INDEX'];
         $this->arrParametros = [];
 

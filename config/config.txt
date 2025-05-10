@@ -14,4 +14,4 @@ DEFAULT_CONTROLLER_LOGIN=ControladorAuth
 DEFAULT_ACTION_LOGIN=login
 
 #ubicación de index sin http:
-DEFAULT_INDEX=//192.168.1.11/ajedrez-cultura/public/index.php/
+DEFAULT_INDEX=//localhost/ajedrez-cultura/public/index.php/
