@@ -23,6 +23,7 @@ $desactivado = empty($dataToView['data']) ? 'disabled' : '';
             <p class="text-center text-warning fw-semibold movil-warning">
                 ⚠️ Para una mejor experiencia en dispositivos móviles, se recomienda girar el dispositivo a modo horizontal.
             </p>
+            <input type="text" id="busquedaAlumno" class="form-control mb-3 m-auto" placeholder="Buscar alumno por nombre...">
             <table class="table table-bordered table-hover text-center align-middle" id="asistenciaTable">
                 <thead class="table-primary">
                     <tr>
@@ -46,7 +47,7 @@ $desactivado = empty($dataToView['data']) ? 'disabled' : '';
                             <td>
                                 <?= 
                                     $alumno['anio_nacimiento'] === null || $alumno['anio_nacimiento'] == 0
-                                    ? '–' 
+                                    ? '-' 
                                     : htmlspecialchars($alumno['anio_nacimiento']) 
                                 ?>
                             </td>
@@ -135,6 +136,16 @@ document.getElementById('toggleEdit').addEventListener('click', function () {
         document.getElementById('pagos_data').value = JSON.stringify(pagosPayload);
         document.getElementById('formPagos').submit();
     }
+});
+
+document.getElementById('busquedaAlumno').addEventListener('input', function () {
+    const filtro = this.value.toLowerCase();
+    const filas = document.querySelectorAll('#asistenciaTable tbody tr');
+
+    filas.forEach(fila => {
+        const nombre = fila.querySelector('td:first-child').textContent.toLowerCase();
+        fila.style.display = nombre.includes(filtro) ? '' : 'none';
+    });
 });
 
 </script>

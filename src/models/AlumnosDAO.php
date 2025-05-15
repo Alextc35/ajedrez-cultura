@@ -17,7 +17,7 @@ class AlumnosDAO
     public function getAlumnosConPagos() {
         $conexion = Conexion::getInstancia()->getConexion();
     
-        $sql = "SELECT id, nombre, anio_nacimiento, liga FROM $this->table";
+        $sql = "SELECT id, nombre, anio_nacimiento, liga FROM $this->table ORDER BY nombre";
         $stmt = $conexion->prepare($sql);
         $stmt->execute();
         $alumnos = $stmt->fetchAll(PDO::FETCH_ASSOC);
