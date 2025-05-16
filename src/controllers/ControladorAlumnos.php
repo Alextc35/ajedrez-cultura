@@ -106,7 +106,7 @@ class ControladorAlumnos
             $id = intval($_GET['id']);
             if ($id > 0) {
                 $this->alumnosObj->deleteAlumno($id);
-                header("Location: " . $config->getParametro('DEFAULT_INDEX') . "ControladorALumnos/listAlumnos");
+                header("Location: " . $config->getParametro('DEFAULT_INDEX') . "ControladorAlumnos/listAlumnos");
                 exit();
             }
         }
