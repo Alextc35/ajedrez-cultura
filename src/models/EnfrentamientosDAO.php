@@ -65,4 +65,14 @@ class EnfrentamientosDAO
         $stmt->bindParam(':id', $alumno_id, PDO::PARAM_INT);
         return $stmt->execute();
     }
+
+    public function getHistorialPorTorneo($torneoId) {
+        $sql = "SELECT alumno1_id, alumno2_id, resultado, fecha 
+                FROM $this->table 
+                WHERE torneo_id = :torneo_id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':torneo_id', $torneoId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

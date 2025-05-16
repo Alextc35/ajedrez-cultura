@@ -30,26 +30,17 @@ class ControladorEnfrentamientos
     }
 
     public function asignarResultados() {
-        $config = Config::getInstancia();
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $liga = $_POST['liga'] ?? 'Local';
             $torneoId = $_POST['torneoId'] ?? null;
-            
-            if ($liga === 'Local') {
-                $TorneoId = 4;
-            } else {
-                $TorneoId = 3;
-            }
+
             $ids = $_POST['ids'] ?? [];
 
             if (count($ids) < 2) {
-                header("Location: " . $config->getParametro('DEFAULT_INDEX') . "ControladorLigas/seleccionarTorneo?id=" . $TorneoId . "&liga=" . urlencode($liga));
+                header("Location: " . $this->config->getParametro('DEFAULT_INDEX') . "ControladorLigas/seleccionarTorneo?id=" . $torneoId . "&liga=" . urlencode($liga));
                 exit();
             }
-
-            shuffle($ids);
-
+            
             $jugadores = [];
             foreach ($ids as $id) {
                 $alumno = $this->alumnosObj->getAlumno($id);
@@ -60,17 +51,105 @@ class ControladorEnfrentamientos
 
             if (empty($jugadores)) {
                 // $_SESSION['error'] = "No se encontraron jugadores seleccionados.";
-                header("Location: " . $config->getParametro('DEFAULT_INDEX') . "ControladorLigas/seleccionarTorneo?id=" . $TorneoId . "&liga=" . urlencode($liga));
+                header("Location: " . $this->config->getParametro('DEFAULT_INDEX') . "ControladorLigas/seleccionarTorneo?id=" . $torneoId . "&liga=" . urlencode($liga));
                 exit();
+            }
+
+            // Obtener historial de enfrentamientos del torneo
+            $historial = $this->enfrentamientosDAO->getHistorialPorTorneo($torneoId);
+            // echo "<pre>";
+            // var_dump($historial); exit();
+            // echo "</pre>";
+
+            // Determinar el último color jugado por cada jugador
+            $ultimoColor = [];
+            foreach($historial as $partida) {
+                $fecha = strtotime($partida['fecha']);
+                $alumno1 = $partida['alumno1_id'];
+                $alumno2 = $partida['alumno2_id'];
+
+                if (!isset($ultimoColor[$alumno1]) || $fecha > $ultimoColor[$alumno1]['fecha']) {
+                    $ultimoColor[$alumno1] = ['color' => 'blancas', 'fecha' => $fecha];
+                }
+                if (!isset($ultimoColor[$alumno2]) || $fecha > $ultimoColor[$alumno2]['fecha']) {
+                    $ultimoColor[$alumno2] = ['color' => 'negras', 'fecha' => $fecha];
+                }
+            }
+
+            // Aleatorizar orden de jugadores
+            shuffle($jugadores);
+            
+            // Emparejamientos inteligentes
+            $jugadoresNoEmparejados = $jugadores;
+            $emparejamientos = [];
+
+            $maxIntentos = count($jugadoresNoEmparejados) * 2;
+            $intentos = 0;
+
+            while (count($jugadoresNoEmparejados) >= 2 && $intentos < $maxIntentos) {
+                $jugador1 = array_shift($jugadoresNoEmparejados);
+
+                $encontrado = false;
+                foreach ($jugadoresNoEmparejados as $i => $jugador2) {
+                    // Alternancia de colores
+                    $color1 = $ultimoColor[$jugador1['id']]['color'] ?? null;
+                    $color2 = $ultimoColor[$jugador2['id']]['color'] ?? null;
+
+                    if ($color1 === 'negras' || ($color2 === 'blancas' && $color1 !== 'blancas')) {
+                        $blancas = $jugador1;
+                        $negras = $jugador2;
+                    } else {
+                        $blancas = $jugador2;
+                        $negras = $jugador1;
+                    }
+
+                    // Bloquea si ya jugaron con esa misma combinación de colores
+                    if ($this->yaJugaronMismaCombinacion($blancas['id'], $negras['id'], $historial)) {
+                        continue;
+                    }
+
+                    $emparejamientos[] = [
+                        'id1' => $blancas['id'],
+                        'id2' => $negras['id'],
+                        'nombre1' => $blancas['nombre'],
+                        'nombre2' => $negras['nombre'],
+                    ];
+
+                    unset($jugadoresNoEmparejados[$i]);
+                    $jugadoresNoEmparejados = array_values($jugadoresNoEmparejados);
+                    $encontrado = true;
+                    break;
+                }
+
+                // Si no encontró rival válida, lo deja para el fiinal
+                if (!$encontrado) {
+                    array_push($jugadoresNoEmparejados, $jugador1);
+                }
+
+                $intentos++;
+            }
+
+            // Si queda un jugador solo => BYE
+            if (count($jugadoresNoEmparejados) === 1) {
+                $solo = $jugadoresNoEmparejados[0];
+                $emparejamientos[] = [
+                    'id1' => $solo['id'],
+                    'id2' => 'bye',
+                    'nombre1' => $solo['nombre'],
+                    'nombre2' => 'BYE'
+                ];
             }
 
             $this->page_title = 'Ajedrez Cultura | Asignar Resultados';
             $this->view = 'enfrentamientos/asignarResultados';
-
             $alumnosLiga = $this->alumnosObj->getAlumnosPorLiga($liga);
 
+            // echo "<pre>";
+            // var_dump($emparejamientos); exit();
+            // echo "</pre>";
+            
             return [
-                'jugadores' => $jugadores,
+                'jugadores' => $emparejamientos,
                 'liga' => $liga,
                 'torneoId' => $torneoId,
                 'alumnos' => $alumnosLiga
@@ -147,4 +226,13 @@ class ControladorEnfrentamientos
         ]);
     }
     
+    private function yaJugaronMismaCombinacion($blancasId, $negrasId, $historial) {
+        foreach ($historial as $partida) {
+            if ($partida['alumno1_id'] == $blancasId && $partida['alumno2_id'] == $negrasId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

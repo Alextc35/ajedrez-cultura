@@ -46,9 +46,6 @@ foreach ($alumnosLiga as $alumno) {
                 </thead>
                 <tbody>
                     <?php
-                    $jugadoresIds = array_column($jugadoresSeleccionados, 'id');
-                    $numJugadores = count($jugadoresIds);
-
                     function renderJugadorSelect($name, $selectedId, $jugadores, $includeBye = false)
                     {
                         echo "<select name='{$name}[]' class='form-select w-100 d-none modo-edicion'>";
@@ -66,10 +63,11 @@ foreach ($alumnosLiga as $alumno) {
                         echo "<span class='modo-lectura'>{$nombreVisible}</span>";
                     }
 
-                    for ($i = 0; $i < $numJugadores - 1; $i += 2) {
-                        $id1 = $jugadoresIds[$i];
-                        $id2 = $jugadoresIds[$i + 1];
-                    ?>
+                    $numJugadores = count($jugadoresSeleccionados);
+                    foreach ($jugadoresSeleccionados as $pareja) {
+                        $id1 = $pareja['id1'];
+                        $id2 = $pareja['id2'];
+                        ?>
                         <tr class="text-center align-middle">
                             <td><?php renderJugadorSelect('id1', $id1, $jugadores, true); ?></td>
                             <td>vs</td>
@@ -89,7 +87,8 @@ foreach ($alumnosLiga as $alumno) {
                                 </button>
                             </td>
                         </tr>
-                    <?php }
+                        <?php
+                    }
 
                     if ($numJugadores % 2 === 1) {
                         $ultimoId = $jugadoresIds[$numJugadores - 1];
